@@ -1,9 +1,18 @@
 name: 'trx-parser'
 description: 'An action to parse trx reports from a given path and use GitHub status check api to fail PRs'
 author: 'Nasir Amin'
+branding:
+  icon: 'info'  
+  color: 'green'
+inputs:
+    TRX_PATH:
+      description: 'Path to the directory cntaining trx files'
+      required: true
 outputs:
   test-outcome:
     description: 'Test outcome Failed/Passed'
+  trx-path:
+    description: 'Used for debugging'
 runs:
   using: 'node12'
   main: 'dist/index.js'

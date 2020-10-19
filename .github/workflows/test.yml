@@ -18,5 +18,7 @@ jobs:
         - name: Run Action
           id: trx-parser
           uses: ./
+          with:
+            TRX_PATH: ./
         - name: Print Test Outcome
           run: echo ${{ steps.trx-parser.outputs.test-outcome }}

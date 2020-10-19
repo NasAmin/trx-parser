@@ -95,7 +95,10 @@ const core = __importStar(__webpack_require__(186));
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
+            const trxPath = core.getInput('TRX_PATH');
+            core.setCommandEcho(true);
             core.setOutput('test-outcome', 'Passed');
+            core.setOutput('trx-path', trxPath);
         }
         catch (error) {
             core.setFailed(error.message);
