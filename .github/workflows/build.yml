@@ -1,11 +1,9 @@
-name: 'build-test'
-on: # rebuild any PRs and main branch changes
+name: Build
+on:
   pull_request:
   push:
-    branches:
+      branches:
       - main
-  create:
-
 jobs:
   build:
     runs-on: ${{ matrix.job.os }}
@@ -16,7 +14,8 @@ jobs:
     steps:
         - name: Get Source Code
           uses: actions/checkout@v2
-        - name: Restore Dependencies
-          run: npm ci
-        - name: Build
-          run: npm run all
+        - name: Run Action
+          id: trx-parser
+          uses: ./
+        - name: Print Test Outcome
+          run: ${{ steps.trx-parser.outputs.test-outcome }}
