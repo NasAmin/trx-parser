@@ -5,5 +5,5 @@ export async function getTrxFiles(path: string) : Promise<string>{
           console.log(file);
         });
       });
-    return ""
+    return "error"
 }
