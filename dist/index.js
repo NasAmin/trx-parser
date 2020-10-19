@@ -556,16 +556,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getTrxFiles = void 0;
-const core = __importStar(__webpack_require__(186));
 const fs = __importStar(__webpack_require__(747));
 function getTrxFiles(path) {
     return __awaiter(this, void 0, void 0, function* () {
-        fs.readdir(path, (err, files) => {
-            for (const file of files) {
-                core.debug(file);
-            }
-        });
-        return 'error';
+        // TODO: Convert to async version
+        const files = fs.readdirSync(path);
+        return files;
     });
 }
 exports.getTrxFiles = getTrxFiles;
