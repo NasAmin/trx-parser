@@ -1,4 +1,5 @@
 import * as core from '@actions/core'
+import { getTrxFiles } from './xml'
 
 export async function run(): Promise<void> {
   try {
@@ -7,6 +8,11 @@ export async function run(): Promise<void> {
 
     core.setOutput('test-outcome', 'Passed')
     core.setOutput('trx-path', trxPath)
+
+    const trxFiles = getTrxFiles('.')
+
+    core.setOutput('trx-files', trxFiles)
+
   } catch (error) {
     core.setFailed(error.message)
   }
