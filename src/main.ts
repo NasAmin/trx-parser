@@ -9,7 +9,7 @@ export async function run(): Promise<void> {
     core.setOutput('test-outcome', 'Passed')
     core.setOutput('trx-path', trxPath)
 
-    const trxFiles = getTrxFiles(trxPath)
+    const trxFiles = await getTrxFiles(trxPath)
 
     core.setOutput('trx-files', trxFiles)
 
