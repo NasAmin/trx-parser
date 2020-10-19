@@ -25,4 +25,4 @@ jobs:
           run: |
             echo Outcome is: ${{ steps.trx-parser.outputs.test-outcome }}
             echo Path is: ${{ steps.trx-parser.outputs.trx-path }}
-            echo files: ${{ steps.trx-parser.outputs.trx-files }}
+            echo trx files: ${{ steps.trx-parser.outputs.trx-files }}
