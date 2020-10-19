@@ -1,8 +1,8 @@
 {
-  "name": "typescript-action",
+  "name": "trx-parser",
   "version": "0.0.0",
   "private": true,
-  "description": "TypeScript template action",
+  "description": "GitHub Action to parse test results and block PRs using the Check API",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
@@ -15,14 +15,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/NasAmin/trx-parser.git"
   },
   "keywords": [
     "actions",
     "node",
     "setup"
   ],
-  "author": "",
+  "author": "Nasir Amin",
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.6"
