@@ -13,8 +13,7 @@ jobs:
     steps:
         - name: Get Source Code
           uses: actions/checkout@v2
-        - name: Run Action
-          id: trx-parser
-          uses: ./
-        - name: Print Test Outcome
-          run: ${{ steps.trx-parser.outputs.test-outcome }}
+        - name: Restore Dependencies
+          run: npm ci
+        - name: Build
+          run: npm run all
