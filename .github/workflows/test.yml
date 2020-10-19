@@ -19,7 +19,8 @@ jobs:
           id: trx-parser
           uses: ./
           with:
-            TRX_PATH: ./
+            TRX_PATH: ${{ github.workspace }}
+
         - name: Print Test Outcome
           run: |
             echo Outcome is: ${{ steps.trx-parser.outputs.test-outcome }}
