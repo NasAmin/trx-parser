@@ -1,4 +1,4 @@
-name: 'build-test'
+name: Test
 on: # rebuild any PRs and main branch changes
   pull_request:
   push:
@@ -8,11 +8,10 @@ on: # rebuild any PRs and main branch changes
 
 jobs:
   build:
-    runs-on: ${{ matrix.job.os }}
-    strategy:
-        fail-fast: true
+    runs-on: ${{ matrix.os }}
+    strategy:        
         matrix:
-          os: [windoes-latest, ubuntu-latest]
+          os: [windows-latest, ubuntu-latest]
     steps:
         - name: Get Source Code
           uses: actions/checkout@v2
