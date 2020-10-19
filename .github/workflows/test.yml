@@ -19,4 +19,4 @@ jobs:
           id: trx-parser
           uses: ./
         - name: Print Test Outcome
-          run: ${{ steps.trx-parser.outputs.test-outcome }}
+          run: echo ${{ steps.trx-parser.outputs.test-outcome }}
