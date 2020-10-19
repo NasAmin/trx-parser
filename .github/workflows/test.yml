@@ -21,4 +21,6 @@ jobs:
           with:
             TRX_PATH: ./
         - name: Print Test Outcome
-          run: echo ${{ steps.trx-parser.outputs.test-outcome }}
+          run: |
+            echo Outcome is: ${{ steps.trx-parser.outputs.test-outcome }}
+            echo Path is: ${{ steps.trx-parser.outputs.trx-path }}
