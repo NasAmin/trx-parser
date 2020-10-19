@@ -1,11 +1,6 @@
 name: 'trx-parser'
 description: 'An action to parse trx reports from a given path and use GitHub status check api to fail PRs'
 author: 'Nasir Amin'
-inputs:
-  milliseconds: # change this
-    required: false
-    description: 'input description here'
-    default: 'default value if applicable'
 outputs:
   test-outcome:
     description: 'Test outcome Failed/Passed'
