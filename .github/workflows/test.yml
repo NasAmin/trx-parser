@@ -7,7 +7,7 @@ on: # rebuild any PRs and main branch changes
   create:
 
 jobs:
-  build:
+  test:
     runs-on: ${{ matrix.os }}
     strategy:        
         matrix:
