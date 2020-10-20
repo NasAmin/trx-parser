@@ -1,7 +1,14 @@
 import * as fs from 'fs'
-export async function getTrxFiles(path: string): Promise<string[]> {
-  // TODO: Convert to async version
-  const files = fs.readdirSync(path)
+import * as path from 'path'
 
-  return files
+import * as uitl from 'util'
+
+export async function getTrxFiles(trxPath: string): Promise<string[]> {
+  // TODO: Convert to async version    
+  const files = fs.readdirSync(path.resolve(trxPath), {withFileTypes: true})  
+  const readdir = uitl.promisify(fs.readdir)
+  let fileNames = (await readdir(trxPath))
+  let trxFiles = fileNames.filter(f => f.endsWith('.json'))
+  
+  return trxFiles
 }
