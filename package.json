@@ -26,7 +26,10 @@
   "author": "Nasir Amin",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.2.6"
+    "@actions/core": "^1.2.6",
+    "@types/he": "^1.1.1",
+    "fast-xml-parser": "^3.17.4",
+    "he": "^1.2.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.10",
