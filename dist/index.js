@@ -562,7 +562,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getTrxFiles = void 0;
+exports.getAbsoluteFilePaths = exports.getTrxFiles = void 0;
 const fs = __importStar(__webpack_require__(747));
 const path = __importStar(__webpack_require__(622));
 const uitl = __importStar(__webpack_require__(669));
@@ -575,10 +575,20 @@ function getTrxFiles(trxPath) {
         const fileNames = yield readdir(trxPath);
         const trxFiles = fileNames.filter(f => f.endsWith('.trx'));
         core.info(`Files count: ${files.length}`);
-        return trxFiles;
+        const filesWithAbsolutePaths = getAbsoluteFilePaths(trxFiles, trxPath);
+        return filesWithAbsolutePaths;
     });
 }
 exports.getTrxFiles = getTrxFiles;
+function getAbsoluteFilePaths(fileNames, directoryName) {
+    const absolutePaths = [];
+    for (const file of fileNames) {
+        const absolutePath = path.join(directoryName, file);
+        absolutePaths.push(absolutePath);
+    }
+    return absolutePaths;
+}
+exports.getAbsoluteFilePaths = getAbsoluteFilePaths;
 
 
 /***/ })

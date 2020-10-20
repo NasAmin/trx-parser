@@ -18,11 +18,10 @@ export function getAbsoluteFilePaths(
   fileNames: string[],
   directoryName: string
 ): string[] {
-  let absolutePaths: string[] = []
-  fileNames.forEach(file => {
+  const absolutePaths: string[] = []
+  for (const file of fileNames) {
     const absolutePath = path.join(directoryName, file)
     absolutePaths.push(absolutePath)
-  })
-
+  }
   return absolutePaths
 }
