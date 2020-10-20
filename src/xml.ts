@@ -10,6 +10,19 @@ export async function getTrxFiles(trxPath: string): Promise<string[]> {
   const fileNames = await readdir(trxPath)
   const trxFiles = fileNames.filter(f => f.endsWith('.trx'))
   core.info(`Files count: ${files.length}`)
+  const filesWithAbsolutePaths = getAbsoluteFilePaths(trxFiles, trxPath)
+  return filesWithAbsolutePaths
+}
 
-  return trxFiles
+export function getAbsoluteFilePaths(
+  fileNames: string[],
+  directoryName: string
+): string[] {
+  let absolutePaths: string[] = []
+  fileNames.forEach(file => {
+    const absolutePath = path.join(directoryName, file)
+    absolutePaths.push(absolutePath)
+  })
+
+  return absolutePaths
 }
