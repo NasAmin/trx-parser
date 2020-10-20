@@ -478,6 +478,13 @@ module.exports = require("path");
 
 /***/ }),
 
+/***/ 669:
+/***/ (function(module) {
+
+module.exports = require("util");
+
+/***/ }),
+
 /***/ 717:
 /***/ (function(__unusedmodule, exports, __webpack_require__) {
 
@@ -557,11 +564,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getTrxFiles = void 0;
 const fs = __importStar(__webpack_require__(747));
-function getTrxFiles(path) {
+const path = __importStar(__webpack_require__(622));
+const uitl = __importStar(__webpack_require__(669));
+const core = __importStar(__webpack_require__(186));
+function getTrxFiles(trxPath) {
     return __awaiter(this, void 0, void 0, function* () {
         // TODO: Convert to async version
-        const files = fs.readdirSync(path);
-        return files;
+        const files = fs.readdirSync(path.resolve(trxPath), { withFileTypes: true });
+        const readdir = uitl.promisify(fs.readdir);
+        const fileNames = yield readdir(trxPath);
+        const trxFiles = fileNames.filter(f => f.endsWith('.json'));
+        core.info(`Files count: ${files.length}`);
+        return trxFiles;
     });
 }
 exports.getTrxFiles = getTrxFiles;
