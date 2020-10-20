@@ -92,7 +92,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.run = void 0;
 const core = __importStar(__webpack_require__(186));
-const xml_1 = __webpack_require__(854);
+const utils_1 = __webpack_require__(918);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -100,7 +100,7 @@ function run() {
             core.setCommandEcho(true);
             core.setOutput('test-outcome', 'Passed');
             core.setOutput('trx-path', trxPath);
-            const trxFiles = yield xml_1.getTrxFiles(trxPath);
+            const trxFiles = yield utils_1.getTrxFiles(trxPath);
             core.setOutput('trx-files', trxFiles);
         }
         catch (error) {
@@ -528,7 +528,7 @@ module.exports = require("fs");
 
 /***/ }),
 
-/***/ 854:
+/***/ 918:
 /***/ (function(__unusedmodule, exports, __webpack_require__) {
 
 "use strict";

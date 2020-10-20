@@ -1,7 +1,6 @@
 import * as core from '@actions/core'
-import {dirname} from 'path'
 import {run} from '../src/main'
-import {getAbsoluteFilePaths} from '../src/xml'
+import {getAbsoluteFilePaths} from '../src/utils'
 jest.mock('@actions/core')
 
 describe('When parsing tests', () => {

@@ -23,5 +23,6 @@ export function getAbsoluteFilePaths(
     const absolutePath = path.join(directoryName, file)
     absolutePaths.push(absolutePath)
   }
+
   return absolutePaths
 }
