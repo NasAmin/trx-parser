@@ -8,7 +8,7 @@ export async function getTrxFiles(trxPath: string): Promise<string[]> {
   const files = fs.readdirSync(path.resolve(trxPath), {withFileTypes: true})
   const readdir = uitl.promisify(fs.readdir)
   const fileNames = await readdir(trxPath)
-  const trxFiles = fileNames.filter(f => f.endsWith('.json'))
+  const trxFiles = fileNames.filter(f => f.endsWith('.trx'))
   core.info(`Files count: ${files.length}`)
 
   return trxFiles

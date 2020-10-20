@@ -1,0 +1,580 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="3e836296-4e3f-4a0b-9807-9a0594ff3f02" name="@testsrunner-job-fc962 2020-01-09 14:05:41:474" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2020-01-09T14:05:41.4749916+00:00" queuing="2020-01-09T14:05:41.4749917+00:00" start="2020-01-09T14:05:40.5069954+00:00" finish="2020-01-09T14:07:31.9132227+00:00" />
+  <TestSettings name="default" id="6017d281-4129-41ad-944f-431176a38322">
+    <Deployment runDeploymentRoot="_testsrunner-job-fc962_2020-01-09_14_05_41_474" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="f408e580-dc86-4fd8-ba9a-9996c23586e4" testId="2c21e386-7b10-bfcf-feb5-d400a04009c1" testName="UserViewsAuditLogEntriesCreatedWithinASpecifiedPeriodOfTime_10December20181300" computerName="testsrunner-job-fc962" startTime="2020-01-09T14:05:41.4070962+00:00" endTime="2020-01-09T14:05:41.4071758+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f408e580-dc86-4fd8-ba9a-9996c23586e4">
+      <Output></Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="45c51476-8ae6-4a31-b2a0-d5f65a3adc69" testId="77451e53-fdfa-d4a6-865f-a06863727cf6" testName="TheUserCanObtainAllTheDetailsOfAnAuditEntry_E_Record" computerName="testsrunner-job-fc962" duration="00:00:12.6078697" startTime="2020-01-09T14:07:18.9047208+00:00" endTime="2020-01-09T14:07:31.5128458+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="45c51476-8ae6-4a31-b2a0-d5f65a3adc69">
+      <Output>
+        <StdOut>#11: Given there is a tenancy
+-&gt; #11: done: TenancySetupSteps.GivenIHaveATenancy() (0.0s)
+#11: And the logged in user is authorized to read the audit log
+#11: When I log in to the tenancy as a known administrator
+#11: Given I am at the hub tenant selection page
+-&gt; #11: done: BrowserSetupSteps.GivenIAmAtTheHubTenantSelectionPage() (0.4s)
+#11: When I enter the tenant ID
+-&gt; #11: done: TenancyLoginSteps.WhenIEnterTheTenantID() (0.8s)
+#11: When I enter my username and password
+-&gt; #11: done: CognitoLoginSteps.WhenIEnterMyUsernameAndPassword() (0.8s)
+#11: Then I am taken to the hub page
+-&gt; #11: done: AppLaunchSteps.ThenIAmRedirectedToTheHubPage() (0.0s)
+-&gt; #11: done: TenancyLoginSteps.WhenILogInToTheTenancyAsAKnownAdministrator() (3.4s)
+-&gt; #11: done: AuditLogSteps.GivenTheUserAuthorizedToViewAuditLogsIsLoggedIn() (3.5s)
+#11: And the tenancy has the following audit entries:
+  --- table step argument ---
+  | Event Type  | Originator | Reason       |
+  | Software    | CloudHub   | Test Event 1 |
+  | Acquisition | CloudHub   | Test Event 2 |
+  | Batch       | CloudHub   | Test Event 3 |
+  | Security    | CloudHub   | Test Event 4 |
+  | eRecord     | CloudHub   | Test Event 5 |
+Read queue name as eu-staging-AuditEventsQueue
+Initialise got queue url http://sqs.eu-west-1.amazonaws.com/032356282346/eu-staging-AuditEventsQueue.
+Elastic search url: https://b2432d99b514415d9cbe0921cd582815.eu-west-1.aws.found.io:9243
+Counted 0 docs
+Counted 1 docs
+Counted 1 docs
+Counted 1 docs
+Counted 1 docs
+Counted 1 docs
+-&gt; #11: done: AuditLogSteps.GivenTheTenancyHasTheFollowingAuditEntries(&lt;table&gt;) (5.3s)
+#11: When the user requests to see the details of an audit log entry of E-Record
+#11: When the user views the audit log
+-&gt; #11: done: AppLaunchSteps.WhenIRequestToViewTheAuditLog() (0.5s)
+-&gt; #11: done: AuditLogSteps.RequestToSeeDetailOfAuditLogByType("E-Record") (1.8s)
+#11: Then the user receives the details of the following Time stamp,Event type,Originating module,Reason for event,Message of the audit entry
+-&gt; #11: done: AuditLogSteps.WhenUserReceiveDetailOfSelectedAuditEntry("Time stamp,Event ...") (1.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="fcfcb502-5110-421f-a5b1-d752659a677e" testId="694a334b-640b-0f99-8769-6fd8628a8d8c" testName="TheUserCanCombineMultipleAuditLogFiltersToFindAuditEntriesOfInterest" computerName="testsrunner-job-fc962" duration="00:00:34.2451270" startTime="2020-01-09T14:05:41.2665433+00:00" endTime="2020-01-09T14:06:51.8104699+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fcfcb502-5110-421f-a5b1-d752659a677e">
+      <Output>
+        <StdOut>#11: Given there is a tenancy
+#14: Given there is a tenancy
+#12: Given there is a tenancy
+#13: Given there is a tenancy
+-&gt; #12: done: TenancySetupSteps.GivenIHaveATenancy() (1.0s)
+-&gt; #14: done: TenancySetupSteps.GivenIHaveATenancy() (1.0s)
+-&gt; #13: done: TenancySetupSteps.GivenIHaveATenancy() (1.0s)
+-&gt; #11: done: TenancySetupSteps.GivenIHaveATenancy() (1.0s)
+#12: And the logged in user is authorized to read the audit log
+#14: And the logged in user is authorized to read the audit log
+#11: And the logged in user is authorized to read the audit log
+#13: And the logged in user is authorized to read the audit log
+#11: When I log in to the tenancy as a known administrator
+#13: When I log in to the tenancy as a known administrator
+#11: Given I am at the hub tenant selection page
+#13: Given I am at the hub tenant selection page
+#12: When I log in to the tenancy as a known administrator
+#12: Given I am at the hub tenant selection page
+#14: When I log in to the tenancy as a known administrator
+#14: Given I am at the hub tenant selection page
+-&gt; #12: done: BrowserSetupSteps.GivenIAmAtTheHubTenantSelectionPage() (1.8s)
+-&gt; #14: done: BrowserSetupSteps.GivenIAmAtTheHubTenantSelectionPage() (1.8s)
+-&gt; #11: done: BrowserSetupSteps.GivenIAmAtTheHubTenantSelectionPage() (2.0s)
+-&gt; #13: done: BrowserSetupSteps.GivenIAmAtTheHubTenantSelectionPage() (2.1s)
+#12: When I enter the tenant ID
+#14: When I enter the tenant ID
+#11: When I enter the tenant ID
+-&gt; #12: done: TenancyLoginSteps.WhenIEnterTheTenantID() (0.7s)
+-&gt; #11: done: TenancyLoginSteps.WhenIEnterTheTenantID() (0.6s)
+-&gt; #14: done: TenancyLoginSteps.WhenIEnterTheTenantID() (0.7s)
+#12: When I enter my username and password
+#11: When I enter my username and password
+#14: When I enter my username and password
+-&gt; #12: done: CognitoLoginSteps.WhenIEnterMyUsernameAndPassword() (1.0s)
+-&gt; #11: done: CognitoLoginSteps.WhenIEnterMyUsernameAndPassword() (1.0s)
+-&gt; #14: done: CognitoLoginSteps.WhenIEnterMyUsernameAndPassword() (1.1s)
+#12: Then I am taken to the hub page
+#11: Then I am taken to the hub page
+-&gt; #12: done: AppLaunchSteps.ThenIAmRedirectedToTheHubPage() (0.0s)
+-&gt; #11: done: AppLaunchSteps.ThenIAmRedirectedToTheHubPage() (0.1s)
+#14: Then I am taken to the hub page
+-&gt; #12: done: TenancyLoginSteps.WhenILogInToTheTenancyAsAKnownAdministrator() (10.4s)
+-&gt; #11: done: TenancyLoginSteps.WhenILogInToTheTenancyAsAKnownAdministrator() (10.4s)
+-&gt; #14: done: AppLaunchSteps.ThenIAmRedirectedToTheHubPage() (0.0s)
+-&gt; #12: done: AuditLogSteps.GivenTheUserAuthorizedToViewAuditLogsIsLoggedIn() (11.8s)
+-&gt; #14: done: TenancyLoginSteps.WhenILogInToTheTenancyAsAKnownAdministrator() (10.6s)
+-&gt; #11: done: AuditLogSteps.GivenTheUserAuthorizedToViewAuditLogsIsLoggedIn() (11.8s)
+#11: And the tenancy has the following audit entries:
+  --- table step argument ---
+  | Event Type  | Originator | Reason       |
+  | Software    | CloudHub   | Test Event 1 |
+  | Acquisition | CloudHub   | Test Event 2 |
+  | Batch       | CloudHub   | Test Event 3 |
+  | Security    | CloudHub   | Test Event 4 |
+  | eRecord     | CloudHub   | Test Event 5 |
+Read queue name as eu-staging-AuditEventsQueue
+-&gt; #14: done: AuditLogSteps.GivenTheUserAuthorizedToViewAuditLogsIsLoggedIn() (12.0s)
+#12: And the tenancy has the following audit entries:
+  --- table step argument ---
+  | Event Type  | Originator              | Reason       |
+  | Software    | swMod virtual calculate | Test Event 1 |
+  | Acquisition | swMod wireless generate | Test Event 2 |
+  | Batch       | WebApi.Authentication   | Test Event 3 |
+  | Security    | Security.Test.Module    | Test Event 4 |
+  | eRecord     | CloudHub                | Test Event 5 |
+Read queue name as eu-staging-AuditEventsQueue
+Initialise got queue url http://sqs.eu-west-1.amazonaws.com/032356282346/eu-staging-AuditEventsQueue.
+Initialise got queue url http://sqs.eu-west-1.amazonaws.com/032356282346/eu-staging-AuditEventsQueue.
+Elastic search url: https://b2432d99b514415d9cbe0921cd582815.eu-west-1.aws.found.io:9243
+Elastic search url: https://b2432d99b514415d9cbe0921cd582815.eu-west-1.aws.found.io:9243
+#14: And the tenancy has the following audit entries:
+  --- table step argument ---
+  | Event Type  | Originator | Reason       |
+  | Software    | CloudHub   | Test Event 1 |
+  | Acquisition | CloudHub   | Test Event 2 |
+  | Batch       | CloudHub   | Test Event 3 |
+  | Security    | CloudHub   | Test Event 4 |
+  | eRecord     | CloudHub   | Test Event 5 |
+Read queue name as eu-staging-AuditEventsQueue
+Initialise got queue url http://sqs.eu-west-1.amazonaws.com/032356282346/eu-staging-AuditEventsQueue.
+Elastic search url: https://b2432d99b514415d9cbe0921cd582815.eu-west-1.aws.found.io:9243
+Counted 0 docs
+Counted 0 docs
+Counted 0 docs
+#13: When I enter the tenant ID
+-&gt; #13: done: TenancyLoginSteps.WhenIEnterTheTenantID() (0.5s)
+Counted 1 docs
+Counted 1 docs
+Counted 1 docs
+Counted 1 docs
+Counted 1 docs
+Counted 1 docs
+Counted 1 docs
+Counted 1 docs
+Counted 1 docs
+Counted 1 docs
+Counted 1 docs
+Counted 1 docs
+-&gt; #11: done: AuditLogSteps.GivenTheTenancyHasTheFollowingAuditEntries(&lt;table&gt;) (5.4s)
+Counted 1 docs
+-&gt; #12: done: AuditLogSteps.GivenTheTenancyHasTheFollowingAuditEntries(&lt;table&gt;) (5.4s)
+Counted 1 docs
+Counted 1 docs
+-&gt; #14: done: AuditLogSteps.GivenTheTenancyHasTheFollowingAuditEntries(&lt;table&gt;) (5.2s)
+#11: When the user requests to see the details of an audit log entry of Software
+#11: When the user views the audit log
+#12: And I view the audit log
+#14: And I view the audit log
+-&gt; #12: done: AppLaunchSteps.WhenIRequestToViewTheAuditLog() (0.8s)
+-&gt; #11: done: AppLaunchSteps.WhenIRequestToViewTheAuditLog() (1.0s)
+-&gt; #14: done: AppLaunchSteps.WhenIRequestToViewTheAuditLog() (1.1s)
+#12: When the user filters audit entries by originating software modules:
+  --- table step argument ---
+  | Originator              |
+  | swMod virtual calculate |
+#14: When the user filters audit entries by event types:
+  --- table step argument ---
+  | Event Type |
+  | Software   |
+-&gt; #14: done: FilteringByEventTypeSteps.WhenTheUserFiltersAuditEntriesByEventTypes(&lt;table&gt;) (1.9s)
+-&gt; #11: done: AuditLogSteps.RequestToSeeDetailOfAuditLogByType("Software") (3.5s)
+#14: Then the user only receives audit entries of the following event types:
+  --- table step argument ---
+  | Event Type |
+  | Software   |
+#11: Then the user receives the details of the following Time stamp,Event type,Originating module,Reason for event,Message of the audit entry
+-&gt; #12: done: FilteringByOriginatingSoftwareModulesSteps.WhenTheUserFiltersAuditEntriesByOriginatingSoftwareModules(&lt;table&gt;) (2.5s)
+#12: Then the user only receives audit entries of the following originating software modules:
+  --- table step argument ---
+  | Originator              |
+  | swMod virtual calculate |
+-&gt; #12: done: FilteringByOriginatingSoftwareModulesSteps.ThenTheUserOnlyReceivesAuditEntriesOfTheFollowingOriginatingSoftwareModules(&lt;table&gt;) (0.3s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d6733962-e88d-4e35-8763-3c8a49a71ff5" testId="23d32c82-96ca-bfa5-f9e7-34ac87ee0a2c" testName="TheUserCanResetAllFiltersToObtainAllAuditEntries" computerName="testsrunner-job-fc962" duration="00:00:19.6740999" startTime="2020-01-09T14:06:51.8109721+00:00" endTime="2020-01-09T14:07:11.4853961+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d6733962-e88d-4e35-8763-3c8a49a71ff5">
+      <Output>
+        <StdOut>#13: Given there is a tenancy
+-&gt; #13: done: TenancySetupSteps.GivenIHaveATenancy() (0.0s)
+#13: And the logged in user is authorized to read the audit log
+#13: When I log in to the tenancy as a known administrator
+#13: Given I am at the hub tenant selection page
+-&gt; #11: done: AppLaunchSteps.WhenIRequestToViewTheAuditLog() (0.7s)
+-&gt; #13: done: BrowserSetupSteps.GivenIAmAtTheHubTenantSelectionPage() (0.4s)
+#13: When I enter the tenant ID
+-&gt; #11: done: AuditLogSteps.RequestToSeeDetailOfAuditLogByType("Acquisition") (1.7s)
+#11: Then the user receives the details of the following Time stamp,Event type,Originating module,Reason for event,Message of the audit entry
+-&gt; #13: done: TenancyLoginSteps.WhenIEnterTheTenantID() (0.9s)
+#13: When I enter my username and password
+-&gt; #11: done: AuditLogSteps.WhenUserReceiveDetailOfSelectedAuditEntry("Time stamp,Event ...") (0.9s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e0b4ecbe-c948-4e7d-b761-bd7d2a489dc7" testId="37fe094f-8b9b-bfeb-ad8b-c3ecdb1dd1bb" testName="AuditLogsContainTheDateAndTimeThatTheEntryWasCreatedInTheViewingUsersLocalTime" computerName="testsrunner-job-fc962" startTime="2020-01-09T14:05:41.3156571+00:00" endTime="2020-01-09T14:05:41.3157911+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e0b4ecbe-c948-4e7d-b761-bd7d2a489dc7">
+      <Output></Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="113f5226-9259-431d-b10c-07ade1d49067" testId="25337c83-b300-8960-b425-2f5e0b92f5d8" testName="UserViewsAuditLogEntriesCreatedWithinASpecifiedPeriodOfTime_20August20181300" computerName="testsrunner-job-fc962" startTime="2020-01-09T14:05:41.4071815+00:00" endTime="2020-01-09T14:05:41.4072617+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="113f5226-9259-431d-b10c-07ade1d49067">
+      <Output></Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="eec2caa6-6e2a-44cc-8c03-89569395209d" testId="154be6e7-c178-90bd-dea8-cd757a1f0efc" testName="TheUserCanObtainAllTheDetailsOfAnAuditEntry_Acquisition" computerName="testsrunner-job-fc962" duration="00:00:12.8552165" startTime="2020-01-09T14:06:41.5047579+00:00" endTime="2020-01-09T14:06:54.3602649+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="eec2caa6-6e2a-44cc-8c03-89569395209d">
+      <Output>
+        <StdOut>#11: Given there is a tenancy
+-&gt; #11: done: TenancySetupSteps.GivenIHaveATenancy() (0.0s)
+-&gt; #14: done: FilteringByEventTypeSteps.ThenTheUserOnlyReceivesAuditEntriesOfTheFollowingEventTypes(&lt;table&gt;) (1.8s)
+#11: And the logged in user is authorized to read the audit log
+#11: When I log in to the tenancy as a known administrator
+#11: Given I am at the hub tenant selection page</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="03e4abad-6ce1-422e-bb22-5d2ec2a5f47f" testId="2293ced2-bce0-7bad-f314-00e949555810" testName="AnAuthorizedUserCanViewTheAuditLog" computerName="testsrunner-job-fc962" startTime="2020-01-09T14:05:41.2663936+00:00" endTime="2020-01-09T14:05:41.2929013+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="03e4abad-6ce1-422e-bb22-5d2ec2a5f47f">
+      <Output></Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="7fb97767-2c2a-4953-8721-677caaceae39" testId="013dd52c-8a7c-b430-df31-c08df348b9cb" testName="TheUserCanObtainAllTheDetailsOfAnAuditEntry_Software" computerName="testsrunner-job-fc962" duration="00:00:23.9399276" startTime="2020-01-09T14:05:41.6401533+00:00" endTime="2020-01-09T14:06:41.5047230+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="7fb97767-2c2a-4953-8721-677caaceae39">
+      <Output>
+        <StdOut>Current Dir /root/AuditLog/bin/Release/netcoreapp2.2
+Reading appsettings from appsettings.json
+Reading clustersettings from /root/clustersettings.json
+Region set to eu-west-1</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="df26e4ff-75d2-466b-a07b-dde13d4530f3" testId="20f55691-268e-8cbd-4890-ff5ac6311f20" testName="TheUserCanObtainAllTheAuditLogEntriesForASingleAuditEventType" computerName="testsrunner-job-fc962" duration="00:00:24.2328753" startTime="2020-01-09T14:05:41.2666611+00:00" endTime="2020-01-09T14:06:41.7976712+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="df26e4ff-75d2-466b-a07b-dde13d4530f3" />
+    <UnitTestResult executionId="8c892600-d62b-4ab3-9f1b-8f836b26ce11" testId="731c8e37-b799-bde5-d604-5dc05e816232" testName="AnUnauthorizedUserCannotViewTheAuditLog" computerName="testsrunner-job-fc962" startTime="2020-01-09T14:05:41.3151737+00:00" endTime="2020-01-09T14:05:41.3154287+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8c892600-d62b-4ab3-9f1b-8f836b26ce11">
+      <Output></Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f0e2b5e5-677b-4d85-bcdc-5863fc2270d5" testId="299ed1c4-450a-4dab-939c-772a628ebbd8" testName="TheUserCanObtainAllTheDetailsOfAnAuditEntry_Security" computerName="testsrunner-job-fc962" duration="00:00:12.1026789" startTime="2020-01-09T14:07:06.8013567+00:00" endTime="2020-01-09T14:07:18.9043438+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f0e2b5e5-677b-4d85-bcdc-5863fc2270d5">
+      <Output>
+        <StdOut>#11: Given there is a tenancy
+-&gt; #11: done: TenancySetupSteps.GivenIHaveATenancy() (0.0s)
+#11: And the logged in user is authorized to read the audit log
+#11: When I log in to the tenancy as a known administrator
+#11: Given I am at the hub tenant selection page
+-&gt; #11: done: BrowserSetupSteps.GivenIAmAtTheHubTenantSelectionPage() (0.4s)
+#11: When I enter the tenant ID
+-&gt; #11: done: TenancyLoginSteps.WhenIEnterTheTenantID() (0.9s)
+#11: When I enter my username and password
+-&gt; #11: done: CognitoLoginSteps.WhenIEnterMyUsernameAndPassword() (0.8s)
+#11: Then I am taken to the hub page
+-&gt; #11: done: AppLaunchSteps.ThenIAmRedirectedToTheHubPage() (0.0s)
+-&gt; #11: done: TenancyLoginSteps.WhenILogInToTheTenancyAsAKnownAdministrator() (3.5s)
+-&gt; #11: done: AuditLogSteps.GivenTheUserAuthorizedToViewAuditLogsIsLoggedIn() (3.6s)
+#11: And the tenancy has the following audit entries:
+  --- table step argument ---
+  | Event Type  | Originator | Reason       |
+  | Software    | CloudHub   | Test Event 1 |
+  | Acquisition | CloudHub   | Test Event 2 |
+  | Batch       | CloudHub   | Test Event 3 |
+  | Security    | CloudHub   | Test Event 4 |
+  | eRecord     | CloudHub   | Test Event 5 |
+Read queue name as eu-staging-AuditEventsQueue
+Initialise got queue url http://sqs.eu-west-1.amazonaws.com/032356282346/eu-staging-AuditEventsQueue.
+Elastic search url: https://b2432d99b514415d9cbe0921cd582815.eu-west-1.aws.found.io:9243
+Counted 0 docs
+-&gt; #13: done: FilteringAuditLogSteps.ThenTheUserReceivesAllTheFollowingAuditLogEntries(&lt;table&gt;) (7.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="8a63c004-07aa-4182-b2e3-caa0fbaa7864" testId="faff849c-fccb-1795-8dbf-2460a4e220ac" testName="TheUserCannotObtainBatchesOfAuditEntriesOutsideOfTheAvailableRange" computerName="testsrunner-job-fc962" startTime="2020-01-09T14:05:41.4067312+00:00" endTime="2020-01-09T14:05:41.4068637+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8a63c004-07aa-4182-b2e3-caa0fbaa7864">
+      <Output></Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f39811a0-3ab4-4671-b8b3-7fd7ba2615df" testId="a89484f8-8eb6-b728-fa94-bb6395c91579" testName="TheUserIsGuidedToProvideValidTimeFilterCriteria" computerName="testsrunner-job-fc962" startTime="2020-01-09T14:05:41.4072670+00:00" endTime="2020-01-09T14:05:41.4073245+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f39811a0-3ab4-4671-b8b3-7fd7ba2615df">
+      <Output></Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="db81d6a9-a147-409c-ae7f-a701c7a1b1ab" testId="11e0ceed-aa44-7037-7f00-c594c0b13daf" testName="LargeAuditLogsAreViewable" computerName="testsrunner-job-fc962" startTime="2020-01-09T14:05:41.3158177+00:00" endTime="2020-01-09T14:05:41.3159869+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="db81d6a9-a147-409c-ae7f-a701c7a1b1ab">
+      <Output></Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b9c27eae-d141-4a49-a9fb-e1eecc8d1f0e" testId="6920162a-d693-76db-d0ba-b67eece11b3b" testName="TheUserCanObtainAllTheAuditLogEntriesForASingleAuditOriginatingSoftwareModule" computerName="testsrunner-job-fc962" duration="00:00:23.3001596" startTime="2020-01-09T14:05:41.4073352+00:00" endTime="2020-01-09T14:06:40.8654300+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b9c27eae-d141-4a49-a9fb-e1eecc8d1f0e">
+      <Output>
+        <StdOut>-&gt; Loading plugin /root/AuditLog/bin/Release/netcoreapp2.2/TechTalk.SpecFlow.MSTest.SpecFlowPlugin.dll
+-&gt; Using specflow.json</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e594bca3-810d-4f9d-bdf2-cc7b423f9d6a" testId="fba0c147-6308-03eb-cc17-8289b30b44de" testName="TheUserCanObtainAllTheDetailsOfAnAuditEntry_Batch" computerName="testsrunner-job-fc962" duration="00:00:12.4400071" startTime="2020-01-09T14:06:54.3606183+00:00" endTime="2020-01-09T14:07:06.8009790+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e594bca3-810d-4f9d-bdf2-cc7b423f9d6a">
+      <Output>
+        <StdOut>#11: Given there is a tenancy
+-&gt; #11: done: TenancySetupSteps.GivenIHaveATenancy() (0.0s)
+#11: And the logged in user is authorized to read the audit log
+#11: When I log in to the tenancy as a known administrator
+#11: Given I am at the hub tenant selection page
+-&gt; #11: done: BrowserSetupSteps.GivenIAmAtTheHubTenantSelectionPage() (0.4s)
+-&gt; #13: done: CognitoLoginSteps.WhenIEnterMyUsernameAndPassword() (0.8s)
+#11: When I enter the tenant ID
+#13: Then I am taken to the hub page
+-&gt; #13: done: AppLaunchSteps.ThenIAmRedirectedToTheHubPage() (0.0s)
+-&gt; #13: done: TenancyLoginSteps.WhenILogInToTheTenancyAsAKnownAdministrator() (3.6s)
+-&gt; #13: done: AuditLogSteps.GivenTheUserAuthorizedToViewAuditLogsIsLoggedIn() (3.8s)
+#13: And the tenancy has the following audit entries:
+  --- table step argument ---
+  | Event Type  | Originator              | Reason       |
+  | Software    | swMod virtual calculate | Test Event 1 |
+  | Acquisition | swMod wireless generate | Test Event 2 |
+  | Batch       | WebApi.Authentication   | Test Event 3 |
+  | Security    | Security.Test.Module    | Test Event 4 |
+  | eRecord     | CloudHub                | Test Event 5 |
+Read queue name as eu-staging-AuditEventsQueue
+Initialise got queue url http://sqs.eu-west-1.amazonaws.com/032356282346/eu-staging-AuditEventsQueue.
+Elastic search url: https://b2432d99b514415d9cbe0921cd582815.eu-west-1.aws.found.io:9243
+Counted 0 docs
+-&gt; #11: done: TenancyLoginSteps.WhenIEnterTheTenantID() (0.9s)
+#11: When I enter my username and password
+-&gt; #11: done: CognitoLoginSteps.WhenIEnterMyUsernameAndPassword() (0.7s)
+#11: Then I am taken to the hub page
+-&gt; #11: done: AppLaunchSteps.ThenIAmRedirectedToTheHubPage() (0.0s)
+-&gt; #11: done: TenancyLoginSteps.WhenILogInToTheTenancyAsAKnownAdministrator() (3.3s)
+-&gt; #11: done: AuditLogSteps.GivenTheUserAuthorizedToViewAuditLogsIsLoggedIn() (3.4s)
+#11: And the tenancy has the following audit entries:
+  --- table step argument ---
+  | Event Type  | Originator | Reason       |
+  | Software    | CloudHub   | Test Event 1 |
+  | Acquisition | CloudHub   | Test Event 2 |
+  | Batch       | CloudHub   | Test Event 3 |
+  | Security    | CloudHub   | Test Event 4 |
+  | eRecord     | CloudHub   | Test Event 5 |
+Read queue name as eu-staging-AuditEventsQueue
+Initialise got queue url http://sqs.eu-west-1.amazonaws.com/032356282346/eu-staging-AuditEventsQueue.
+Elastic search url: https://b2432d99b514415d9cbe0921cd582815.eu-west-1.aws.found.io:9243
+Counted 0 docs
+Counted 1 docs
+Counted 1 docs
+Counted 1 docs
+Counted 1 docs
+Counted 1 docs
+-&gt; #13: done: AuditLogSteps.GivenTheTenancyHasTheFollowingAuditEntries(&lt;table&gt;) (5.5s)
+#13: And I view the audit log
+-&gt; #13: done: AppLaunchSteps.WhenIRequestToViewTheAuditLog() (0.6s)
+#13: Given the user filters audit entries by event types:
+  --- table step argument ---
+  | Event Type |
+  | Software   |
+-&gt; #13: done: FilteringByEventTypeSteps.WhenTheUserFiltersAuditEntriesByEventTypes(&lt;table&gt;) (0.4s)
+#13: And the user filters audit entries by originating software modules:
+  --- table step argument ---
+  | Originator              |
+  | swMod virtual calculate |
+Counted 1 docs
+Counted 1 docs
+Counted 1 docs
+Counted 1 docs
+Counted 1 docs
+-&gt; #11: done: AuditLogSteps.GivenTheTenancyHasTheFollowingAuditEntries(&lt;table&gt;) (5.5s)
+-&gt; #13: done: FilteringByOriginatingSoftwareModulesSteps.WhenTheUserFiltersAuditEntriesByOriginatingSoftwareModules(&lt;table&gt;) (0.3s)
+#11: When the user requests to see the details of an audit log entry of Batch
+#11: When the user views the audit log
+#13: When the user requests to reset filters
+-&gt; #13: done: FilteringAuditLogSteps.WhenTheUserRequestsToResetFilters() (0.3s)
+-&gt; #11: done: AppLaunchSteps.WhenIRequestToViewTheAuditLog() (0.5s)
+#13: Then the user receives all the following audit log entries:
+  --- table step argument ---
+  | Event Type  | Originator              | Reason       |
+  | Software    | swMod virtual calculate | Test Event 1 |
+  | Acquisition | swMod wireless generate | Test Event 2 |
+  | Batch       | WebApi.Authentication   | Test Event 3 |
+  | Security    | Security.Test.Module    | Test Event 4 |
+  | eRecord     | CloudHub                | Test Event 5 |
+-&gt; #11: done: AuditLogSteps.RequestToSeeDetailOfAuditLogByType("Batch") (1.8s)
+#11: Then the user receives the details of the following Time stamp,Event type,Originating module,Reason for event,Message of the audit entry
+-&gt; #11: done: AuditLogSteps.WhenUserReceiveDetailOfSelectedAuditEntry("Time stamp,Event ...") (0.8s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="2f507392-9246-4d44-8cb9-c12bfb6d23f9" testId="04fd2efa-efdc-f393-bdfc-f446eec83701" testName="AuditLogsEventTimesAreShownInTheLocalTimeZoneOfTheUser" computerName="testsrunner-job-fc962" startTime="2020-01-09T14:05:41.4069931+00:00" endTime="2020-01-09T14:05:41.4070836+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2f507392-9246-4d44-8cb9-c12bfb6d23f9">
+      <Output></Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e8320149-7a63-40c0-a0fa-ad2f2c3a1c03" testId="289d56e4-ddae-f343-1c63-3345e110c765" testName="VerifyAuditLogHealthEndpoint" computerName="testsrunner-job-fc962" duration="00:00:00.3167297" startTime="2020-01-09T14:05:41.2658158+00:00" endTime="2020-01-09T14:05:41.6400881+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e8320149-7a63-40c0-a0fa-ad2f2c3a1c03" />
+    <UnitTestResult executionId="355e3cb0-f142-4b43-83d8-8d9180cc0a9b" testId="9af95e6a-ce40-f918-acfe-b901520ddd80" testName="TheUserCanChangeTheNumberOfEntriesInABatchOfAuditEntries" computerName="testsrunner-job-fc962" startTime="2020-01-09T14:05:41.3160148+00:00" endTime="2020-01-09T14:05:41.3161504+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="355e3cb0-f142-4b43-83d8-8d9180cc0a9b">
+      <Output></Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0cd075b9-c302-430d-aed1-07a1521c80e2" testId="f297ebcb-7f24-b6ee-cd45-c773bf8d67af" testName="AuditLogsAreOrderedByTime" computerName="testsrunner-job-fc962" startTime="2020-01-09T14:05:41.3154944+00:00" endTime="2020-01-09T14:05:41.3156329+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0cd075b9-c302-430d-aed1-07a1521c80e2">
+      <Output></Output>
+    </UnitTestResult>
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="LargeAuditLogsAreViewable" storage="/root/auditlog/bin/release/netcoreapp2.2/auditlog.dll" id="11e0ceed-aa44-7037-7f00-c594c0b13daf">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareBrowser" />
+        <TestCategoryItem TestCategory="INFSAAS-34" />
+      </TestCategory>
+      <Execution id="db81d6a9-a147-409c-ae7f-a701c7a1b1ab" />
+      <TestMethod codeBase="/root/AuditLog/bin/Release/netcoreapp2.2/AuditLog.dll" adapterTypeName="executor://mstestadapter/v2" className="AuditLog.AuditLogViewerFeature" name="LargeAuditLogsAreViewable" />
+    </UnitTest>
+    <UnitTest name="UserViewsAuditLogEntriesCreatedWithinASpecifiedPeriodOfTime_10December20181300" storage="/root/auditlog/bin/release/netcoreapp2.2/auditlog.dll" id="2c21e386-7b10-bfcf-feb5-d400a04009c1">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareBrowser" />
+        <TestCategoryItem TestCategory="INFSAAS-34" />
+      </TestCategory>
+      <Execution id="f408e580-dc86-4fd8-ba9a-9996c23586e4" />
+      <TestMethod codeBase="/root/AuditLog/bin/Release/netcoreapp2.2/AuditLog.dll" adapterTypeName="executor://mstestadapter/v2" className="AuditLog.AuditLogViewerFeature" name="UserViewsAuditLogEntriesCreatedWithinASpecifiedPeriodOfTime_10December20181300" />
+    </UnitTest>
+    <UnitTest name="AuditLogsAreOrderedByTime" storage="/root/auditlog/bin/release/netcoreapp2.2/auditlog.dll" id="f297ebcb-7f24-b6ee-cd45-c773bf8d67af">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareBrowser" />
+        <TestCategoryItem TestCategory="INFSAAS-34" />
+      </TestCategory>
+      <Execution id="0cd075b9-c302-430d-aed1-07a1521c80e2" />
+      <TestMethod codeBase="/root/AuditLog/bin/Release/netcoreapp2.2/AuditLog.dll" adapterTypeName="executor://mstestadapter/v2" className="AuditLog.AuditLogViewerFeature" name="AuditLogsAreOrderedByTime" />
+    </UnitTest>
+    <UnitTest name="VerifyAuditLogHealthEndpoint" storage="/root/auditlog/bin/release/netcoreapp2.2/auditlog.dll" id="289d56e4-ddae-f343-1c63-3345e110c765">
+      <Execution id="e8320149-7a63-40c0-a0fa-ad2f2c3a1c03" />
+      <TestMethod codeBase="/root/AuditLog/bin/Release/netcoreapp2.2/AuditLog.dll" adapterTypeName="executor://mstestadapter/v2" className="AuditLog.AuditLogTests" name="VerifyAuditLogHealthEndpoint" />
+    </UnitTest>
+    <UnitTest name="TheUserCanResetAllFiltersToObtainAllAuditEntries" storage="/root/auditlog/bin/release/netcoreapp2.2/auditlog.dll" id="23d32c82-96ca-bfa5-f9e7-34ac87ee0a2c">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-tenancyAuditLogOperations" />
+        <TestCategoryItem TestCategory="shareBrowser" />
+      </TestCategory>
+      <Execution id="d6733962-e88d-4e35-8763-3c8a49a71ff5" />
+      <TestMethod codeBase="/root/AuditLog/bin/Release/netcoreapp2.2/AuditLog.dll" adapterTypeName="executor://mstestadapter/v2" className="AuditLog.Behaviours.FilteringAuditLogFeature" name="TheUserCanResetAllFiltersToObtainAllAuditEntries" />
+    </UnitTest>
+    <UnitTest name="TheUserCanObtainAllTheDetailsOfAnAuditEntry_E_Record" storage="/root/auditlog/bin/release/netcoreapp2.2/auditlog.dll" id="77451e53-fdfa-d4a6-865f-a06863727cf6">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-tenancyAuditLogOperations" />
+        <TestCategoryItem TestCategory="shareBrowser" />
+      </TestCategory>
+      <Execution id="45c51476-8ae6-4a31-b2a0-d5f65a3adc69" />
+      <TestMethod codeBase="/root/AuditLog/bin/Release/netcoreapp2.2/AuditLog.dll" adapterTypeName="executor://mstestadapter/v2" className="AuditLog.Behaviours.ViewingAuditLogEntryDetailsFeature" name="TheUserCanObtainAllTheDetailsOfAnAuditEntry_E_Record" />
+    </UnitTest>
+    <UnitTest name="TheUserCanObtainAllTheDetailsOfAnAuditEntry_Software" storage="/root/auditlog/bin/release/netcoreapp2.2/auditlog.dll" id="013dd52c-8a7c-b430-df31-c08df348b9cb">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-tenancyAuditLogOperations" />
+        <TestCategoryItem TestCategory="shareBrowser" />
+      </TestCategory>
+      <Execution id="7fb97767-2c2a-4953-8721-677caaceae39" />
+      <TestMethod codeBase="/root/AuditLog/bin/Release/netcoreapp2.2/AuditLog.dll" adapterTypeName="executor://mstestadapter/v2" className="AuditLog.Behaviours.ViewingAuditLogEntryDetailsFeature" name="TheUserCanObtainAllTheDetailsOfAnAuditEntry_Software" />
+    </UnitTest>
+    <UnitTest name="TheUserCanObtainAllTheDetailsOfAnAuditEntry_Acquisition" storage="/root/auditlog/bin/release/netcoreapp2.2/auditlog.dll" id="154be6e7-c178-90bd-dea8-cd757a1f0efc">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-tenancyAuditLogOperations" />
+        <TestCategoryItem TestCategory="shareBrowser" />
+      </TestCategory>
+      <Execution id="eec2caa6-6e2a-44cc-8c03-89569395209d" />
+      <TestMethod codeBase="/root/AuditLog/bin/Release/netcoreapp2.2/AuditLog.dll" adapterTypeName="executor://mstestadapter/v2" className="AuditLog.Behaviours.ViewingAuditLogEntryDetailsFeature" name="TheUserCanObtainAllTheDetailsOfAnAuditEntry_Acquisition" />
+    </UnitTest>
+    <UnitTest name="TheUserCanObtainAllTheDetailsOfAnAuditEntry_Batch" storage="/root/auditlog/bin/release/netcoreapp2.2/auditlog.dll" id="fba0c147-6308-03eb-cc17-8289b30b44de">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-tenancyAuditLogOperations" />
+        <TestCategoryItem TestCategory="shareBrowser" />
+      </TestCategory>
+      <Execution id="e594bca3-810d-4f9d-bdf2-cc7b423f9d6a" />
+      <TestMethod codeBase="/root/AuditLog/bin/Release/netcoreapp2.2/AuditLog.dll" adapterTypeName="executor://mstestadapter/v2" className="AuditLog.Behaviours.ViewingAuditLogEntryDetailsFeature" name="TheUserCanObtainAllTheDetailsOfAnAuditEntry_Batch" />
+    </UnitTest>
+    <UnitTest name="TheUserCannotObtainBatchesOfAuditEntriesOutsideOfTheAvailableRange" storage="/root/auditlog/bin/release/netcoreapp2.2/auditlog.dll" id="faff849c-fccb-1795-8dbf-2460a4e220ac">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareBrowser" />
+        <TestCategoryItem TestCategory="INFSAAS-34" />
+      </TestCategory>
+      <Execution id="8a63c004-07aa-4182-b2e3-caa0fbaa7864" />
+      <TestMethod codeBase="/root/AuditLog/bin/Release/netcoreapp2.2/AuditLog.dll" adapterTypeName="executor://mstestadapter/v2" className="AuditLog.AuditLogViewerFeature" name="TheUserCannotObtainBatchesOfAuditEntriesOutsideOfTheAvailableRange" />
+    </UnitTest>
+    <UnitTest name="UserViewsAuditLogEntriesCreatedWithinASpecifiedPeriodOfTime_20August20181300" storage="/root/auditlog/bin/release/netcoreapp2.2/auditlog.dll" id="25337c83-b300-8960-b425-2f5e0b92f5d8">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareBrowser" />
+        <TestCategoryItem TestCategory="INFSAAS-34" />
+      </TestCategory>
+      <Execution id="113f5226-9259-431d-b10c-07ade1d49067" />
+      <TestMethod codeBase="/root/AuditLog/bin/Release/netcoreapp2.2/AuditLog.dll" adapterTypeName="executor://mstestadapter/v2" className="AuditLog.AuditLogViewerFeature" name="UserViewsAuditLogEntriesCreatedWithinASpecifiedPeriodOfTime_20August20181300" />
+    </UnitTest>
+    <UnitTest name="TheUserIsGuidedToProvideValidTimeFilterCriteria" storage="/root/auditlog/bin/release/netcoreapp2.2/auditlog.dll" id="a89484f8-8eb6-b728-fa94-bb6395c91579">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareBrowser" />
+        <TestCategoryItem TestCategory="INFSAAS-34" />
+      </TestCategory>
+      <Execution id="f39811a0-3ab4-4671-b8b3-7fd7ba2615df" />
+      <TestMethod codeBase="/root/AuditLog/bin/Release/netcoreapp2.2/AuditLog.dll" adapterTypeName="executor://mstestadapter/v2" className="AuditLog.AuditLogViewerFeature" name="TheUserIsGuidedToProvideValidTimeFilterCriteria" />
+    </UnitTest>
+    <UnitTest name="TheUserCanObtainAllTheDetailsOfAnAuditEntry_Security" storage="/root/auditlog/bin/release/netcoreapp2.2/auditlog.dll" id="299ed1c4-450a-4dab-939c-772a628ebbd8">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-tenancyAuditLogOperations" />
+        <TestCategoryItem TestCategory="shareBrowser" />
+      </TestCategory>
+      <Execution id="f0e2b5e5-677b-4d85-bcdc-5863fc2270d5" />
+      <TestMethod codeBase="/root/AuditLog/bin/Release/netcoreapp2.2/AuditLog.dll" adapterTypeName="executor://mstestadapter/v2" className="AuditLog.Behaviours.ViewingAuditLogEntryDetailsFeature" name="TheUserCanObtainAllTheDetailsOfAnAuditEntry_Security" />
+    </UnitTest>
+    <UnitTest name="AuditLogsEventTimesAreShownInTheLocalTimeZoneOfTheUser" storage="/root/auditlog/bin/release/netcoreapp2.2/auditlog.dll" id="04fd2efa-efdc-f393-bdfc-f446eec83701">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareBrowser" />
+        <TestCategoryItem TestCategory="INFSAAS-34" />
+      </TestCategory>
+      <Execution id="2f507392-9246-4d44-8cb9-c12bfb6d23f9" />
+      <TestMethod codeBase="/root/AuditLog/bin/Release/netcoreapp2.2/AuditLog.dll" adapterTypeName="executor://mstestadapter/v2" className="AuditLog.AuditLogViewerFeature" name="AuditLogsEventTimesAreShownInTheLocalTimeZoneOfTheUser" />
+    </UnitTest>
+    <UnitTest name="AuditLogsContainTheDateAndTimeThatTheEntryWasCreatedInTheViewingUsersLocalTime" storage="/root/auditlog/bin/release/netcoreapp2.2/auditlog.dll" id="37fe094f-8b9b-bfeb-ad8b-c3ecdb1dd1bb">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareBrowser" />
+        <TestCategoryItem TestCategory="INFSAAS-34" />
+      </TestCategory>
+      <Execution id="e0b4ecbe-c948-4e7d-b761-bd7d2a489dc7" />
+      <TestMethod codeBase="/root/AuditLog/bin/Release/netcoreapp2.2/AuditLog.dll" adapterTypeName="executor://mstestadapter/v2" className="AuditLog.AuditLogViewerFeature" name="AuditLogsContainTheDateAndTimeThatTheEntryWasCreatedInTheViewingUsersLocalTime" />
+    </UnitTest>
+    <UnitTest name="TheUserCanChangeTheNumberOfEntriesInABatchOfAuditEntries" storage="/root/auditlog/bin/release/netcoreapp2.2/auditlog.dll" id="9af95e6a-ce40-f918-acfe-b901520ddd80">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareBrowser" />
+        <TestCategoryItem TestCategory="INFSAAS-34" />
+      </TestCategory>
+      <Execution id="355e3cb0-f142-4b43-83d8-8d9180cc0a9b" />
+      <TestMethod codeBase="/root/AuditLog/bin/Release/netcoreapp2.2/AuditLog.dll" adapterTypeName="executor://mstestadapter/v2" className="AuditLog.AuditLogViewerFeature" name="TheUserCanChangeTheNumberOfEntriesInABatchOfAuditEntries" />
+    </UnitTest>
+    <UnitTest name="TheUserCanObtainAllTheAuditLogEntriesForASingleAuditEventType" storage="/root/auditlog/bin/release/netcoreapp2.2/auditlog.dll" id="20f55691-268e-8cbd-4890-ff5ac6311f20">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-tenancyAuditLogOperations" />
+        <TestCategoryItem TestCategory="shareBrowser" />
+      </TestCategory>
+      <Execution id="df26e4ff-75d2-466b-a07b-dde13d4530f3" />
+      <TestMethod codeBase="/root/AuditLog/bin/Release/netcoreapp2.2/AuditLog.dll" adapterTypeName="executor://mstestadapter/v2" className="AuditLog.Behaviours.FilteringByEventTypeFeature" name="TheUserCanObtainAllTheAuditLogEntriesForASingleAuditEventType" />
+    </UnitTest>
+    <UnitTest name="AnAuthorizedUserCanViewTheAuditLog" storage="/root/auditlog/bin/release/netcoreapp2.2/auditlog.dll" id="2293ced2-bce0-7bad-f314-00e949555810">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareBrowser" />
+        <TestCategoryItem TestCategory="INFSAAS-34" />
+      </TestCategory>
+      <Execution id="03e4abad-6ce1-422e-bb22-5d2ec2a5f47f" />
+      <TestMethod codeBase="/root/AuditLog/bin/Release/netcoreapp2.2/AuditLog.dll" adapterTypeName="executor://mstestadapter/v2" className="AuditLog.AuditLogViewerFeature" name="AnAuthorizedUserCanViewTheAuditLog" />
+    </UnitTest>
+    <UnitTest name="TheUserCanObtainAllTheAuditLogEntriesForASingleAuditOriginatingSoftwareModule" storage="/root/auditlog/bin/release/netcoreapp2.2/auditlog.dll" id="6920162a-d693-76db-d0ba-b67eece11b3b">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-tenancyAuditLogOperations" />
+        <TestCategoryItem TestCategory="shareBrowser" />
+      </TestCategory>
+      <Execution id="b9c27eae-d141-4a49-a9fb-e1eecc8d1f0e" />
+      <TestMethod codeBase="/root/AuditLog/bin/Release/netcoreapp2.2/AuditLog.dll" adapterTypeName="executor://mstestadapter/v2" className="AuditLog.Behaviours.FilteringByOriginatingSoftwareModulesFeature" name="TheUserCanObtainAllTheAuditLogEntriesForASingleAuditOriginatingSoftwareModule" />
+    </UnitTest>
+    <UnitTest name="TheUserCanCombineMultipleAuditLogFiltersToFindAuditEntriesOfInterest" storage="/root/auditlog/bin/release/netcoreapp2.2/auditlog.dll" id="694a334b-640b-0f99-8769-6fd8628a8d8c">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-tenancyAuditLogOperations" />
+        <TestCategoryItem TestCategory="shareBrowser" />
+      </TestCategory>
+      <Execution id="fcfcb502-5110-421f-a5b1-d752659a677e" />
+      <TestMethod codeBase="/root/AuditLog/bin/Release/netcoreapp2.2/AuditLog.dll" adapterTypeName="executor://mstestadapter/v2" className="AuditLog.Behaviours.FilteringAuditLogFeature" name="TheUserCanCombineMultipleAuditLogFiltersToFindAuditEntriesOfInterest" />
+    </UnitTest>
+    <UnitTest name="AnUnauthorizedUserCannotViewTheAuditLog" storage="/root/auditlog/bin/release/netcoreapp2.2/auditlog.dll" id="731c8e37-b799-bde5-d604-5dc05e816232">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareBrowser" />
+        <TestCategoryItem TestCategory="INFSAAS-34" />
+      </TestCategory>
+      <Execution id="8c892600-d62b-4ab3-9f1b-8f836b26ce11" />
+      <TestMethod codeBase="/root/AuditLog/bin/Release/netcoreapp2.2/AuditLog.dll" adapterTypeName="executor://mstestadapter/v2" className="AuditLog.AuditLogViewerFeature" name="AnUnauthorizedUserCannotViewTheAuditLog" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="2c21e386-7b10-bfcf-feb5-d400a04009c1" executionId="f408e580-dc86-4fd8-ba9a-9996c23586e4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="77451e53-fdfa-d4a6-865f-a06863727cf6" executionId="45c51476-8ae6-4a31-b2a0-d5f65a3adc69" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="694a334b-640b-0f99-8769-6fd8628a8d8c" executionId="fcfcb502-5110-421f-a5b1-d752659a677e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="23d32c82-96ca-bfa5-f9e7-34ac87ee0a2c" executionId="d6733962-e88d-4e35-8763-3c8a49a71ff5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="37fe094f-8b9b-bfeb-ad8b-c3ecdb1dd1bb" executionId="e0b4ecbe-c948-4e7d-b761-bd7d2a489dc7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="25337c83-b300-8960-b425-2f5e0b92f5d8" executionId="113f5226-9259-431d-b10c-07ade1d49067" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="154be6e7-c178-90bd-dea8-cd757a1f0efc" executionId="eec2caa6-6e2a-44cc-8c03-89569395209d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2293ced2-bce0-7bad-f314-00e949555810" executionId="03e4abad-6ce1-422e-bb22-5d2ec2a5f47f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="013dd52c-8a7c-b430-df31-c08df348b9cb" executionId="7fb97767-2c2a-4953-8721-677caaceae39" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="20f55691-268e-8cbd-4890-ff5ac6311f20" executionId="df26e4ff-75d2-466b-a07b-dde13d4530f3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="731c8e37-b799-bde5-d604-5dc05e816232" executionId="8c892600-d62b-4ab3-9f1b-8f836b26ce11" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="299ed1c4-450a-4dab-939c-772a628ebbd8" executionId="f0e2b5e5-677b-4d85-bcdc-5863fc2270d5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="faff849c-fccb-1795-8dbf-2460a4e220ac" executionId="8a63c004-07aa-4182-b2e3-caa0fbaa7864" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a89484f8-8eb6-b728-fa94-bb6395c91579" executionId="f39811a0-3ab4-4671-b8b3-7fd7ba2615df" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="11e0ceed-aa44-7037-7f00-c594c0b13daf" executionId="db81d6a9-a147-409c-ae7f-a701c7a1b1ab" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6920162a-d693-76db-d0ba-b67eece11b3b" executionId="b9c27eae-d141-4a49-a9fb-e1eecc8d1f0e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fba0c147-6308-03eb-cc17-8289b30b44de" executionId="e594bca3-810d-4f9d-bdf2-cc7b423f9d6a" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="04fd2efa-efdc-f393-bdfc-f446eec83701" executionId="2f507392-9246-4d44-8cb9-c12bfb6d23f9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="289d56e4-ddae-f343-1c63-3345e110c765" executionId="e8320149-7a63-40c0-a0fa-ad2f2c3a1c03" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9af95e6a-ce40-f918-acfe-b901520ddd80" executionId="355e3cb0-f142-4b43-83d8-8d9180cc0a9b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f297ebcb-7f24-b6ee-cd45-c773bf8d67af" executionId="0cd075b9-c302-430d-aed1-07a1521c80e2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="21" executed="10" passed="10" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>MSTest Executor: Test Parallelization enabled for /root/AuditLog/bin/Release/netcoreapp2.2/AuditLog.dll (Workers: 4, Scope: ClassLevel).Test 'AnAuthorizedUserCanViewTheAuditLog' was skipped in the test run.Test 'AnUnauthorizedUserCannotViewTheAuditLog' was skipped in the test run.Test 'AuditLogsAreOrderedByTime' was skipped in the test run.Test 'AuditLogsContainTheDateAndTimeThatTheEntryWasCreatedInTheViewingUsersLocalTime' was skipped in the test run.Test 'LargeAuditLogsAreViewable' was skipped in the test run.Test 'TheUserCanChangeTheNumberOfEntriesInABatchOfAuditEntries' was skipped in the test run.Test 'TheUserCannotObtainBatchesOfAuditEntriesOutsideOfTheAvailableRange' was skipped in the test run.Test 'AuditLogsEventTimesAreShownInTheLocalTimeZoneOfTheUser' was skipped in the test run.Test 'UserViewsAuditLogEntriesCreatedWithinASpecifiedPeriodOfTime_10December20181300' was skipped in the test run.Test 'UserViewsAuditLogEntriesCreatedWithinASpecifiedPeriodOfTime_20August20181300' was skipped in the test run.Test 'TheUserIsGuidedToProvideValidTimeFilterCriteria' was skipped in the test run.</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
