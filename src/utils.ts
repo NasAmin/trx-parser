@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import * as fs from 'fs'
 import * as path from 'path'
 import * as uitl from 'util'
@@ -5,12 +6,13 @@ import * as core from '@actions/core'
 import * as xmlParser from 'fast-xml-parser'
 import * as he from 'he'
 import {promises} from 'fs'
+import {RootObject} from './types/types'
 
 // import {promises as promises} from 'fs'
 
 export async function getTrxFiles(trxPath: string): Promise<string[]> {
-  // TODO: Convert to async version
-  // const files = fs.readdirSync(path.resolve(trxPath), {withFileTypes: true})
+  if (!fs.existsSync(trxPath)) return []
+
   const readdir = uitl.promisify(fs.readdir)
   const fileNames = await readdir(trxPath)
   const trxFiles = fileNames.filter(f => f.endsWith('.trx'))
@@ -31,9 +33,7 @@ export function getAbsoluteFilePaths(
   return absolutePaths
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function loadXmlFile(filePath: string): Promise<any> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function loadXmlFile(filePath: string): Promise<RootObject> {
   let jsonObj: any
 
   if (fs.existsSync(filePath)) {
@@ -67,4 +67,11 @@ export async function loadXmlFile(filePath: string): Promise<any> {
     core.error('file doesnt exist')
   }
   return jsonObj
+}
+
+export function validateTrx(trxJson: any): void {
+  const testOutcome = trxJson.TestRun.ResultSummary._outcome
+  if (testOutcome === 'Failed') {
+    core.setFailed('At least one test failed')
+  }
 }

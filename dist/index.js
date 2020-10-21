@@ -2424,7 +2424,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loadXmlFile = exports.getAbsoluteFilePaths = exports.getTrxFiles = void 0;
+exports.validateTrx = exports.loadXmlFile = exports.getAbsoluteFilePaths = exports.getTrxFiles = void 0;
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const fs = __importStar(__webpack_require__(747));
 const path = __importStar(__webpack_require__(622));
 const uitl = __importStar(__webpack_require__(669));
@@ -2435,8 +2436,8 @@ const fs_1 = __webpack_require__(747);
 // import {promises as promises} from 'fs'
 function getTrxFiles(trxPath) {
     return __awaiter(this, void 0, void 0, function* () {
-        // TODO: Convert to async version
-        // const files = fs.readdirSync(path.resolve(trxPath), {withFileTypes: true})
+        if (!fs.existsSync(trxPath))
+            return [];
         const readdir = uitl.promisify(fs.readdir);
         const fileNames = yield readdir(trxPath);
         const trxFiles = fileNames.filter(f => f.endsWith('.trx'));
@@ -2455,10 +2456,8 @@ function getAbsoluteFilePaths(fileNames, directoryName) {
     return absolutePaths;
 }
 exports.getAbsoluteFilePaths = getAbsoluteFilePaths;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function loadXmlFile(filePath) {
     return __awaiter(this, void 0, void 0, function* () {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         let jsonObj;
         if (fs.existsSync(filePath)) {
             const xmlData = yield fs_1.promises.readFile(filePath, 'utf8');
@@ -2494,6 +2493,13 @@ function loadXmlFile(filePath) {
     });
 }
 exports.loadXmlFile = loadXmlFile;
+function validateTrx(trxJson) {
+    const testOutcome = trxJson.TestRun.ResultSummary._outcome;
+    if (testOutcome === 'Failed') {
+        core.setFailed('At least one test failed');
+    }
+}
+exports.validateTrx = validateTrx;
 
 
 /***/ })
