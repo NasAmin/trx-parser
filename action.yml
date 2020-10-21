@@ -8,6 +8,9 @@ inputs:
     TRX_PATH:
       description: 'Path to the directory cntaining trx files'
       required: true
+    repo_token:
+      description: 'Pass in the repository token. This should be generally be ${{ secrets.GITHUB_TOKEN }}. This is used for GitHub checks api'
+      required: true
 outputs:
   test-outcome:
     description: 'Test outcome Failed/Passed'

@@ -20,6 +20,7 @@ jobs:
           uses: ./
           with:
             TRX_PATH: ${{ github.workspace }}/test-data
+            repo_token: ${{ secrets.GITHUB_TOKEN}}
 
         - name: Print Test Outcome
           run: |

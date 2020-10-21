@@ -1,4 +1,5 @@
 import * as core from '@actions/core'
+import {createCheckRun} from './github'
 import {
   areThereAnyFailingTests,
   getTrxFiles,
@@ -7,6 +8,7 @@ import {
 
 export async function run(): Promise<void> {
   try {
+    const token = core.getInput('repo-token')
     const trxPath = core.getInput('TRX_PATH')
     core.setCommandEcho(true)
 
@@ -24,6 +26,7 @@ export async function run(): Promise<void> {
 
     if (failingTestsFound) {
       core.error(`At least one failing test was found`)
+      createCheckRun(token)
       core.setFailed('Failing tests found')
     }
 
