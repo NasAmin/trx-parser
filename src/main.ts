@@ -26,7 +26,7 @@ export async function run(): Promise<void> {
 
     if (failingTestsFound) {
       core.error(`At least one failing test was found`)
-      createCheckRun(token)
+      await createCheckRun(token)
       core.setFailed('Failing tests found')
     }
 
