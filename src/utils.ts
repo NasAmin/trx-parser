@@ -69,7 +69,7 @@ export async function loadXmlFile(filePath: string): Promise<RootObject> {
   return jsonObj
 }
 
-export function validateTrx(trxJson: any): void {
+export function validateTrx(trxJson: RootObject): void {
   const testOutcome = trxJson.TestRun.ResultSummary._outcome
   if (testOutcome === 'Failed') {
     core.setFailed('At least one test failed')
