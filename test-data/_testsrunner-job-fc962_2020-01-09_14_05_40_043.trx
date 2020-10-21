@@ -944,7 +944,7 @@ Response: code: OK, str: [{"children":[{"children":[],"id":"under_root2","tenant
     <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
     <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
   </TestLists>
-  <ResultSummary outcome="Failed">
+  <ResultSummary outcome="Completed">
     <Counters total="54" executed="48" passed="48" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
     <Output>
       <StdOut>MSTest Executor: Test Parallelization enabled for /root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll (Workers: 4, Scope: ClassLevel).Test 'GetFoldersDeniesAccessWithoutToken' was skipped in the test run.Test 'GetFoldersDeniesAccessWithUnauthorizedToken' was skipped in the test run.Test 'GetFoldersListsFolders' was skipped in the test run.Test 'CreateSubFolderDeniesAccessWithoutToken' was skipped in the test run.Test 'CreateSubFolderDeniesAccessWithUnauthorizedToken' was skipped in the test run.Test 'CreateSubFolderCreatesASubFolder' was skipped in the test run.</StdOut>
