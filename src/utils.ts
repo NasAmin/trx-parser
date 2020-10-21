@@ -4,6 +4,9 @@ import * as uitl from 'util'
 import * as core from '@actions/core'
 import * as xmlParser from 'fast-xml-parser'
 import * as he from 'he'
+import {promises} from 'fs'
+
+// import {promises as promises} from 'fs'
 
 export async function getTrxFiles(trxPath: string): Promise<string[]> {
   // TODO: Convert to async version
@@ -28,41 +31,40 @@ export function getAbsoluteFilePaths(
   return absolutePaths
 }
 
-export async function loadXmlFile(filePath: string): Promise<unknown> {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function loadXmlFile(filePath: string): Promise<any> {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let jsonObj: any
+
   if (fs.existsSync(filePath)) {
-    fs.readFile(filePath, async (err, data) => {
-      core.info(`Files count: ${data}`)
-
-      const options = {
-        attributeNamePrefix: '@_',
-        // attrNodeName: 'attr', //default is 'false'
-        textNodeName: '#text',
-        ignoreAttributes: false,
-        ignoreNameSpace: false,
-        allowBooleanAttributes: true,
-        parseNodeValue: true,
-        parseAttributeValue: true,
-        trimValues: true,
-        cdataTagName: '__cdata', //default is 'false'
-        cdataPositionChar: '\\c',
-        parseTrueNumberOnly: false,
-        arrayMode: false, //"strict"
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        attrValueProcessor: (val: string, attrName: string) =>
-          he.decode(val, {isAttributeValue: true}), //default is a=>a
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        tagValueProcessor: (val: string, tagName: string) => he.decode(val), //default is a=>a
-        stopNodes: ['parse-me-as-string']
-      }
-
-      if (xmlParser.validate(data.toString()) === true) {
-        const jsonObj = xmlParser.parse(data.toString(), options, true)
-        core.info(jsonObj)
-        return JSON.stringify(jsonObj)
-      }
-    })
+    const xmlData = await promises.readFile(filePath, 'utf8')
+    const options = {
+      attributeNamePrefix: '_',
+      // attrNodeName: 'attr', //default is 'false'
+      textNodeName: '#text',
+      ignoreAttributes: false,
+      ignoreNameSpace: false,
+      allowBooleanAttributes: true,
+      parseNodeValue: true,
+      parseAttributeValue: true,
+      trimValues: true,
+      cdataTagName: '__cdata', //default is 'false'
+      cdataPositionChar: '\\c',
+      parseTrueNumberOnly: false,
+      arrayMode: false, //"strict"
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      attrValueProcessor: (val: string, attrName: string) =>
+        he.decode(val, {isAttributeValue: true}), //default is a=>a
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      tagValueProcessor: (val: string, tagName: string) => he.decode(val), //default is a=>a
+      stopNodes: ['parse-me-as-string']
+    }
+    if (xmlParser.validate(xmlData.toString()) === true) {
+      jsonObj = xmlParser.parse(xmlData, options, true)
+      core.info(jsonObj)
+    }
   } else {
     core.error('file doesnt exist')
   }
-  return '{}'
+  return jsonObj
 }

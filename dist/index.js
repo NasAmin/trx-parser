@@ -2431,6 +2431,8 @@ const uitl = __importStar(__webpack_require__(669));
 const core = __importStar(__webpack_require__(186));
 const xmlParser = __importStar(__webpack_require__(448));
 const he = __importStar(__webpack_require__(527));
+const fs_1 = __webpack_require__(747);
+// import {promises as promises} from 'fs'
 function getTrxFiles(trxPath) {
     return __awaiter(this, void 0, void 0, function* () {
         // TODO: Convert to async version
@@ -2453,42 +2455,42 @@ function getAbsoluteFilePaths(fileNames, directoryName) {
     return absolutePaths;
 }
 exports.getAbsoluteFilePaths = getAbsoluteFilePaths;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function loadXmlFile(filePath) {
     return __awaiter(this, void 0, void 0, function* () {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        let jsonObj;
         if (fs.existsSync(filePath)) {
-            fs.readFile(filePath, (err, data) => __awaiter(this, void 0, void 0, function* () {
-                core.info(`Files count: ${data}`);
-                const options = {
-                    attributeNamePrefix: '@_',
-                    // attrNodeName: 'attr', //default is 'false'
-                    textNodeName: '#text',
-                    ignoreAttributes: false,
-                    ignoreNameSpace: false,
-                    allowBooleanAttributes: true,
-                    parseNodeValue: true,
-                    parseAttributeValue: true,
-                    trimValues: true,
-                    cdataTagName: '__cdata',
-                    cdataPositionChar: '\\c',
-                    parseTrueNumberOnly: false,
-                    arrayMode: false,
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                    attrValueProcessor: (val, attrName) => he.decode(val, { isAttributeValue: true }),
-                    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                    tagValueProcessor: (val, tagName) => he.decode(val),
-                    stopNodes: ['parse-me-as-string']
-                };
-                if (xmlParser.validate(data.toString()) === true) {
-                    const jsonObj = xmlParser.parse(data.toString(), options, true);
-                    core.info(jsonObj);
-                    return JSON.stringify(jsonObj);
-                }
-            }));
+            const xmlData = yield fs_1.promises.readFile(filePath, 'utf8');
+            const options = {
+                attributeNamePrefix: '_',
+                // attrNodeName: 'attr', //default is 'false'
+                textNodeName: '#text',
+                ignoreAttributes: false,
+                ignoreNameSpace: false,
+                allowBooleanAttributes: true,
+                parseNodeValue: true,
+                parseAttributeValue: true,
+                trimValues: true,
+                cdataTagName: '__cdata',
+                cdataPositionChar: '\\c',
+                parseTrueNumberOnly: false,
+                arrayMode: false,
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                attrValueProcessor: (val, attrName) => he.decode(val, { isAttributeValue: true }),
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                tagValueProcessor: (val, tagName) => he.decode(val),
+                stopNodes: ['parse-me-as-string']
+            };
+            if (xmlParser.validate(xmlData.toString()) === true) {
+                jsonObj = xmlParser.parse(xmlData, options, true);
+                core.info(jsonObj);
+            }
         }
         else {
             core.error('file doesnt exist');
         }
-        return '{}';
+        return jsonObj;
     });
 }
 exports.loadXmlFile = loadXmlFile;
