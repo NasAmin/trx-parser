@@ -173,10 +173,14 @@ function run() {
             core.setCommandEcho(true);
             core.setOutput('test-outcome', 'Passed');
             core.setOutput('trx-path', trxPath);
+            core.info(`Finding Trx files in: ${trxPath}`);
             const trxFiles = yield utils_1.getTrxFiles(trxPath);
+            core.info(`Processing ${trxFiles.length} trx files`);
             const trxToJson = yield utils_1.transformAllTrxToJson(trxFiles);
+            core.info(`Checking for failing tests`);
             const failingTestsFound = utils_1.areThereAnyFailingTests(trxToJson);
             if (failingTestsFound) {
+                core.error(`At least one failing test was found`);
                 core.setFailed('Failing tests found');
             }
             core.setOutput('trx-files', trxFiles);
@@ -2465,6 +2469,7 @@ function transformTrxToJson(filePath) {
     return __awaiter(this, void 0, void 0, function* () {
         let jsonObj;
         if (fs.existsSync(filePath)) {
+            core.info(`Transforming file ${filePath}`);
             const xmlData = yield fs_1.promises.readFile(filePath, 'utf8');
             const options = {
                 attributeNamePrefix: '_',
@@ -2491,7 +2496,7 @@ function transformTrxToJson(filePath) {
             }
         }
         else {
-            core.error('file doesnt exist');
+            core.warning(`Trx file ${filePath} does not exist`);
         }
         return jsonObj;
     });

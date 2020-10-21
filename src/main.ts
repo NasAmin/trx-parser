@@ -13,11 +13,17 @@ export async function run(): Promise<void> {
     core.setOutput('test-outcome', 'Passed')
     core.setOutput('trx-path', trxPath)
 
+    core.info(`Finding Trx files in: ${trxPath}`)
     const trxFiles = await getTrxFiles(trxPath)
+
+    core.info(`Processing ${trxFiles.length} trx files`)
     const trxToJson = await transformAllTrxToJson(trxFiles)
+
+    core.info(`Checking for failing tests`)
     const failingTestsFound = areThereAnyFailingTests(trxToJson)
 
     if (failingTestsFound) {
+      core.error(`At least one failing test was found`)
       core.setFailed('Failing tests found')
     }
 

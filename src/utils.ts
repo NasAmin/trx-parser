@@ -37,6 +37,8 @@ export async function transformTrxToJson(filePath: string): Promise<TrxData> {
   let jsonObj: any
 
   if (fs.existsSync(filePath)) {
+    core.info(`Transforming file ${filePath}`)
+
     const xmlData = await promises.readFile(filePath, 'utf8')
     const options = {
       attributeNamePrefix: '_',
@@ -63,7 +65,7 @@ export async function transformTrxToJson(filePath: string): Promise<TrxData> {
       jsonObj = xmlParser.parse(xmlData, options, true)
     }
   } else {
-    core.error('file doesnt exist')
+    core.warning(`Trx file ${filePath} does not exist`)
   }
   return jsonObj
 }
