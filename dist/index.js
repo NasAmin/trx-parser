@@ -1516,7 +1516,7 @@ function run() {
             const failingTestsFound = utils_1.areThereAnyFailingTests(trxToJson);
             if (failingTestsFound) {
                 core.error(`At least one failing test was found`);
-                github_1.createCheckRun(token);
+                yield github_1.createCheckRun(token);
                 core.setFailed('Failing tests found');
             }
             core.setOutput('trx-files', trxFiles);
@@ -7954,33 +7954,42 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createCheckRun = void 0;
-const github_1 = __importDefault(__webpack_require__(438));
+const github = __importStar(__webpack_require__(438));
 const core = __importStar(__webpack_require__(186));
 function createCheckRun(repoToken) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (github_1.default.context.eventName === 'pullRequest') {
-            const octokit = github_1.default.getOctokit(repoToken);
-            octokit.checks.create({
-                owner: github_1.default.context.repo.owner,
-                repo: github_1.default.context.repo.repo,
-                name: 'trx-parser',
-                head_sha: github_1.default.context.sha,
-                status: 'completed',
-                conclusion: 'neutral',
-                output: {
-                    title: 'My test report',
-                    summary: `This test run completed at ${Date.now()}`,
-                    text: 'test'
+        try {
+            core.info('Trying to create check');
+            const octokit = github.getOctokit(repoToken);
+            if (github.context.eventName === 'pullRequest') {
+                const response = yield octokit.checks.create({
+                    owner: github.context.repo.owner,
+                    repo: github.context.repo.repo,
+                    name: 'trx-parser',
+                    head_sha: github.context.sha,
+                    status: 'completed',
+                    conclusion: 'neutral',
+                    output: {
+                        title: 'My test report',
+                        summary: `This test run completed at ${Date.now()}`,
+                        text: 'test'
+                    }
+                });
+                if (response.status !== 201) {
+                    throw new Error(`Failed to create status check. Error code: ${response.status}`);
                 }
-            });
+                else {
+                    core.info(`Created check: ${response.data.name}`);
+                }
+            }
+            else {
+                core.info('Skipping status check as the trigger was not on a pull request');
+            }
         }
-        else {
-            core.info('Skipping status check as the trigger was not on a pull request');
+        catch (error) {
+            core.setFailed(error.message);
         }
     });
 }
