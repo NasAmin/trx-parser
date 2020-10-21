@@ -44,7 +44,7 @@ function createCheckRun(repoToken) {
         try {
             core.info('Trying to create check');
             const octokit = github.getOctokit(repoToken);
-            if (github.context.eventName === 'pullRequest') {
+            if (github.context.eventName === 'pull_request') {
                 const response = yield octokit.checks.create({
                     owner: github.context.repo.owner,
                     repo: github.context.repo.repo,

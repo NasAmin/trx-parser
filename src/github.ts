@@ -5,7 +5,7 @@ export async function createCheckRun(repoToken: string): Promise<void> {
   try {
     core.info('Trying to create check')
     const octokit = github.getOctokit(repoToken)
-    if (github.context.eventName === 'pullRequest') {
+    if (github.context.eventName === 'pull_request') {
       const response = await octokit.checks.create({
         owner: github.context.repo.owner,
         repo: github.context.repo.repo,
