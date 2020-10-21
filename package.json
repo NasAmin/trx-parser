@@ -18,15 +18,37 @@
     "type": "git",
     "url": "git+https://github.com/NasAmin/trx-parser.git"
   },
+  "engines": {
+    "node": ">= 13",
+    "npm": ">= 6"
+  },
   "keywords": [
     "actions",
     "node",
-    "setup"
+    "setup",
+    "github",
+    "dotnet",
+    "test",
+    "report",
+    "trx",
+    "check",
+    "status"
   ],
   "author": "Nasir Amin",
   "license": "MIT",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged && ./scripts/pre-commit.sh",
+      "pre-push": "./scripts/pre-push.sh"
+    }
+  },
   "dependencies": {
-    "@actions/core": "^1.2.6"
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^4.0.0",
+    "@octokit/webhooks": "^7.15.0",
+    "@types/he": "^1.1.1",
+    "fast-xml-parser": "^3.17.4",
+    "he": "^1.2.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.10",
@@ -41,6 +63,11 @@
     "js-yaml": "^3.14.0",
     "prettier": "2.1.2",
     "ts-jest": "^24.3.0",
-    "typescript": "^4.0.3"
+    "typescript": "^4.0.3",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.1.5"
+  },
+  "jest": {
+    "testEnvironment": "node"
   }
 }

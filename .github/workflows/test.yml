@@ -7,7 +7,7 @@ on: # rebuild any PRs and main branch changes
   create:
 
 jobs:
-  build:
+  test:
     runs-on: ${{ matrix.os }}
     strategy:        
         matrix:
@@ -19,7 +19,8 @@ jobs:
           id: trx-parser
           uses: ./
           with:
-            TRX_PATH: ${{ github.workspace }}/*.json
+            TRX_PATH: ${{ github.workspace }}/test-data
+            repo-token: ${{ secrets.GITHUB_TOKEN }}
 
         - name: Print Test Outcome
           run: |

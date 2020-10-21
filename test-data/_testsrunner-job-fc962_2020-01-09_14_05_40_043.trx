@@ -1,0 +1,953 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="71f782ed-4b90-4736-be6d-7e865b03553f" name="@testsrunner-job-fc962 2020-01-09 14:05:40:043" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2020-01-09T14:05:40.0442907+00:00" queuing="2020-01-09T14:05:40.0442908+00:00" start="2020-01-09T14:04:56.6227817+00:00" finish="2020-01-09T14:05:59.7003305+00:00" />
+  <TestSettings name="default" id="67c7a00d-0c2d-4bcd-b9b0-75e0061aae60">
+    <Deployment runDeploymentRoot="_testsrunner-job-fc962_2020-01-09_14_05_40_043" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="98ca5656-5db4-46c6-8e5b-3c139c8c11f5" testId="7e4bd8f6-1a56-9dac-963f-043f03b0c5fa" testName="TeamsCanBeAssignedToUsers" computerName="testsrunner-job-fc962" duration="00:00:03.0785778" startTime="2020-01-09T14:04:57.3881845+00:00" endTime="2020-01-09T14:05:41.6586898+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="98ca5656-5db4-46c6-8e5b-3c139c8c11f5">
+      <Output>
+        <StdOut>-&gt; Loading plugin /root/ComplianceAS/bin/Release/netcoreapp2.2/TechTalk.SpecFlow.MSTest.SpecFlowPlugin.dll
+-&gt; Using specflow.json
+Current Dir /root/ComplianceAS/bin/Release/netcoreapp2.2
+Reading appsettings from appsettings.json
+Reading clustersettings from /root/clustersettings.json
+Current Dir /root/ComplianceAS/bin/Release/netcoreapp2.2
+Reading appsettings from appsettings.json
+Reading clustersettings from /root/clustersettings.json
+Region set to eu-west-1
+Region set to eu-west-1
+-&gt; #12: done: TeamStepDefinitions.GivenThereIsAUserWithAUsernameOf("alan@mailinator.com") (1.6s)
+-&gt; #14: done: TeamStepDefinitions.GivenThereIsAUserWithAUsernameOf("harry@mailinator.com") (1.6s)
+#12: And a root team named 'Architects' exists
+#14: When I attempt to assign the user to the 'Administrators' team
+-&gt; #14: done: TeamStepDefinitions.WhenIAttemptToAssignTheUserToTheTeam("Administrators") (0.0s)
+#14: Then I am returned the list of users in the team
+-&gt; #14: done: TeamStepDefinitions.ThenIAmReturnedTheListOfUsersInTheTeam() (0.0s)
+#14: And the list contains the user 'harry@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.ThenTheListContainsTheUser("harry@mailinator.com") (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="6c90df56-39a5-473a-892a-9b5d8f4aabd4" testId="419268b4-02d7-1ace-a28a-59f1034c20e6" testName="UpdateUserIdentityReturnsNotFoundForUnknownUser" computerName="testsrunner-job-fc962" duration="00:00:00.0169538" startTime="2020-01-09T14:05:47.0966240+00:00" endTime="2020-01-09T14:05:47.1137525+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6c90df56-39a5-473a-892a-9b5d8f4aabd4" />
+    <UnitTestResult executionId="6fcf7798-7eb8-497e-aa17-c711f5d31ad4" testId="a3843a5d-27b4-6077-9af5-e2ae0c2cd42a" testName="UsersCannotBeAssignedToNon_ExistentTeams" computerName="testsrunner-job-fc962" duration="00:00:01.1615500" startTime="2020-01-09T14:05:48.6223606+00:00" endTime="2020-01-09T14:05:49.7840665+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6fcf7798-7eb8-497e-aa17-c711f5d31ad4">
+      <Output>
+        <StdOut>#14: Given I have a tenancy
+-&gt; #14: done: TenancySetupSteps.GivenIHaveATenancy() (0.0s)
+#14: And I am logged-in to the tenancy as an administrator
+-&gt; #14: done: TeamStepDefinitions.GivenIAmLogged_InToTheTenancyAsAnAdministrator() (0.0s)
+#14: And a root team named 'Administrators' exists
+-&gt; #12: done: TeamStepDefinitions.GivenThereIsAUserWithAUsernameOf("fred@mailinator.com") (1.1s)
+#12: And this user is a member of these teams
+-&gt; #14: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Administrators") (0.1s)
+#14: Given there is a user with a username of 'neil@mailinator.com'
+-&gt; #12: done: TeamStepDefinitions.GivenThisUserIsAMemberOfTheseTeams() (0.1s)
+#12: When I attempt to unassign the following teams from this user:
+  --- table step argument ---
+  | team    |
+  | Bangor  |
+  | Llanrug |
+  | Rhyl    |
+Response: code: OK, str: [{"children":[{"children":[],"id":"under_root2","tenantId":"stage-840lx3apeuivfwwjesxmg","parentId":"root_team2","name":"UnderRoot2","description":"","identityPoolArn":null}],"id":"root_team2","tenantId":"stage-840lx3apeuivfwwjesxmg","parentId":"","name":"Root2","description":"","identityPoolArn":null},{"children":[],"id":"1c34b8d7-a844-40c8-bfa2-662569eda32d","tenantId":"stage-840lx3apeuivfwwjesxmg","parentId":"","name":"Administrators","description":"Root Team for stage-840lx3apeuivfwwjesxmg","identityPoolArn":null},{"children":[],"id":"root_team1","tenantId":"stage-840lx3apeuivfwwjesxmg","parentId":"","name":"Root1","description":"","identityPoolArn":null}]</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="0a3e4338-7fae-44d2-9bdb-882d1fd6dfd2" testId="438bbb67-061d-764b-ca3b-67bdd035dad9" testName="TeamsCanBeUnassignedFromUsersMultipleTimes" computerName="testsrunner-job-fc962" duration="00:00:01.3025839" startTime="2020-01-09T14:05:45.8758733+00:00" endTime="2020-01-09T14:05:47.1786075+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0a3e4338-7fae-44d2-9bdb-882d1fd6dfd2">
+      <Output>
+        <StdOut>#12: Given I have a tenancy
+-&gt; #12: done: TenancySetupSteps.GivenIHaveATenancy() (0.0s)
+#12: And I am logged-in to the tenancy as an administrator
+-&gt; #12: done: TeamStepDefinitions.GivenIAmLogged_InToTheTenancyAsAnAdministrator() (0.0s)
+#12: And a root team named 'Administrators' exists
+-&gt; #12: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Administrators") (0.0s)
+#12: Given there is a user with a username of 'eric@mailinator.com'</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1929d27c-a19e-433d-8a70-f48966f97ade" testId="0e16701b-9a05-9b75-80c9-41177f0fb96c" testName="GetUsersReturnsOrderedList" computerName="testsrunner-job-fc962" duration="00:00:00.2709988" startTime="2020-01-09T14:05:45.1381658+00:00" endTime="2020-01-09T14:05:45.4093794+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1929d27c-a19e-433d-8a70-f48966f97ade">
+      <Output>
+        <StdOut>-&gt; #14: done: TeamStepDefinitions.WhenIAttemptToAssignTheUserToTheTeam("Administrators") (0.1s)
+#14: Then I am returned the list of users in the team
+-&gt; #14: done: TeamStepDefinitions.ThenIAmReturnedTheListOfUsersInTheTeam() (0.0s)
+#14: And the list contains the user 'john@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.ThenTheListContainsTheUser("john@mailinator.com") (0.0s)
+#14: When I attempt to assign the user to the 'Administrators' team
+-&gt; #14: done: TeamStepDefinitions.WhenIAttemptToAssignTheUserToTheTeam("Administrators") (0.1s)
+#14: Then I am returned the list of users in the team
+-&gt; #14: done: TeamStepDefinitions.ThenIAmReturnedTheListOfUsersInTheTeam() (0.0s)
+#14: And the list contains the user 'john@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.ThenTheListContainsTheUser("john@mailinator.com") (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="503330ea-5ee0-44b2-adec-6ec7bc0da8b2" testId="bb26529b-5bb6-482d-6da5-d8a6604f4fa4" testName="UsersCanBeQueriedForTheTeamsTheyAreMembersOf" computerName="testsrunner-job-fc962" duration="00:00:01.6108650" startTime="2020-01-09T14:05:48.8612011+00:00" endTime="2020-01-09T14:05:50.4722615+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="503330ea-5ee0-44b2-adec-6ec7bc0da8b2">
+      <Output>
+        <StdOut>#12: Given I have a tenancy
+-&gt; #12: done: TenancySetupSteps.GivenIHaveATenancy() (0.0s)
+#12: And I am logged-in to the tenancy as an administrator
+-&gt; #12: done: TeamStepDefinitions.GivenIAmLogged_InToTheTenancyAsAnAdministrator() (0.0s)
+#12: And a root team named 'Administrators' exists
+-&gt; #12: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Administrators") (0.0s)
+#12: Given a root team named 'Bob' exists
+-&gt; #12: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Bob") (0.1s)
+#12: And a root team named 'Charles' exists</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ec28d85d-baf0-4430-a68b-421f37b738c0" testId="6eb50f37-ba8e-58e0-cd5f-674cf9d49d03" testName="CreateSubFolderCreatesASubFolder" computerName="testsrunner-job-fc962" startTime="2020-01-09T14:05:43.6291457+00:00" endTime="2020-01-09T14:05:43.6291902+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ec28d85d-baf0-4430-a68b-421f37b738c0">
+      <Output>
+        <ErrorInfo>
+          <Message>API for folders is changing</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="cf4bad5c-8a2c-405f-88cd-402cad83d09b" testId="4957b4ea-4232-e02e-6cfa-b54e4943400e" testName="UsersCanBeUnassignedFromTeams" computerName="testsrunner-job-fc962" duration="00:00:01.3760130" startTime="2020-01-09T14:05:49.7840973+00:00" endTime="2020-01-09T14:05:51.1602851+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cf4bad5c-8a2c-405f-88cd-402cad83d09b">
+      <Output>
+        <StdOut>#14: Given I have a tenancy
+-&gt; #14: done: TenancySetupSteps.GivenIHaveATenancy() (0.0s)
+#14: And I am logged-in to the tenancy as an administrator
+-&gt; #14: done: TeamStepDefinitions.GivenIAmLogged_InToTheTenancyAsAnAdministrator() (0.0s)
+#14: And a root team named 'Administrators' exists
+-&gt; #14: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Administrators") (0.1s)
+#14: Given there is a user with a username of 'owen@mailinator.com'
+-&gt; #12: done: TeamStepDefinitions.GivenThereIsAUserWithAUsernameOf("gareth@mailinator...") (1.1s)
+#12: And the user is a member of the 'Bob' team
+-&gt; #12: done: TeamStepDefinitions.GivenTheUserIsAMemberOfTheTeam("Bob") (0.1s)
+#12: And the user is a member of the 'Charles' team
+-&gt; #12: done: TeamStepDefinitions.GivenTheUserIsAMemberOfTheTeam("Charles") (0.1s)
+#12: When I ask for a list of teams for the current user
+-&gt; #12: done: TeamStepDefinitions.WhenIAskForAListOfTeamsForTheUser() (0.0s)
+#12: Then I am returned the list of teams for the user
+-&gt; #12: done: TeamStepDefinitions.ThenIAmReturnedTheListOfTeamsForTheUser() (0.0s)
+#12: And the list contains the team 'Bob'
+-&gt; #12: done: TeamStepDefinitions.ThenTheListContainsTheTeam("Bob") (0.0s)
+#12: And the list contains the team 'Charles'
+-&gt; #12: done: TeamStepDefinitions.ThenTheListContainsTheTeam("Charles") (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e9cd2a29-f3ad-4e04-8380-15fe3aba0634" testId="d7d97caa-a8ab-b2f6-cdee-d08b8dfcf3c8" testName="GetFoldersListsFolders" computerName="testsrunner-job-fc962" startTime="2020-01-09T14:05:43.6289780+00:00" endTime="2020-01-09T14:05:43.6290293+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e9cd2a29-f3ad-4e04-8380-15fe3aba0634">
+      <Output>
+        <ErrorInfo>
+          <Message>API for folders is changing</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="efac8628-7660-4a82-96ee-fce6912751ec" testId="2d864662-20bc-73d6-aae1-ea709db23550" testName="MultipleUsersCanBeAssignedToATeamAtOnce" computerName="testsrunner-job-fc962" duration="00:00:03.3821900" startTime="2020-01-09T14:05:45.2399856+00:00" endTime="2020-01-09T14:05:48.6223388+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="efac8628-7660-4a82-96ee-fce6912751ec">
+      <Output>
+        <StdOut>#14: Given I have a tenancy
+-&gt; #14: done: TenancySetupSteps.GivenIHaveATenancy() (0.0s)
+#14: And I am logged-in to the tenancy as an administrator
+-&gt; #14: done: TeamStepDefinitions.GivenIAmLogged_InToTheTenancyAsAnAdministrator() (0.0s)
+#14: And a root team named 'Administrators' exists
+-&gt; #14: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Administrators") (0.0s)
+#14: Given there is a user with a username of 'kevin@mailinator.com'</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="324b2135-43a9-4a58-8c0e-7f86ac58fcd4" testId="b4570d8c-2ad9-972d-3ae0-cfb2f84a221e" testName="RegisterUserReturnsConflictIfUserNameAlreadyExists" computerName="testsrunner-job-fc962" duration="00:00:00.3164377" startTime="2020-01-09T14:05:46.7798679+00:00" endTime="2020-01-09T14:05:47.0965510+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="324b2135-43a9-4a58-8c0e-7f86ac58fcd4">
+      <Output>
+        <StdOut>-&gt; #12: done: TeamStepDefinitions.GivenThereIsAUserWithAUsernameOf("eric@mailinator.com") (1.1s)
+#12: And the user is a member of the 'Administrators' team
+-&gt; #12: done: TeamStepDefinitions.GivenTheUserIsAMemberOfTheTeam("Administrators") (0.1s)
+#12: When I attempt to unassign the 'Administrators' team from the user</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="2856bd1c-4f28-48e1-8f02-44bf48e165e5" testId="f617b441-f2d4-955e-e3a2-a70328d6a501" testName="UsersCanBeAssignedToMultipleTeams" computerName="testsrunner-job-fc962" duration="00:00:02.3336187" startTime="2020-01-09T14:05:41.5913110+00:00" endTime="2020-01-09T14:05:43.9251109+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2856bd1c-4f28-48e1-8f02-44bf48e165e5">
+      <Output>
+        <StdOut>#14: Given I have a tenancy
+-&gt; #14: done: TenancySetupSteps.GivenIHaveATenancy() (0.0s)
+#14: And I am logged-in to the tenancy as an administrator
+-&gt; #14: done: TeamStepDefinitions.GivenIAmLogged_InToTheTenancyAsAnAdministrator() (0.0s)
+#14: And a root team named 'Administrators' exists
+-&gt; #12: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Architects") (0.1s)
+#12: When I attempt to assign the 'Architects' team to the user
+-&gt; #14: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Administrators") (0.0s)
+#14: Given a root team named 'multiple teams test' exists
+-&gt; #12: done: TeamStepDefinitions.WhenIAttemptToAssignTheTeamToTheUser("Architects") (0.1s)
+#12: Then I am returned the list of teams for the user
+-&gt; #12: done: TeamStepDefinitions.ThenIAmReturnedTheListOfTeamsForTheUser() (0.0s)
+#12: And the list contains the team 'Architects'
+-&gt; #12: done: TeamStepDefinitions.ThenTheListContainsTheTeam("Architects") (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="58143f38-7393-4712-80cc-7b4f345ba48c" testId="23dd3da5-4375-6eb2-cec6-81884631038a" testName="TheUserCanDisableAnotherUser" computerName="testsrunner-job-fc962" duration="00:00:00.5794342" startTime="2020-01-09T14:05:40.0588554+00:00" endTime="2020-01-09T14:05:40.6384581+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="58143f38-7393-4712-80cc-7b4f345ba48c">
+      <Output>
+        <StdOut>#13: Given there is a tenancy
+-&gt; #13: done: TenancySetupSteps.GivenIHaveATenancy() (0.0s)
+#13: Given there is an enabled user 'bob_henderson@mailinator.com'
+-&gt; #13: done: UpdatingUserAccountStatusSteps.GivenThereIsAnEnabledUser("bob_henderson@mai...") (0.6s)
+#13: When the user attempts to disable another user 'bob_henderson@mailinator.com'
+-&gt; #13: done: UpdatingUserAccountStatusSteps.WhenTheUserAttemptsToDisableAnotherUser("bob_henderson@mai...") (0.0s)
+#13: Then the user receives the details of another user 'bob_henderson@mailinator.com'
+-&gt; #13: done: UpdatingUserAccountStatusSteps.ThenTheUserReceivesTheDetailsOfAnotherUser("bob_henderson@mai...") (0.0s)
+#13: And the user 'bob_henderson@mailinator.com' is disabled
+-&gt; #13: done: UpdatingUserAccountStatusSteps.ThenTheUserIsDisabled("bob_henderson@mai...") (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c7c639b0-a9b5-4f51-86f9-b8fda881e176" testId="4ea901a7-0d4a-ec8e-538a-303182f82cdd" testName="UpdateUserIdentityUpdatesUserPropertiesCorrectly" computerName="testsrunner-job-fc962" duration="00:00:00.7745188" startTime="2020-01-09T14:05:47.4121276+00:00" endTime="2020-01-09T14:05:48.1868163+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c7c639b0-a9b5-4f51-86f9-b8fda881e176">
+      <Output>
+        <StdOut>-&gt; #14: done: TeamStepDefinitions.GivenThereIsAUserWithAUsernameOf("liam@mailinator.com") (1.1s)
+#14: And there is a user with a username of 'mike@mailinator.com'
+-&gt; #12: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Rhyl") (0.1s)
+#12: And a root team named 'Conwy' exists
+-&gt; #12: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Conwy") (0.1s)
+#12: And there is a user with a username of 'fred@mailinator.com'</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="79f6cd9e-35c7-4528-940f-aa8d0a66703e" testId="464dc4ae-1ed5-26e9-f21e-c7b9ca40b3df" testName="TheUserCannotEnableAnotherUserBySpecifyingInvalidDetails" computerName="testsrunner-job-fc962" duration="00:00:00.0185954" startTime="2020-01-09T14:05:40.0292291+00:00" endTime="2020-01-09T14:05:40.0481167+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="79f6cd9e-35c7-4528-940f-aa8d0a66703e">
+      <Output>
+        <StdOut>#13: Given there is a tenancy
+-&gt; #13: done: TenancySetupSteps.GivenIHaveATenancy() (0.0s)
+#13: When the user attempts to enable another user by specifying invalid details:
+  --- table step argument ---
+  | invalid details |
+  | empty username  |
+  | empty tenant id |
+-&gt; #13: done: UpdatingUserAccountStatusSteps.WhenTheUserAttemptsToEnableAnotherUserBySpecifyingInvalidDetails(&lt;table&gt;) (0.0s)
+#13: Then the user receives an error indicating that the details were invalid
+-&gt; #13: done: UpdatingUserAccountStatusSteps.ThenTheUserReceivesAnErrorIndicatingThatTheDetailsWereInvalid() (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="dfb70ec9-3461-41ec-b543-28a9471e1dd3" testId="e27c20f3-7b23-39c4-162a-1bca05c6379d" testName="UsersCanBeUnassignedFromTeamsMultipleTimes" computerName="testsrunner-job-fc962" duration="00:00:01.4116681" startTime="2020-01-09T14:05:51.1603093+00:00" endTime="2020-01-09T14:05:52.5721423+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dfb70ec9-3461-41ec-b543-28a9471e1dd3">
+      <Output>
+        <StdOut>#14: Given I have a tenancy
+-&gt; #14: done: TenancySetupSteps.GivenIHaveATenancy() (0.0s)
+#14: And I am logged-in to the tenancy as an administrator
+-&gt; #14: done: TeamStepDefinitions.GivenIAmLogged_InToTheTenancyAsAnAdministrator() (0.0s)
+#14: And a root team named 'Administrators' exists
+-&gt; #14: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Administrators") (0.1s)
+#14: Given there is a user with a username of 'peter@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.GivenThereIsAUserWithAUsernameOf("peter@mailinator.com") (1.1s)
+#14: And the user is a member of the 'Administrators' team
+-&gt; #14: done: TeamStepDefinitions.GivenTheUserIsAMemberOfTheTeam("Administrators") (0.1s)
+#14: When I attempt to unassign the user from the 'Administrators' team
+-&gt; #14: done: TeamStepDefinitions.WhenIAttemptToUnassignTheUserFromTheTeam("Administrators") (0.1s)
+#14: Then I am returned the list of users in the team
+-&gt; #14: done: TeamStepDefinitions.ThenIAmReturnedTheListOfUsersInTheTeam() (0.0s)
+#14: And the list does not contain the user 'peter@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.ThenTheListDoesNotContainTheUser("peter@mailinator.com") (0.0s)
+#14: When I attempt to unassign the user from the 'Administrators' team
+-&gt; #14: done: TeamStepDefinitions.WhenIAttemptToUnassignTheUserFromTheTeam("Administrators") (0.1s)
+#14: Then I am returned the list of users in the team
+-&gt; #14: done: TeamStepDefinitions.ThenIAmReturnedTheListOfUsersInTheTeam() (0.0s)
+#14: And the list does not contain the user 'peter@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.ThenTheListDoesNotContainTheUser("peter@mailinator.com") (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="aa100b45-7f42-42a5-9c20-2f020c3c7e15" testId="453a4f84-95ba-0015-d04c-1acc0a1f5b8c" testName="TeamsCanBeQueriedForTheUsersWithinThem" computerName="testsrunner-job-fc962" duration="00:00:03.4777634" startTime="2020-01-09T14:05:56.1027568+00:00" endTime="2020-01-09T14:05:59.5807146+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="aa100b45-7f42-42a5-9c20-2f020c3c7e15">
+      <Output>
+        <StdOut>#14: Given I have a tenancy
+-&gt; #14: done: TenancySetupSteps.GivenIHaveATenancy() (0.0s)
+#14: And I am logged-in to the tenancy as an administrator
+-&gt; #14: done: TeamStepDefinitions.GivenIAmLogged_InToTheTenancyAsAnAdministrator() (0.0s)
+#14: And a root team named 'Administrators' exists
+-&gt; #14: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Administrators") (0.1s)
+#14: Given there is a user with a username of 'tom@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.GivenThereIsAUserWithAUsernameOf("tom@mailinator.com") (1.1s)
+#14: And there is a user with a username of 'ulysses@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.GivenThereIsAUserWithAUsernameOf("ulysses@mailinato...") (1.1s)
+#14: And these users are members of the 'Administrators' team
+-&gt; #14: done: TeamStepDefinitions.GivenTheseUsersAreMembersOfTheTeam("Administrators") (0.1s)
+#14: And there is a user with a username of 'vic@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.GivenThereIsAUserWithAUsernameOf("vic@mailinator.com") (1.1s)
+#14: When I ask for a list of users in the 'Administrators' team
+-&gt; #14: done: TeamStepDefinitions.WhenIAskForAListOfUsersInTheTeam("Administrators") (0.1s)
+#14: Then I am returned the list of users in the team
+-&gt; #14: done: TeamStepDefinitions.ThenIAmReturnedTheListOfUsersInTheTeam() (0.0s)
+#14: And the list contains the user 'tom@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.ThenTheListContainsTheUser("tom@mailinator.com") (0.0s)
+#14: And the list contains the user 'ulysses@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.ThenTheListContainsTheUser("ulysses@mailinato...") (0.0s)
+#14: And the list does not contain the user 'vic@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.ThenTheListDoesNotContainTheUser("vic@mailinator.com") (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ef75a90d-5457-4dab-a839-9d41d67f5d5d" testId="a499002e-f196-4bec-d98a-1a821f195833" testName="UpdateUsersDeniesAccessWithoutValidToken" computerName="testsrunner-job-fc962" duration="00:00:00.2538860" startTime="2020-01-09T14:05:45.7675732+00:00" endTime="2020-01-09T14:05:46.0216144+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ef75a90d-5457-4dab-a839-9d41d67f5d5d">
+      <Output>
+        <StdOut>-&gt; #12: done: TeamStepDefinitions.GivenTheUserIsAMemberOfTheTeam("Administrators") (0.1s)
+#12: When I attempt to unassign the 'Administrators' team from the user
+-&gt; #12: done: TeamStepDefinitions.WhenIAttemptToUnassignTheTeamFromTheUser("Administrators") (0.1s)
+#12: Then I am returned the list of teams for the user
+-&gt; #12: done: TeamStepDefinitions.ThenIAmReturnedTheListOfTeamsForTheUser() (0.0s)
+#12: And the list does not contain the team 'Administrators'
+-&gt; #12: done: TeamStepDefinitions.ThenTheListDoesNotContainTheTeam("Administrators") (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f87c7dd5-13b0-4c64-9fea-a93527641e0b" testId="ed2f71a1-01c3-4916-0894-a3b3fb8c1ac9" testName="CreateTeamAndGet" computerName="testsrunner-job-fc962" duration="00:00:00.2999394" startTime="2020-01-09T14:05:48.1868793+00:00" endTime="2020-01-09T14:05:48.4869887+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f87c7dd5-13b0-4c64-9fea-a93527641e0b" />
+    <UnitTestResult executionId="90be094f-d212-4092-8700-e4eda997ac72" testId="642fe07b-2bbc-3968-a42e-d7e05c3ae5bf" testName="RegisterAndUpdateTenantAllowsAnonymousAccess" computerName="testsrunner-job-fc962" duration="00:00:00.0866833" startTime="2020-01-09T14:05:43.7385463+00:00" endTime="2020-01-09T14:05:43.8254144+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="90be094f-d212-4092-8700-e4eda997ac72">
+      <Output>
+        <StdOut>-&gt; #14: done: TeamStepDefinitions.GivenThereIsAUserWithAUsernameOf("ian@mailinator.com") (2.1s)
+#14: When I attempt to assign the user to the 'Administrators' team</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="bd3187cf-3641-4083-8012-6a993f8ca99f" testId="62b9053b-e7a9-ffab-552e-c8393cfb24fc" testName="CreateSubFolderDeniesAccessWithoutToken" computerName="testsrunner-job-fc962" startTime="2020-01-09T14:05:43.6290351+00:00" endTime="2020-01-09T14:05:43.6290839+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="bd3187cf-3641-4083-8012-6a993f8ca99f">
+      <Output>
+        <ErrorInfo>
+          <Message>API for folders is changing</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="1217563c-3e12-498a-b180-2a5c7da5ade9" testId="65b9b250-e57f-5820-1dd8-d21364559e1e" testName="UpdateUsersReturnsNotFound" computerName="testsrunner-job-fc962" duration="00:00:00.2367182" startTime="2020-01-09T14:05:46.0216808+00:00" endTime="2020-01-09T14:05:46.2585763+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1217563c-3e12-498a-b180-2a5c7da5ade9" />
+    <UnitTestResult executionId="a0dba93d-b9e1-4b15-bb61-7384efe46a03" testId="8e8d8d64-7547-8b65-cd53-79513fcf341b" testName="TeamsCannotBeAssignedToNon_ExistentUsers" computerName="testsrunner-job-fc962" duration="00:00:00.1280060" startTime="2020-01-09T14:05:44.4982971+00:00" endTime="2020-01-09T14:05:44.6264897+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a0dba93d-b9e1-4b15-bb61-7384efe46a03">
+      <Output>
+        <StdOut>#12: Given I have a tenancy
+-&gt; #12: done: TenancySetupSteps.GivenIHaveATenancy() (0.0s)
+#12: And I am logged-in to the tenancy as an administrator
+-&gt; #12: done: TeamStepDefinitions.GivenIAmLogged_InToTheTenancyAsAnAdministrator() (0.0s)
+#12: And a root team named 'Administrators' exists
+-&gt; #12: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Administrators") (0.0s)
+#12: Given a root team named 'Administrators' exists
+-&gt; #12: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Administrators") (0.0s)
+#12: When I attempt to assign the 'Administrators' team to a non-existent user
+-&gt; #12: done: TeamStepDefinitions.WhenIAttemptToAssignTheTeamToANon_ExistentUser("Administrators") (0.1s)
+#12: Then I get an error indicating that the assignment could not be completed because the user was not found
+-&gt; #12: done: TeamStepDefinitions.ThenIGetAnErrorIndicatingThatTheAssignmentCouldNotBeCompleted() (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d94b3668-2016-4bc9-ab38-b88ea8ac742d" testId="6e7db232-3116-8abf-40f3-0393faab208c" testName="CreateRootTeam" computerName="testsrunner-job-fc962" duration="00:00:00.2646458" startTime="2020-01-09T14:05:49.1056036+00:00" endTime="2020-01-09T14:05:49.3704211+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d94b3668-2016-4bc9-ab38-b88ea8ac742d">
+      <Output>
+        <StdOut>-&gt; #12: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Charles") (0.1s)
+#12: And a root team named 'Derek' exists
+-&gt; #12: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Derek") (0.1s)
+#12: And there is a user with a username of 'gareth@mailinator.com'</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="6fca9fd9-af15-4145-820e-006c7b906398" testId="20258ef0-1c9c-384c-d23d-dd5d9e46559d" testName="VerifyComplianceASHealthEndpoint" computerName="testsrunner-job-fc962" duration="00:00:00.0058213" startTime="2020-01-09T14:04:57.3881658+00:00" endTime="2020-01-09T14:05:43.6283443+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6fca9fd9-af15-4145-820e-006c7b906398" />
+    <UnitTestResult executionId="33caf982-a262-4e88-8cc3-d2ed7200b7aa" testId="6cf22957-19bb-9b2c-20cd-e904ee5c31af" testName="UpdateUserIdentitySetsRegisteredUserPropertiesCorrectly" computerName="testsrunner-job-fc962" duration="00:00:00.2972884" startTime="2020-01-09T14:05:47.1146090+00:00" endTime="2020-01-09T14:05:47.4120661+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="33caf982-a262-4e88-8cc3-d2ed7200b7aa">
+      <Output>
+        <StdOut>-&gt; #12: done: TeamStepDefinitions.WhenIAttemptToUnassignTheTeamFromTheUser("Administrators") (0.1s)
+#12: Then I am returned the list of teams for the user
+-&gt; #12: done: TeamStepDefinitions.ThenIAmReturnedTheListOfTeamsForTheUser() (0.0s)
+#12: And the list does not contain the team 'Administrators'
+-&gt; #12: done: TeamStepDefinitions.ThenTheListDoesNotContainTheTeam("Administrators") (0.0s)
+#12: When I attempt to unassign the 'Administrators' team from the user
+-&gt; #12: done: TeamStepDefinitions.WhenIAttemptToUnassignTheTeamFromTheUser("Administrators") (0.1s)
+#12: Then I am returned the list of teams for the user
+-&gt; #12: done: TeamStepDefinitions.ThenIAmReturnedTheListOfTeamsForTheUser() (0.0s)
+#12: And the list does not contain the team 'Administrators'
+-&gt; #12: done: TeamStepDefinitions.ThenTheListDoesNotContainTheTeam("Administrators") (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="027f6042-f103-4ee6-b24e-a6e644b72419" testId="85fedc7e-20be-6fab-8e79-acf72a61685b" testName="UsersCanBeAssignedToTeamsMultipleTimesWithoutIllEffects" computerName="testsrunner-job-fc962" duration="00:00:01.3145825" startTime="2020-01-09T14:05:43.9251732+00:00" endTime="2020-01-09T14:05:45.2399265+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="027f6042-f103-4ee6-b24e-a6e644b72419">
+      <Output>
+        <StdOut>#14: Given I have a tenancy
+-&gt; #14: done: TenancySetupSteps.GivenIHaveATenancy() (0.0s)
+#14: And I am logged-in to the tenancy as an administrator
+-&gt; #14: done: TeamStepDefinitions.GivenIAmLogged_InToTheTenancyAsAnAdministrator() (0.0s)
+#14: And a root team named 'Administrators' exists
+-&gt; #14: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Administrators") (0.0s)
+#14: Given there is a user with a username of 'john@mailinator.com'</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="da11fcc0-3a20-45b3-97f5-8417ef09c7d9" testId="9b6f8cc8-620f-3ea1-fe4e-8d110553eeca" testName="UpdateUsersSuccess" computerName="testsrunner-job-fc962" duration="00:00:00.2519533" startTime="2020-01-09T14:05:46.2586406+00:00" endTime="2020-01-09T14:05:46.5107538+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="da11fcc0-3a20-45b3-97f5-8417ef09c7d9">
+      <Output>
+        <StdOut>-&gt; #14: done: TeamStepDefinitions.GivenThereIsAUserWithAUsernameOf("kevin@mailinator.com") (1.1s)
+#14: And there is a user with a username of 'liam@mailinator.com'</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="f134943e-529f-4278-8ca0-5eeacfb4531c" testId="64d406ff-3f7e-ab4c-4eee-76424d9fe80c" testName="RegisterUserReturnsAcceptedForNewUserName" computerName="testsrunner-job-fc962" duration="00:00:00.2610462" startTime="2020-01-09T14:05:46.5185997+00:00" endTime="2020-01-09T14:05:46.7798032+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f134943e-529f-4278-8ca0-5eeacfb4531c" />
+    <UnitTestResult executionId="336d2938-c988-449e-9b1f-ca6191c30d35" testId="964198b5-db34-df7d-731d-0b2d4f0b953f" testName="GetUserInternalAcceptsTenantId" computerName="testsrunner-job-fc962" duration="00:00:00.0162867" startTime="2020-01-09T14:05:45.7140340+00:00" endTime="2020-01-09T14:05:45.7305198+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="336d2938-c988-449e-9b1f-ca6191c30d35" />
+    <UnitTestResult executionId="daf12c41-ba9c-4cf9-aeb9-2d210db8040c" testId="e308f652-0a2b-65d1-c405-5ae891237476" testName="CreateSubFolderDeniesAccessWithUnauthorizedToken" computerName="testsrunner-job-fc962" startTime="2020-01-09T14:05:43.6290897+00:00" endTime="2020-01-09T14:05:43.6291400+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="daf12c41-ba9c-4cf9-aeb9-2d210db8040c">
+      <Output>
+        <ErrorInfo>
+          <Message>API for folders is changing</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="07210f90-d928-4880-96fa-bf2e5550f82e" testId="8ba01b53-7f69-3ede-db9a-00221c20ecd4" testName="GetUsersReturnsListOfUsersForTenancyInToken" computerName="testsrunner-job-fc962" duration="00:00:00.5197728" startTime="2020-01-09T14:05:44.3048066+00:00" endTime="2020-01-09T14:05:44.8247419+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="07210f90-d928-4880-96fa-bf2e5550f82e">
+      <Output>
+        <StdOut>-&gt; #12: done: TeamStepDefinitions.GivenThereIsAUserWithAUsernameOf("chris@mailinator.com") (1.1s)
+#12: When I attempt to assign the following teams to the user:
+  --- table step argument ---
+  | team     |
+  | Oldham   |
+  | Rochdale |
+  | Shaw     |
+  | Milnrow  |
+  | Royton   |
+-&gt; #12: done: TeamStepDefinitions.WhenIAttemptToAssignTheFollowingTeamsToTheUser(&lt;table&gt;) (0.1s)
+#12: Then I am returned the list of teams for the user
+-&gt; #12: done: TeamStepDefinitions.ThenIAmReturnedTheListOfTeamsForTheUser() (0.0s)
+#12: And the list contains the team 'Oldham'
+-&gt; #12: done: TeamStepDefinitions.ThenTheListContainsTheTeam("Oldham") (0.0s)
+#12: And the list contains the team 'Rochdale'
+-&gt; #12: done: TeamStepDefinitions.ThenTheListContainsTheTeam("Rochdale") (0.0s)
+#12: And the list contains the team 'Shaw'
+-&gt; #12: done: TeamStepDefinitions.ThenTheListContainsTheTeam("Shaw") (0.0s)
+#12: And the list contains the team 'Milnrow'
+-&gt; #12: done: TeamStepDefinitions.ThenTheListContainsTheTeam("Milnrow") (0.0s)
+#12: And the list contains the team 'Royton'
+-&gt; #12: done: TeamStepDefinitions.ThenTheListContainsTheTeam("Royton") (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d9a74ef1-f5cc-481b-b2fe-2a53605a3171" testId="181b4a99-1522-0911-f5f3-3ec90d0c6a13" testName="GetUserNeedsToken" computerName="testsrunner-job-fc962" duration="00:00:00.0063311" startTime="2020-01-09T14:05:43.8254429+00:00" endTime="2020-01-09T14:05:43.8319537+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d9a74ef1-f5cc-481b-b2fe-2a53605a3171" />
+    <UnitTestResult executionId="04a855c4-d8d3-4d76-bb07-60378b84a779" testId="7aa4adba-a59f-1037-8e2d-7b40e7f7c57f" testName="GetUserUsesToken" computerName="testsrunner-job-fc962" duration="00:00:00.4652260" startTime="2020-01-09T14:05:43.8319747+00:00" endTime="2020-01-09T14:05:44.2973545+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="04a855c4-d8d3-4d76-bb07-60378b84a779">
+      <Output>
+        <StdOut>-&gt; #14: done: TeamStepDefinitions.WhenIAttemptToAssignTheUserToTheTeam("Administrators") (0.1s)
+#14: Then I am returned the list of users in the team
+-&gt; #14: done: TeamStepDefinitions.ThenIAmReturnedTheListOfUsersInTheTeam() (0.0s)
+#14: And the list contains the user 'ian@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.ThenTheListContainsTheUser("ian@mailinator.com") (0.0s)
+#14: When I attempt to assign the user to the 'multiple teams test' team
+-&gt; #14: done: TeamStepDefinitions.WhenIAttemptToAssignTheUserToTheTeam("multiple teams test") (0.1s)
+#14: Then I am returned the list of users in the team
+-&gt; #14: done: TeamStepDefinitions.ThenIAmReturnedTheListOfUsersInTheTeam() (0.0s)
+#14: And the list contains the user 'ian@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.ThenTheListContainsTheUser("ian@mailinator.com") (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="2579c7b5-0d74-4e8f-9c00-5bcba9204ad7" testId="37e3cc09-e7c6-a3e6-d7b4-9adb83408651" testName="TheUserCannotDisableAnotherUserBySpecifyingInvalidDetails" computerName="testsrunner-job-fc962" duration="00:00:00.0102725" startTime="2020-01-09T14:05:40.0482585+00:00" endTime="2020-01-09T14:05:40.0587024+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="2579c7b5-0d74-4e8f-9c00-5bcba9204ad7">
+      <Output>
+        <StdOut>#13: Given there is a tenancy
+-&gt; #13: done: TenancySetupSteps.GivenIHaveATenancy() (0.0s)
+#13: When the user attempts to disable another user by specifying invalid details:
+  --- table step argument ---
+  | invalid details |
+  | empty username  |
+  | empty tenant id |
+-&gt; #13: done: UpdatingUserAccountStatusSteps.WhenTheUserAttemptsToDisableAnotherUserBySpecifyingInvalidDetails(&lt;table&gt;) (0.0s)
+#13: Then the user receives an error indicating that the details were invalid
+-&gt; #13: done: UpdatingUserAccountStatusSteps.ThenTheUserReceivesAnErrorIndicatingThatTheDetailsWereInvalid() (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5cd51a35-4e77-4c37-968d-66c917e3d3cc" testId="d9cf3626-3f38-d779-a199-61945409fd07" testName="MultipleTeamsCanBeAssignedToAUserAtOnce" computerName="testsrunner-job-fc962" duration="00:00:01.5719678" startTime="2020-01-09T14:05:42.9260549+00:00" endTime="2020-01-09T14:05:44.4981952+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5cd51a35-4e77-4c37-968d-66c917e3d3cc">
+      <Output>
+        <StdOut>#12: Given I have a tenancy
+-&gt; #12: done: TenancySetupSteps.GivenIHaveATenancy() (0.0s)
+#12: And I am logged-in to the tenancy as an administrator
+-&gt; #12: done: TeamStepDefinitions.GivenIAmLogged_InToTheTenancyAsAnAdministrator() (0.0s)
+#12: And a root team named 'Administrators' exists
+-&gt; #12: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Administrators") (0.0s)
+#12: Given a root team named 'Oldham' exists
+-&gt; #12: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Oldham") (0.1s)
+#12: Given a root team named 'Rochdale' exists
+-&gt; #12: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Rochdale") (0.1s)
+#12: Given a root team named 'Shaw' exists
+-&gt; #12: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Shaw") (0.1s)
+#12: Given a root team named 'Milnrow' exists
+-&gt; #12: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Milnrow") (0.1s)
+#12: Given a root team named 'Royton' exists
+-&gt; #12: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Royton") (0.1s)
+#12: And there is a user with a username of 'chris@mailinator.com'</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="46e86005-e5bd-43a6-bb65-5e570b706823" testId="a8a96b38-2581-e5b3-8d4c-3a96c81089af" testName="RegisterUserDeniesAccessWithoutAccessToken" computerName="testsrunner-job-fc962" duration="00:00:00.0075540" startTime="2020-01-09T14:05:46.5108132+00:00" endTime="2020-01-09T14:05:46.5185383+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="46e86005-e5bd-43a6-bb65-5e570b706823" />
+    <UnitTestResult executionId="9ac4d785-443e-4bd4-9467-45c88ff175db" testId="c3fda9dd-f7cc-9233-0ca5-47bd39e2cd3e" testName="UpdateUsersDeniesAccessWithoutToken" computerName="testsrunner-job-fc962" duration="00:00:00.0093732" startTime="2020-01-09T14:05:45.7572008+00:00" endTime="2020-01-09T14:05:45.7667259+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="9ac4d785-443e-4bd4-9467-45c88ff175db" />
+    <UnitTestResult executionId="1deede32-6afe-41fe-948a-36ca62af0304" testId="4b45a854-e63d-2889-d083-1783b3cdb714" testName="UsersCanBeAssignedToTeams" computerName="testsrunner-job-fc962" duration="00:00:03.0111763" startTime="2020-01-09T14:04:57.3882064+00:00" endTime="2020-01-09T14:05:41.5912862+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1deede32-6afe-41fe-948a-36ca62af0304">
+      <Output>
+        <StdOut>#13: Given there is a tenancy
+#14: Given I have a tenancy
+#12: Given I have a tenancy
+-&gt; #12: done: TenancySetupSteps.GivenIHaveATenancy() (0.8s)
+-&gt; #13: done: TenancySetupSteps.GivenIHaveATenancy() (0.8s)
+-&gt; #14: done: TenancySetupSteps.GivenIHaveATenancy() (0.8s)
+#13: Given there is a disabled user 'dave_wheels@mailinator.com'
+#12: And I am logged-in to the tenancy as an administrator
+#14: And I am logged-in to the tenancy as an administrator
+-&gt; #12: done: TeamStepDefinitions.GivenIAmLogged_InToTheTenancyAsAnAdministrator() (0.5s)
+-&gt; #14: done: TeamStepDefinitions.GivenIAmLogged_InToTheTenancyAsAnAdministrator() (0.5s)
+#14: And a root team named 'Administrators' exists
+#12: And a root team named 'Administrators' exists
+-&gt; #13: done: UpdatingUserAccountStatusSteps.GivenThereIsADisabledUser("dave_wheels@maili...") (0.5s)
+#13: When the user attempts to enable another user 'dave_wheels@mailinator.com'
+-&gt; #12: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Administrators") (0.0s)
+-&gt; #14: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Administrators") (0.0s)
+#12: Given there is a user with a username of 'alan@mailinator.com'
+#14: Given there is a user with a username of 'harry@mailinator.com'
+-&gt; #13: done: UpdatingUserAccountStatusSteps.WhenTheUserAttemptsToEnableAnotherUser("dave_wheels@maili...") (0.0s)
+#13: Then the user receives the details of another user 'dave_wheels@mailinator.com'
+-&gt; #13: done: UpdatingUserAccountStatusSteps.ThenTheUserReceivesTheDetailsOfAnotherUser("dave_wheels@maili...") (0.0s)
+#13: And the user 'dave_wheels@mailinator.com' is enabled
+-&gt; #13: done: UpdatingUserAccountStatusSteps.ThenTheUserIsEnabled("dave_wheels@maili...") (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="032e622f-4439-4022-b96b-af51419ad20c" testId="fc3f7301-82b8-0216-5862-940a111ef642" testName="TheUserCanEnableAnotherUser" computerName="testsrunner-job-fc962" duration="00:00:01.4176580" startTime="2020-01-09T14:04:57.3882003+00:00" endTime="2020-01-09T14:05:39.9998555+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="032e622f-4439-4022-b96b-af51419ad20c" />
+    <UnitTestResult executionId="6228135d-a595-4ad5-8e99-0156c89b0646" testId="8e7e9fe0-709c-f7ec-292a-e52d8e31220e" testName="CreateAndDeleteTenantAllowsAnonymousAccess" computerName="testsrunner-job-fc962" duration="00:00:00.0916715" startTime="2020-01-09T14:05:43.6449813+00:00" endTime="2020-01-09T14:05:43.7368334+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6228135d-a595-4ad5-8e99-0156c89b0646" />
+    <UnitTestResult executionId="f2a8c6b4-59a4-4ad9-8f91-ce585d71f1a0" testId="fe538c95-09c3-9a6b-69d0-290d2c30e943" testName="GetFoldersDeniesAccessWithoutToken" computerName="testsrunner-job-fc962" startTime="2020-01-09T14:05:43.6283719+00:00" endTime="2020-01-09T14:05:43.6288704+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f2a8c6b4-59a4-4ad9-8f91-ce585d71f1a0">
+      <Output>
+        <ErrorInfo>
+          <Message>API for folders is changing</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="5b120832-07eb-424f-ab61-291d2bea8a5e" testId="03fc6d28-55ee-cf3e-f90d-c363180cc814" testName="MultipleTeamsCanBeUnassignedFromAUserAtOnce" computerName="testsrunner-job-fc962" duration="00:00:01.6823446" startTime="2020-01-09T14:05:47.1786328+00:00" endTime="2020-01-09T14:05:48.8611439+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="5b120832-07eb-424f-ab61-291d2bea8a5e">
+      <Output>
+        <StdOut>#12: Given I have a tenancy
+-&gt; #12: done: TenancySetupSteps.GivenIHaveATenancy() (0.0s)
+#12: And I am logged-in to the tenancy as an administrator
+-&gt; #12: done: TeamStepDefinitions.GivenIAmLogged_InToTheTenancyAsAnAdministrator() (0.0s)
+#12: And a root team named 'Administrators' exists
+-&gt; #12: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Administrators") (0.0s)
+#12: Given a root team named 'Bangor' exists
+-&gt; #12: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Bangor") (0.1s)
+#12: And a root team named 'Llanrug' exists
+-&gt; #12: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Llanrug") (0.1s)
+#12: And a root team named 'Rhyl' exists</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="fd748512-223b-4a14-b74e-1092591a5611" testId="31fdb4aa-e6f8-19be-daf1-0e0bd5109c3f" testName="CreateTeamHierarchyAndGet" computerName="testsrunner-job-fc962" duration="00:00:00.3042511" startTime="2020-01-09T14:05:48.4870580+00:00" endTime="2020-01-09T14:05:48.7914916+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fd748512-223b-4a14-b74e-1092591a5611">
+      <Output>
+        <StdOut>-&gt; #14: done: TeamStepDefinitions.GivenThereIsAUserWithAUsernameOf("mike@mailinator.com") (1.1s)
+#14: When I attempt to assign these users to the 'Administrators' team
+-&gt; #14: done: TeamStepDefinitions.WhenIAttemptToAssignTheseUsersToTheTeam("Administrators") (0.1s)
+#14: Then I am returned the list of users in the team
+-&gt; #14: done: TeamStepDefinitions.ThenIAmReturnedTheListOfUsersInTheTeam() (0.0s)
+#14: And the list contains the user 'kevin@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.ThenTheListContainsTheUser("kevin@mailinator.com") (0.0s)
+#14: And the list contains the user 'liam@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.ThenTheListContainsTheUser("liam@mailinator.com") (0.0s)
+#14: And the list contains the user 'mike@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.ThenTheListContainsTheUser("mike@mailinator.com") (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ded5772f-1a8c-46a7-b785-41a315e2199b" testId="f0c4a46a-51b7-04b5-b6b9-c77ad3715d1d" testName="CreateUserAllowsAnonymousAccess" computerName="testsrunner-job-fc962" duration="00:00:00.0263828" startTime="2020-01-09T14:05:45.7305886+00:00" endTime="2020-01-09T14:05:45.7571365+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ded5772f-1a8c-46a7-b785-41a315e2199b">
+      <Output>
+        <StdOut>-&gt; #12: done: TeamStepDefinitions.GivenThereIsAUserWithAUsernameOf("dave@mailinator.com") (1.1s)
+#12: And the user is a member of the 'Administrators' team</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="d02edf14-65be-4146-ae8f-bc9ca9bb811e" testId="f2e1c5c7-26b0-d94d-b8b0-380b6f922d36" testName="TeamsCanBeAssignedToUsersMultipleTimesWithoutIllEffects" computerName="testsrunner-job-fc962" duration="00:00:01.2667076" startTime="2020-01-09T14:05:41.6590477+00:00" endTime="2020-01-09T14:05:42.9260009+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d02edf14-65be-4146-ae8f-bc9ca9bb811e">
+      <Output>
+        <StdOut>#12: Given I have a tenancy
+-&gt; #12: done: TenancySetupSteps.GivenIHaveATenancy() (0.0s)
+#12: And I am logged-in to the tenancy as an administrator
+-&gt; #12: done: TeamStepDefinitions.GivenIAmLogged_InToTheTenancyAsAnAdministrator() (0.0s)
+#12: And a root team named 'Administrators' exists
+-&gt; #12: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Administrators") (0.0s)
+#12: Given there is a user with a username of 'brian@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("multiple teams test") (0.1s)
+#14: And there is a user with a username of 'ian@mailinator.com'
+-&gt; #12: done: TeamStepDefinitions.GivenThereIsAUserWithAUsernameOf("brian@mailinator.com") (1.1s)
+#12: And a root team named 'Astronauts' exists
+-&gt; #12: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Astronauts") (0.1s)
+#12: When I attempt to assign the 'Astronauts' team to the user
+-&gt; #12: done: TeamStepDefinitions.WhenIAttemptToAssignTheTeamToTheUser("Astronauts") (0.0s)
+#12: Then I am returned the list of teams for the user
+-&gt; #12: done: TeamStepDefinitions.ThenIAmReturnedTheListOfTeamsForTheUser() (0.0s)
+#12: And the list contains the team 'Astronauts'
+-&gt; #12: done: TeamStepDefinitions.ThenTheListContainsTheTeam("Astronauts") (0.0s)
+#12: When I attempt to assign the 'Astronauts' team to the user
+-&gt; #12: done: TeamStepDefinitions.WhenIAttemptToAssignTheTeamToTheUser("Astronauts") (0.0s)
+#12: Then I am returned the list of teams for the user
+-&gt; #12: done: TeamStepDefinitions.ThenIAmReturnedTheListOfTeamsForTheUser() (0.0s)
+#12: And the list contains the team 'Astronauts'
+-&gt; #12: done: TeamStepDefinitions.ThenTheListContainsTheTeam("Astronauts") (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="ce9017e4-b980-4cb6-994d-9625cf6dff6c" testId="64830ddc-089b-89b8-878e-dd13262da1b5" testName="MultipleUsersCanBeUnassignedFromATeamAtOnce" computerName="testsrunner-job-fc962" duration="00:00:03.5301009" startTime="2020-01-09T14:05:52.5721650+00:00" endTime="2020-01-09T14:05:56.1024117+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ce9017e4-b980-4cb6-994d-9625cf6dff6c">
+      <Output>
+        <StdOut>#14: Given I have a tenancy
+-&gt; #14: done: TenancySetupSteps.GivenIHaveATenancy() (0.0s)
+#14: And I am logged-in to the tenancy as an administrator
+-&gt; #14: done: TeamStepDefinitions.GivenIAmLogged_InToTheTenancyAsAnAdministrator() (0.0s)
+#14: And a root team named 'Administrators' exists
+-&gt; #14: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Administrators") (0.1s)
+#14: Given there is a user with a username of 'quentin@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.GivenThereIsAUserWithAUsernameOf("quentin@mailinato...") (1.1s)
+#14: And there is a user with a username of 'robert@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.GivenThereIsAUserWithAUsernameOf("robert@mailinator...") (1.1s)
+#14: And there is a user with a username of 'simon@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.GivenThereIsAUserWithAUsernameOf("simon@mailinator.com") (1.1s)
+#14: And these users are members of the 'Administrators' team
+-&gt; #14: done: TeamStepDefinitions.GivenTheseUsersAreMembersOfTheTeam("Administrators") (0.1s)
+#14: When I attempt to unassign the following users from the 'Administrators' team:
+  --- table step argument ---
+  | user                   |
+  | quentin@mailinator.com |
+  | robert@mailinator.com  |
+-&gt; #14: done: TeamStepDefinitions.WhenIAttemptToUnassignTheFollowingUsersFromTheTeam("Administrators", &lt;table&gt;) (0.1s)
+#14: Then I am returned the list of users in the team
+-&gt; #14: done: TeamStepDefinitions.ThenIAmReturnedTheListOfUsersInTheTeam() (0.0s)
+#14: And the list does not contain the user 'quentin@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.ThenTheListDoesNotContainTheUser("quentin@mailinato...") (0.0s)
+#14: And the list does not contain the user 'robert@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.ThenTheListDoesNotContainTheUser("robert@mailinator...") (0.0s)
+#14: And the list contains the user 'simon@mailinator.com'
+-&gt; #14: done: TeamStepDefinitions.ThenTheListContainsTheUser("simon@mailinator.com") (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="fe110b6c-b5b1-46d1-b8cb-8f07dfd9e6c3" testId="fcdea910-2aba-15f2-615d-2239248c0e9b" testName="CannotCreateDuplicateTeamNameUnderSameParent" computerName="testsrunner-job-fc962" duration="00:00:00.3138217" startTime="2020-01-09T14:05:48.7915623+00:00" endTime="2020-01-09T14:05:49.1055476+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="fe110b6c-b5b1-46d1-b8cb-8f07dfd9e6c3">
+      <Output>
+        <StdOut>-&gt; #12: done: TeamStepDefinitions.WhenIAttemptToRemoveTheFollowingTeamsFromThisUser(&lt;table&gt;) (0.1s)
+#12: Then I am returned the list of teams for the user
+-&gt; #12: done: TeamStepDefinitions.ThenIAmReturnedTheListOfTeamsForTheUser() (0.0s)
+#12: And the list does not contain the team 'Bangor'
+-&gt; #12: done: TeamStepDefinitions.ThenTheListDoesNotContainTheTeam("Bangor") (0.0s)
+#12: And the list does not contain the team 'Llanrug'
+-&gt; #12: done: TeamStepDefinitions.ThenTheListDoesNotContainTheTeam("Llanrug") (0.0s)
+#12: And the list does not contain the team 'Rhyl'
+-&gt; #12: done: TeamStepDefinitions.ThenTheListDoesNotContainTheTeam("Rhyl") (0.0s)
+#12: And the list contains the team 'Conwy'
+-&gt; #12: done: TeamStepDefinitions.ThenTheListContainsTheTeam("Conwy") (0.0s)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="b8bae92a-5cee-4b28-83f2-96f3abe843a8" testId="000e4a4d-12aa-77a3-05f2-fd5fdd8340ee" testName="GetFoldersDeniesAccessWithUnauthorizedToken" computerName="testsrunner-job-fc962" startTime="2020-01-09T14:05:43.6288882+00:00" endTime="2020-01-09T14:05:43.6289713+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="NotExecuted" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b8bae92a-5cee-4b28-83f2-96f3abe843a8">
+      <Output>
+        <ErrorInfo>
+          <Message>API for folders is changing</Message>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="85191b37-eb73-493d-abde-9b7c4e41866e" testId="6790bbc5-15af-83bd-ba8b-1e17d4c30f27" testName="GetTenantAllowsAnonymousAccess" computerName="testsrunner-job-fc962" duration="00:00:00.0156590" startTime="2020-01-09T14:05:43.6291956+00:00" endTime="2020-01-09T14:05:43.6449496+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="85191b37-eb73-493d-abde-9b7c4e41866e" />
+    <UnitTestResult executionId="c190b002-45e1-4f4e-9a57-7c9b17965ad7" testId="99b11089-c326-a788-77ed-a44a13a17ddb" testName="TeamsCanBeUnassignedFromUsers" computerName="testsrunner-job-fc962" duration="00:00:01.2482806" startTime="2020-01-09T14:05:44.6273834+00:00" endTime="2020-01-09T14:05:45.8758520+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c190b002-45e1-4f4e-9a57-7c9b17965ad7">
+      <Output>
+        <StdOut>#12: Given I have a tenancy
+-&gt; #12: done: TenancySetupSteps.GivenIHaveATenancy() (0.0s)
+#12: And I am logged-in to the tenancy as an administrator
+-&gt; #12: done: TeamStepDefinitions.GivenIAmLogged_InToTheTenancyAsAnAdministrator() (0.0s)
+#12: And a root team named 'Administrators' exists
+-&gt; #12: done: TeamStepDefinitions.GivenARootTeamNamedAlreadyExists("Administrators") (0.0s)
+#12: Given there is a user with a username of 'dave@mailinator.com'</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="c3422ca6-a854-494a-80fb-af0b999c976d" testId="66483841-ef53-c72a-f65a-482f7e580bf8" testName="GetUsersNeedsToken" computerName="testsrunner-job-fc962" duration="00:00:00.0071417" startTime="2020-01-09T14:05:44.2974261+00:00" endTime="2020-01-09T14:05:44.3047560+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="c3422ca6-a854-494a-80fb-af0b999c976d" />
+    <UnitTestResult executionId="64811700-8ee8-483a-a14f-d88c443718c5" testId="4ad6ce50-fcac-9b59-64b7-49eaf9ef6714" testName="GetUsersIsPaginated" computerName="testsrunner-job-fc962" duration="00:00:00.3130855" startTime="2020-01-09T14:05:44.8247789+00:00" endTime="2020-01-09T14:05:45.1381244+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="64811700-8ee8-483a-a14f-d88c443718c5">
+      <Output>
+        <StdOut>-&gt; #14: done: TeamStepDefinitions.GivenThereIsAUserWithAUsernameOf("john@mailinator.com") (1.1s)
+#14: When I attempt to assign the user to the 'Administrators' team</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="caf3d764-818e-497f-9eda-6a2d8cbd8945" testId="7172c136-5404-5007-440c-96a901be8549" testName="GetUsersWithOffsetGreaterThanNumberOfUsersReturnsEmptyList" computerName="testsrunner-job-fc962" duration="00:00:00.3043340" startTime="2020-01-09T14:05:45.4094395+00:00" endTime="2020-01-09T14:05:45.7139642+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="caf3d764-818e-497f-9eda-6a2d8cbd8945" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="GetUsersNeedsToken" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="66483841-ef53-c72a-f65a-482f7e580bf8">
+      <Execution id="c3422ca6-a854-494a-80fb-af0b999c976d" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="GetUsersNeedsToken" />
+    </UnitTest>
+    <UnitTest name="UsersCanBeQueriedForTheTeamsTheyAreMembersOf" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="bb26529b-5bb6-482d-6da5-d8a6604f4fa4">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-teamOperations" />
+      </TestCategory>
+      <Execution id="503330ea-5ee0-44b2-adec-6ec7bc0da8b2" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.APITests.TeamToUserAPIOperationsFeature" name="UsersCanBeQueriedForTheTeamsTheyAreMembersOf" />
+    </UnitTest>
+    <UnitTest name="UpdateUserIdentityUpdatesUserPropertiesCorrectly" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="4ea901a7-0d4a-ec8e-538a-303182f82cdd">
+      <Execution id="c7c639b0-a9b5-4f51-86f9-b8fda881e176" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="UpdateUserIdentityUpdatesUserPropertiesCorrectly" />
+    </UnitTest>
+    <UnitTest name="UpdateUserIdentityReturnsNotFoundForUnknownUser" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="419268b4-02d7-1ace-a28a-59f1034c20e6">
+      <Execution id="6c90df56-39a5-473a-892a-9b5d8f4aabd4" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="UpdateUserIdentityReturnsNotFoundForUnknownUser" />
+    </UnitTest>
+    <UnitTest name="GetFoldersDeniesAccessWithUnauthorizedToken" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="000e4a4d-12aa-77a3-05f2-fd5fdd8340ee">
+      <Execution id="b8bae92a-5cee-4b28-83f2-96f3abe843a8" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="GetFoldersDeniesAccessWithUnauthorizedToken" />
+    </UnitTest>
+    <UnitTest name="GetUserNeedsToken" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="181b4a99-1522-0911-f5f3-3ec90d0c6a13">
+      <Execution id="d9a74ef1-f5cc-481b-b2fe-2a53605a3171" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="GetUserNeedsToken" />
+    </UnitTest>
+    <UnitTest name="MultipleUsersCanBeUnassignedFromATeamAtOnce" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="64830ddc-089b-89b8-878e-dd13262da1b5">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-teamOperations" />
+      </TestCategory>
+      <Execution id="ce9017e4-b980-4cb6-994d-9625cf6dff6c" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.APITests.UserToTeamAPIOperationsFeature" name="MultipleUsersCanBeUnassignedFromATeamAtOnce" />
+    </UnitTest>
+    <UnitTest name="UpdateUsersDeniesAccessWithoutToken" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="c3fda9dd-f7cc-9233-0ca5-47bd39e2cd3e">
+      <Execution id="9ac4d785-443e-4bd4-9467-45c88ff175db" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="UpdateUsersDeniesAccessWithoutToken" />
+    </UnitTest>
+    <UnitTest name="RegisterUserReturnsAcceptedForNewUserName" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="64d406ff-3f7e-ab4c-4eee-76424d9fe80c">
+      <Execution id="f134943e-529f-4278-8ca0-5eeacfb4531c" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="RegisterUserReturnsAcceptedForNewUserName" />
+    </UnitTest>
+    <UnitTest name="RegisterUserDeniesAccessWithoutAccessToken" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="a8a96b38-2581-e5b3-8d4c-3a96c81089af">
+      <Execution id="46e86005-e5bd-43a6-bb65-5e570b706823" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="RegisterUserDeniesAccessWithoutAccessToken" />
+    </UnitTest>
+    <UnitTest name="RegisterUserReturnsConflictIfUserNameAlreadyExists" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="b4570d8c-2ad9-972d-3ae0-cfb2f84a221e">
+      <Execution id="324b2135-43a9-4a58-8c0e-7f86ac58fcd4" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="RegisterUserReturnsConflictIfUserNameAlreadyExists" />
+    </UnitTest>
+    <UnitTest name="TheUserCanDisableAnotherUser" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="23dd3da5-4375-6eb2-cec6-81884631038a">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-teamOperations" />
+      </TestCategory>
+      <Execution id="58143f38-7393-4712-80cc-7b4f345ba48c" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.APITests.UpdatingUserAccountStatusFeature" name="TheUserCanDisableAnotherUser" />
+    </UnitTest>
+    <UnitTest name="CreateSubFolderDeniesAccessWithUnauthorizedToken" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="e308f652-0a2b-65d1-c405-5ae891237476">
+      <Execution id="daf12c41-ba9c-4cf9-aeb9-2d210db8040c" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="CreateSubFolderDeniesAccessWithUnauthorizedToken" />
+    </UnitTest>
+    <UnitTest name="MultipleUsersCanBeAssignedToATeamAtOnce" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="2d864662-20bc-73d6-aae1-ea709db23550">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-teamOperations" />
+      </TestCategory>
+      <Execution id="efac8628-7660-4a82-96ee-fce6912751ec" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.APITests.UserToTeamAPIOperationsFeature" name="MultipleUsersCanBeAssignedToATeamAtOnce" />
+    </UnitTest>
+    <UnitTest name="GetFoldersListsFolders" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="d7d97caa-a8ab-b2f6-cdee-d08b8dfcf3c8">
+      <Execution id="e9cd2a29-f3ad-4e04-8380-15fe3aba0634" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="GetFoldersListsFolders" />
+    </UnitTest>
+    <UnitTest name="CreateSubFolderDeniesAccessWithoutToken" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="62b9053b-e7a9-ffab-552e-c8393cfb24fc">
+      <Execution id="bd3187cf-3641-4083-8012-6a993f8ca99f" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="CreateSubFolderDeniesAccessWithoutToken" />
+    </UnitTest>
+    <UnitTest name="UsersCanBeAssignedToMultipleTeams" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="f617b441-f2d4-955e-e3a2-a70328d6a501">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-teamOperations" />
+      </TestCategory>
+      <Execution id="2856bd1c-4f28-48e1-8f02-44bf48e165e5" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.APITests.UserToTeamAPIOperationsFeature" name="UsersCanBeAssignedToMultipleTeams" />
+    </UnitTest>
+    <UnitTest name="CannotCreateDuplicateTeamNameUnderSameParent" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="fcdea910-2aba-15f2-615d-2239248c0e9b">
+      <Execution id="fe110b6c-b5b1-46d1-b8cb-8f07dfd9e6c3" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="CannotCreateDuplicateTeamNameUnderSameParent" />
+    </UnitTest>
+    <UnitTest name="CreateUserAllowsAnonymousAccess" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="f0c4a46a-51b7-04b5-b6b9-c77ad3715d1d">
+      <Execution id="ded5772f-1a8c-46a7-b785-41a315e2199b" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="CreateUserAllowsAnonymousAccess" />
+    </UnitTest>
+    <UnitTest name="CreateAndDeleteTenantAllowsAnonymousAccess" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="8e7e9fe0-709c-f7ec-292a-e52d8e31220e">
+      <Execution id="6228135d-a595-4ad5-8e99-0156c89b0646" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="CreateAndDeleteTenantAllowsAnonymousAccess" />
+    </UnitTest>
+    <UnitTest name="UpdateUsersReturnsNotFound" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="65b9b250-e57f-5820-1dd8-d21364559e1e">
+      <Execution id="1217563c-3e12-498a-b180-2a5c7da5ade9" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="UpdateUsersReturnsNotFound" />
+    </UnitTest>
+    <UnitTest name="MultipleTeamsCanBeAssignedToAUserAtOnce" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="d9cf3626-3f38-d779-a199-61945409fd07">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-teamOperations" />
+      </TestCategory>
+      <Execution id="5cd51a35-4e77-4c37-968d-66c917e3d3cc" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.APITests.TeamToUserAPIOperationsFeature" name="MultipleTeamsCanBeAssignedToAUserAtOnce" />
+    </UnitTest>
+    <UnitTest name="UsersCanBeAssignedToTeams" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="4b45a854-e63d-2889-d083-1783b3cdb714">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-teamOperations" />
+      </TestCategory>
+      <Execution id="1deede32-6afe-41fe-948a-36ca62af0304" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.APITests.UserToTeamAPIOperationsFeature" name="UsersCanBeAssignedToTeams" />
+    </UnitTest>
+    <UnitTest name="CreateRootTeam" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="6e7db232-3116-8abf-40f3-0393faab208c">
+      <Execution id="d94b3668-2016-4bc9-ab38-b88ea8ac742d" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="CreateRootTeam" />
+    </UnitTest>
+    <UnitTest name="GetFoldersDeniesAccessWithoutToken" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="fe538c95-09c3-9a6b-69d0-290d2c30e943">
+      <Execution id="f2a8c6b4-59a4-4ad9-8f91-ce585d71f1a0" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="GetFoldersDeniesAccessWithoutToken" />
+    </UnitTest>
+    <UnitTest name="CreateTeamHierarchyAndGet" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="31fdb4aa-e6f8-19be-daf1-0e0bd5109c3f">
+      <Execution id="fd748512-223b-4a14-b74e-1092591a5611" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="CreateTeamHierarchyAndGet" />
+    </UnitTest>
+    <UnitTest name="TeamsCanBeAssignedToUsers" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="7e4bd8f6-1a56-9dac-963f-043f03b0c5fa">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-teamOperations" />
+      </TestCategory>
+      <Execution id="98ca5656-5db4-46c6-8e5b-3c139c8c11f5" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.APITests.TeamToUserAPIOperationsFeature" name="TeamsCanBeAssignedToUsers" />
+    </UnitTest>
+    <UnitTest name="GetUserInternalAcceptsTenantId" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="964198b5-db34-df7d-731d-0b2d4f0b953f">
+      <Execution id="336d2938-c988-449e-9b1f-ca6191c30d35" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="GetUserInternalAcceptsTenantId" />
+    </UnitTest>
+    <UnitTest name="UsersCanBeUnassignedFromTeamsMultipleTimes" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="e27c20f3-7b23-39c4-162a-1bca05c6379d">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-teamOperations" />
+      </TestCategory>
+      <Execution id="dfb70ec9-3461-41ec-b543-28a9471e1dd3" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.APITests.UserToTeamAPIOperationsFeature" name="UsersCanBeUnassignedFromTeamsMultipleTimes" />
+    </UnitTest>
+    <UnitTest name="MultipleTeamsCanBeUnassignedFromAUserAtOnce" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="03fc6d28-55ee-cf3e-f90d-c363180cc814">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-teamOperations" />
+      </TestCategory>
+      <Execution id="5b120832-07eb-424f-ab61-291d2bea8a5e" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.APITests.TeamToUserAPIOperationsFeature" name="MultipleTeamsCanBeUnassignedFromAUserAtOnce" />
+    </UnitTest>
+    <UnitTest name="TeamsCanBeUnassignedFromUsers" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="99b11089-c326-a788-77ed-a44a13a17ddb">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-teamOperations" />
+      </TestCategory>
+      <Execution id="c190b002-45e1-4f4e-9a57-7c9b17965ad7" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.APITests.TeamToUserAPIOperationsFeature" name="TeamsCanBeUnassignedFromUsers" />
+    </UnitTest>
+    <UnitTest name="CreateTeamAndGet" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="ed2f71a1-01c3-4916-0894-a3b3fb8c1ac9">
+      <Execution id="f87c7dd5-13b0-4c64-9fea-a93527641e0b" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="CreateTeamAndGet" />
+    </UnitTest>
+    <UnitTest name="UpdateUsersDeniesAccessWithoutValidToken" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="a499002e-f196-4bec-d98a-1a821f195833">
+      <Execution id="ef75a90d-5457-4dab-a839-9d41d67f5d5d" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="UpdateUsersDeniesAccessWithoutValidToken" />
+    </UnitTest>
+    <UnitTest name="TeamsCannotBeAssignedToNon_ExistentUsers" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="8e8d8d64-7547-8b65-cd53-79513fcf341b">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-teamOperations" />
+      </TestCategory>
+      <Execution id="a0dba93d-b9e1-4b15-bb61-7384efe46a03" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.APITests.TeamToUserAPIOperationsFeature" name="TeamsCannotBeAssignedToNon_ExistentUsers" />
+    </UnitTest>
+    <UnitTest name="VerifyComplianceASHealthEndpoint" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="20258ef0-1c9c-384c-d23d-dd5d9e46559d">
+      <Execution id="6fca9fd9-af15-4145-820e-006c7b906398" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="VerifyComplianceASHealthEndpoint" />
+    </UnitTest>
+    <UnitTest name="TheUserCannotEnableAnotherUserBySpecifyingInvalidDetails" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="464dc4ae-1ed5-26e9-f21e-c7b9ca40b3df">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-teamOperations" />
+      </TestCategory>
+      <Execution id="79f6cd9e-35c7-4528-940f-aa8d0a66703e" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.APITests.UpdatingUserAccountStatusFeature" name="TheUserCannotEnableAnotherUserBySpecifyingInvalidDetails" />
+    </UnitTest>
+    <UnitTest name="UsersCannotBeAssignedToNon_ExistentTeams" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="a3843a5d-27b4-6077-9af5-e2ae0c2cd42a">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-teamOperations" />
+      </TestCategory>
+      <Execution id="6fcf7798-7eb8-497e-aa17-c711f5d31ad4" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.APITests.UserToTeamAPIOperationsFeature" name="UsersCannotBeAssignedToNon_ExistentTeams" />
+    </UnitTest>
+    <UnitTest name="TeamsCanBeUnassignedFromUsersMultipleTimes" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="438bbb67-061d-764b-ca3b-67bdd035dad9">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-teamOperations" />
+      </TestCategory>
+      <Execution id="0a3e4338-7fae-44d2-9bdb-882d1fd6dfd2" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.APITests.TeamToUserAPIOperationsFeature" name="TeamsCanBeUnassignedFromUsersMultipleTimes" />
+    </UnitTest>
+    <UnitTest name="RegisterAndUpdateTenantAllowsAnonymousAccess" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="642fe07b-2bbc-3968-a42e-d7e05c3ae5bf">
+      <Execution id="90be094f-d212-4092-8700-e4eda997ac72" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="RegisterAndUpdateTenantAllowsAnonymousAccess" />
+    </UnitTest>
+    <UnitTest name="UsersCanBeUnassignedFromTeams" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="4957b4ea-4232-e02e-6cfa-b54e4943400e">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-teamOperations" />
+      </TestCategory>
+      <Execution id="cf4bad5c-8a2c-405f-88cd-402cad83d09b" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.APITests.UserToTeamAPIOperationsFeature" name="UsersCanBeUnassignedFromTeams" />
+    </UnitTest>
+    <UnitTest name="GetUsersIsPaginated" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="4ad6ce50-fcac-9b59-64b7-49eaf9ef6714">
+      <Execution id="64811700-8ee8-483a-a14f-d88c443718c5" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="GetUsersIsPaginated" />
+    </UnitTest>
+    <UnitTest name="GetUsersReturnsOrderedList" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="0e16701b-9a05-9b75-80c9-41177f0fb96c">
+      <Execution id="1929d27c-a19e-433d-8a70-f48966f97ade" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="GetUsersReturnsOrderedList" />
+    </UnitTest>
+    <UnitTest name="TeamsCanBeAssignedToUsersMultipleTimesWithoutIllEffects" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="f2e1c5c7-26b0-d94d-b8b0-380b6f922d36">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-teamOperations" />
+      </TestCategory>
+      <Execution id="d02edf14-65be-4146-ae8f-bc9ca9bb811e" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.APITests.TeamToUserAPIOperationsFeature" name="TeamsCanBeAssignedToUsersMultipleTimesWithoutIllEffects" />
+    </UnitTest>
+    <UnitTest name="GetUsersReturnsListOfUsersForTenancyInToken" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="8ba01b53-7f69-3ede-db9a-00221c20ecd4">
+      <Execution id="07210f90-d928-4880-96fa-bf2e5550f82e" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="GetUsersReturnsListOfUsersForTenancyInToken" />
+    </UnitTest>
+    <UnitTest name="UsersCanBeAssignedToTeamsMultipleTimesWithoutIllEffects" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="85fedc7e-20be-6fab-8e79-acf72a61685b">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-teamOperations" />
+      </TestCategory>
+      <Execution id="027f6042-f103-4ee6-b24e-a6e644b72419" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.APITests.UserToTeamAPIOperationsFeature" name="UsersCanBeAssignedToTeamsMultipleTimesWithoutIllEffects" />
+    </UnitTest>
+    <UnitTest name="TheUserCanEnableAnotherUser" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="fc3f7301-82b8-0216-5862-940a111ef642">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-teamOperations" />
+      </TestCategory>
+      <Execution id="032e622f-4439-4022-b96b-af51419ad20c" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.APITests.UpdatingUserAccountStatusFeature" name="TheUserCanEnableAnotherUser" />
+    </UnitTest>
+    <UnitTest name="CreateSubFolderCreatesASubFolder" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="6eb50f37-ba8e-58e0-cd5f-674cf9d49d03">
+      <Execution id="ec28d85d-baf0-4430-a68b-421f37b738c0" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="CreateSubFolderCreatesASubFolder" />
+    </UnitTest>
+    <UnitTest name="TheUserCannotDisableAnotherUserBySpecifyingInvalidDetails" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="37e3cc09-e7c6-a3e6-d7b4-9adb83408651">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-teamOperations" />
+      </TestCategory>
+      <Execution id="2579c7b5-0d74-4e8f-9c00-5bcba9204ad7" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.APITests.UpdatingUserAccountStatusFeature" name="TheUserCannotDisableAnotherUserBySpecifyingInvalidDetails" />
+    </UnitTest>
+    <UnitTest name="GetTenantAllowsAnonymousAccess" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="6790bbc5-15af-83bd-ba8b-1e17d4c30f27">
+      <Execution id="85191b37-eb73-493d-abde-9b7c4e41866e" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="GetTenantAllowsAnonymousAccess" />
+    </UnitTest>
+    <UnitTest name="UpdateUserIdentitySetsRegisteredUserPropertiesCorrectly" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="6cf22957-19bb-9b2c-20cd-e904ee5c31af">
+      <Execution id="33caf982-a262-4e88-8cc3-d2ed7200b7aa" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="UpdateUserIdentitySetsRegisteredUserPropertiesCorrectly" />
+    </UnitTest>
+    <UnitTest name="UpdateUsersSuccess" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="9b6f8cc8-620f-3ea1-fe4e-8d110553eeca">
+      <Execution id="da11fcc0-3a20-45b3-97f5-8417ef09c7d9" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="UpdateUsersSuccess" />
+    </UnitTest>
+    <UnitTest name="TeamsCanBeQueriedForTheUsersWithinThem" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="453a4f84-95ba-0015-d04c-1acc0a1f5b8c">
+      <TestCategory>
+        <TestCategoryItem TestCategory="shareTenancy-teamOperations" />
+      </TestCategory>
+      <Execution id="aa100b45-7f42-42a5-9c20-2f020c3c7e15" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.APITests.UserToTeamAPIOperationsFeature" name="TeamsCanBeQueriedForTheUsersWithinThem" />
+    </UnitTest>
+    <UnitTest name="GetUsersWithOffsetGreaterThanNumberOfUsersReturnsEmptyList" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="7172c136-5404-5007-440c-96a901be8549">
+      <Execution id="caf3d764-818e-497f-9eda-6a2d8cbd8945" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="GetUsersWithOffsetGreaterThanNumberOfUsersReturnsEmptyList" />
+    </UnitTest>
+    <UnitTest name="GetUserUsesToken" storage="/root/complianceas/bin/release/netcoreapp2.2/complianceas.dll" id="7aa4adba-a59f-1037-8e2d-7b40e7f7c57f">
+      <Execution id="04a855c4-d8d3-4d76-bb07-60378b84a779" />
+      <TestMethod codeBase="/root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll" adapterTypeName="executor://mstestadapter/v2" className="ComplianceAS.ComplianceASTests" name="GetUserUsesToken" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="7e4bd8f6-1a56-9dac-963f-043f03b0c5fa" executionId="98ca5656-5db4-46c6-8e5b-3c139c8c11f5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="419268b4-02d7-1ace-a28a-59f1034c20e6" executionId="6c90df56-39a5-473a-892a-9b5d8f4aabd4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a3843a5d-27b4-6077-9af5-e2ae0c2cd42a" executionId="6fcf7798-7eb8-497e-aa17-c711f5d31ad4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="438bbb67-061d-764b-ca3b-67bdd035dad9" executionId="0a3e4338-7fae-44d2-9bdb-882d1fd6dfd2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0e16701b-9a05-9b75-80c9-41177f0fb96c" executionId="1929d27c-a19e-433d-8a70-f48966f97ade" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bb26529b-5bb6-482d-6da5-d8a6604f4fa4" executionId="503330ea-5ee0-44b2-adec-6ec7bc0da8b2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6eb50f37-ba8e-58e0-cd5f-674cf9d49d03" executionId="ec28d85d-baf0-4430-a68b-421f37b738c0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4957b4ea-4232-e02e-6cfa-b54e4943400e" executionId="cf4bad5c-8a2c-405f-88cd-402cad83d09b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d7d97caa-a8ab-b2f6-cdee-d08b8dfcf3c8" executionId="e9cd2a29-f3ad-4e04-8380-15fe3aba0634" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2d864662-20bc-73d6-aae1-ea709db23550" executionId="efac8628-7660-4a82-96ee-fce6912751ec" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b4570d8c-2ad9-972d-3ae0-cfb2f84a221e" executionId="324b2135-43a9-4a58-8c0e-7f86ac58fcd4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f617b441-f2d4-955e-e3a2-a70328d6a501" executionId="2856bd1c-4f28-48e1-8f02-44bf48e165e5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="23dd3da5-4375-6eb2-cec6-81884631038a" executionId="58143f38-7393-4712-80cc-7b4f345ba48c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4ea901a7-0d4a-ec8e-538a-303182f82cdd" executionId="c7c639b0-a9b5-4f51-86f9-b8fda881e176" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="464dc4ae-1ed5-26e9-f21e-c7b9ca40b3df" executionId="79f6cd9e-35c7-4528-940f-aa8d0a66703e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e27c20f3-7b23-39c4-162a-1bca05c6379d" executionId="dfb70ec9-3461-41ec-b543-28a9471e1dd3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="453a4f84-95ba-0015-d04c-1acc0a1f5b8c" executionId="aa100b45-7f42-42a5-9c20-2f020c3c7e15" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a499002e-f196-4bec-d98a-1a821f195833" executionId="ef75a90d-5457-4dab-a839-9d41d67f5d5d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ed2f71a1-01c3-4916-0894-a3b3fb8c1ac9" executionId="f87c7dd5-13b0-4c64-9fea-a93527641e0b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="642fe07b-2bbc-3968-a42e-d7e05c3ae5bf" executionId="90be094f-d212-4092-8700-e4eda997ac72" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="62b9053b-e7a9-ffab-552e-c8393cfb24fc" executionId="bd3187cf-3641-4083-8012-6a993f8ca99f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="65b9b250-e57f-5820-1dd8-d21364559e1e" executionId="1217563c-3e12-498a-b180-2a5c7da5ade9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8e8d8d64-7547-8b65-cd53-79513fcf341b" executionId="a0dba93d-b9e1-4b15-bb61-7384efe46a03" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6e7db232-3116-8abf-40f3-0393faab208c" executionId="d94b3668-2016-4bc9-ab38-b88ea8ac742d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="20258ef0-1c9c-384c-d23d-dd5d9e46559d" executionId="6fca9fd9-af15-4145-820e-006c7b906398" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6cf22957-19bb-9b2c-20cd-e904ee5c31af" executionId="33caf982-a262-4e88-8cc3-d2ed7200b7aa" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="85fedc7e-20be-6fab-8e79-acf72a61685b" executionId="027f6042-f103-4ee6-b24e-a6e644b72419" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9b6f8cc8-620f-3ea1-fe4e-8d110553eeca" executionId="da11fcc0-3a20-45b3-97f5-8417ef09c7d9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="64d406ff-3f7e-ab4c-4eee-76424d9fe80c" executionId="f134943e-529f-4278-8ca0-5eeacfb4531c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="964198b5-db34-df7d-731d-0b2d4f0b953f" executionId="336d2938-c988-449e-9b1f-ca6191c30d35" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e308f652-0a2b-65d1-c405-5ae891237476" executionId="daf12c41-ba9c-4cf9-aeb9-2d210db8040c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8ba01b53-7f69-3ede-db9a-00221c20ecd4" executionId="07210f90-d928-4880-96fa-bf2e5550f82e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="181b4a99-1522-0911-f5f3-3ec90d0c6a13" executionId="d9a74ef1-f5cc-481b-b2fe-2a53605a3171" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7aa4adba-a59f-1037-8e2d-7b40e7f7c57f" executionId="04a855c4-d8d3-4d76-bb07-60378b84a779" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="37e3cc09-e7c6-a3e6-d7b4-9adb83408651" executionId="2579c7b5-0d74-4e8f-9c00-5bcba9204ad7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="d9cf3626-3f38-d779-a199-61945409fd07" executionId="5cd51a35-4e77-4c37-968d-66c917e3d3cc" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a8a96b38-2581-e5b3-8d4c-3a96c81089af" executionId="46e86005-e5bd-43a6-bb65-5e570b706823" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c3fda9dd-f7cc-9233-0ca5-47bd39e2cd3e" executionId="9ac4d785-443e-4bd4-9467-45c88ff175db" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4b45a854-e63d-2889-d083-1783b3cdb714" executionId="1deede32-6afe-41fe-948a-36ca62af0304" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fc3f7301-82b8-0216-5862-940a111ef642" executionId="032e622f-4439-4022-b96b-af51419ad20c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="8e7e9fe0-709c-f7ec-292a-e52d8e31220e" executionId="6228135d-a595-4ad5-8e99-0156c89b0646" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fe538c95-09c3-9a6b-69d0-290d2c30e943" executionId="f2a8c6b4-59a4-4ad9-8f91-ce585d71f1a0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="03fc6d28-55ee-cf3e-f90d-c363180cc814" executionId="5b120832-07eb-424f-ab61-291d2bea8a5e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="31fdb4aa-e6f8-19be-daf1-0e0bd5109c3f" executionId="fd748512-223b-4a14-b74e-1092591a5611" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f0c4a46a-51b7-04b5-b6b9-c77ad3715d1d" executionId="ded5772f-1a8c-46a7-b785-41a315e2199b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="f2e1c5c7-26b0-d94d-b8b0-380b6f922d36" executionId="d02edf14-65be-4146-ae8f-bc9ca9bb811e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="64830ddc-089b-89b8-878e-dd13262da1b5" executionId="ce9017e4-b980-4cb6-994d-9625cf6dff6c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="fcdea910-2aba-15f2-615d-2239248c0e9b" executionId="fe110b6c-b5b1-46d1-b8cb-8f07dfd9e6c3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="000e4a4d-12aa-77a3-05f2-fd5fdd8340ee" executionId="b8bae92a-5cee-4b28-83f2-96f3abe843a8" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6790bbc5-15af-83bd-ba8b-1e17d4c30f27" executionId="85191b37-eb73-493d-abde-9b7c4e41866e" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="99b11089-c326-a788-77ed-a44a13a17ddb" executionId="c190b002-45e1-4f4e-9a57-7c9b17965ad7" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="66483841-ef53-c72a-f65a-482f7e580bf8" executionId="c3422ca6-a854-494a-80fb-af0b999c976d" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4ad6ce50-fcac-9b59-64b7-49eaf9ef6714" executionId="64811700-8ee8-483a-a14f-d88c443718c5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7172c136-5404-5007-440c-96a901be8549" executionId="caf3d764-818e-497f-9eda-6a2d8cbd8945" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="54" executed="48" passed="48" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>MSTest Executor: Test Parallelization enabled for /root/ComplianceAS/bin/Release/netcoreapp2.2/ComplianceAS.dll (Workers: 4, Scope: ClassLevel).Test 'GetFoldersDeniesAccessWithoutToken' was skipped in the test run.Test 'GetFoldersDeniesAccessWithUnauthorizedToken' was skipped in the test run.Test 'GetFoldersListsFolders' was skipped in the test run.Test 'CreateSubFolderDeniesAccessWithoutToken' was skipped in the test run.Test 'CreateSubFolderDeniesAccessWithUnauthorizedToken' was skipped in the test run.Test 'CreateSubFolderCreatesASubFolder' was skipped in the test run.</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>
