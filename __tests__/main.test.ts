@@ -1,5 +1,7 @@
 import * as core from '@actions/core'
 import {run} from '../src/main'
+import * as path from 'path'
+
 import {
   getAbsoluteFilePaths,
   transformTrxToJson,
@@ -24,8 +26,12 @@ describe('When parsing tests', () => {
 describe('Test GetAbsolutePath returns correct values', () => {
   it('getAbsoluteFilePaths()', async () => {
     const filesNames = ['abc.trx', 'xyz.trx']
-    const dirName = '/root/test-data'
-    const expectedPaths = ['/root/test-data/abc.trx', '/root/test-data/xyz.trx']
+    const dirName = path.normalize('/root/test-data')
+    const expectedPaths = [
+      path.normalize('/root/test-data/abc.trx'),
+      path.normalize('/root/test-data/xyz.trx')
+    ]
+
     const actualPaths = getAbsoluteFilePaths(filesNames, dirName)
     expect(actualPaths).toEqual(expectedPaths)
   })
