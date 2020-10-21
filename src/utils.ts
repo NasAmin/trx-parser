@@ -6,7 +6,7 @@ import * as core from '@actions/core'
 import * as xmlParser from 'fast-xml-parser'
 import * as he from 'he'
 import {promises} from 'fs'
-import {RootObject} from './types/types'
+import {TrxData} from './types/types'
 
 // import {promises as promises} from 'fs'
 
@@ -33,7 +33,7 @@ export function getAbsoluteFilePaths(
   return absolutePaths
 }
 
-export async function loadXmlFile(filePath: string): Promise<RootObject> {
+export async function loadXmlFile(filePath: string): Promise<TrxData> {
   let jsonObj: any
 
   if (fs.existsSync(filePath)) {
@@ -69,7 +69,7 @@ export async function loadXmlFile(filePath: string): Promise<RootObject> {
   return jsonObj
 }
 
-export function validateTrx(trxJson: RootObject): void {
+export function validateTrx(trxJson: TrxData): void {
   const testOutcome = trxJson.TestRun.ResultSummary._outcome
   if (testOutcome === 'Failed') {
     core.setFailed('At least one test failed')

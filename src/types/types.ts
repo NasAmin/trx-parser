@@ -112,6 +112,6 @@ export interface TestRun {
   ResultSummary: ResultSummary
 }
 
-export interface RootObject {
+export interface TrxData {
   TestRun: TestRun
 }
