@@ -1,10 +1,11 @@
-import github from '@actions/github'
+import * as github from '@actions/github'
 import * as core from '@actions/core'
 
 export async function createCheckRun(repoToken: string): Promise<void> {
   try {
+    core.info('Trying to create check')
+    const octokit = github.getOctokit(repoToken)
     if (github.context.eventName === 'pullRequest') {
-      const octokit = github.getOctokit(repoToken)
       const response = await octokit.checks.create({
         owner: github.context.repo.owner,
         repo: github.context.repo.repo,
