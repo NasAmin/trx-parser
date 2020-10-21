@@ -1,5 +1,9 @@
 import * as core from '@actions/core'
-import {getTrxFiles} from './utils'
+import {
+  areThereAnyFailingTests,
+  getTrxFiles,
+  transformAllTrxToJson
+} from './utils'
 
 export async function run(): Promise<void> {
   try {
@@ -10,6 +14,12 @@ export async function run(): Promise<void> {
     core.setOutput('trx-path', trxPath)
 
     const trxFiles = await getTrxFiles(trxPath)
+    const trxToJson = await transformAllTrxToJson(trxFiles)
+    const failingTestsFound = areThereAnyFailingTests(trxToJson)
+
+    if (failingTestsFound) {
+      core.setFailed('Failing tests found')
+    }
 
     core.setOutput('trx-files', trxFiles)
   } catch (error) {

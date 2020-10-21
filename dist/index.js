@@ -174,6 +174,11 @@ function run() {
             core.setOutput('test-outcome', 'Passed');
             core.setOutput('trx-path', trxPath);
             const trxFiles = yield utils_1.getTrxFiles(trxPath);
+            const trxToJson = yield utils_1.transformAllTrxToJson(trxFiles);
+            const failingTestsFound = utils_1.areThereAnyFailingTests(trxToJson);
+            if (failingTestsFound) {
+                core.setFailed('Failing tests found');
+            }
             core.setOutput('trx-files', trxFiles);
         }
         catch (error) {
@@ -2424,7 +2429,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateTrx = exports.loadXmlFile = exports.getAbsoluteFilePaths = exports.getTrxFiles = void 0;
+exports.areThereAnyFailingTests = exports.transformAllTrxToJson = exports.transformTrxToJson = exports.getAbsoluteFilePaths = exports.getTrxFiles = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const fs = __importStar(__webpack_require__(747));
 const path = __importStar(__webpack_require__(622));
@@ -2456,7 +2461,7 @@ function getAbsoluteFilePaths(fileNames, directoryName) {
     return absolutePaths;
 }
 exports.getAbsoluteFilePaths = getAbsoluteFilePaths;
-function loadXmlFile(filePath) {
+function transformTrxToJson(filePath) {
     return __awaiter(this, void 0, void 0, function* () {
         let jsonObj;
         if (fs.existsSync(filePath)) {
@@ -2483,7 +2488,6 @@ function loadXmlFile(filePath) {
             };
             if (xmlParser.validate(xmlData.toString()) === true) {
                 jsonObj = xmlParser.parse(xmlData, options, true);
-                core.info(jsonObj);
             }
         }
         else {
@@ -2492,14 +2496,26 @@ function loadXmlFile(filePath) {
         return jsonObj;
     });
 }
-exports.loadXmlFile = loadXmlFile;
-function validateTrx(trxJson) {
-    const testOutcome = trxJson.TestRun.ResultSummary._outcome;
-    if (testOutcome === 'Failed') {
-        core.setFailed('At least one test failed');
-    }
+exports.transformTrxToJson = transformTrxToJson;
+function transformAllTrxToJson(trxFiles) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const transformedTrxReports = [];
+        for (const trx of trxFiles) {
+            transformedTrxReports.push(yield transformTrxToJson(trx));
+        }
+        return transformedTrxReports;
+    });
 }
-exports.validateTrx = validateTrx;
+exports.transformAllTrxToJson = transformAllTrxToJson;
+function areThereAnyFailingTests(trxJsonReports) {
+    for (const trxData of trxJsonReports) {
+        if (trxData.TestRun.ResultSummary._outcome === 'Failed') {
+            return true;
+        }
+    }
+    return false;
+}
+exports.areThereAnyFailingTests = areThereAnyFailingTests;
 
 
 /***/ })

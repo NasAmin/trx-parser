@@ -33,7 +33,7 @@ export function getAbsoluteFilePaths(
   return absolutePaths
 }
 
-export async function loadXmlFile(filePath: string): Promise<TrxData> {
+export async function transformTrxToJson(filePath: string): Promise<TrxData> {
   let jsonObj: any
 
   if (fs.existsSync(filePath)) {
@@ -61,7 +61,6 @@ export async function loadXmlFile(filePath: string): Promise<TrxData> {
     }
     if (xmlParser.validate(xmlData.toString()) === true) {
       jsonObj = xmlParser.parse(xmlData, options, true)
-      core.info(jsonObj)
     }
   } else {
     core.error('file doesnt exist')
@@ -69,9 +68,22 @@ export async function loadXmlFile(filePath: string): Promise<TrxData> {
   return jsonObj
 }
 
-export function validateTrx(trxJson: TrxData): void {
-  const testOutcome = trxJson.TestRun.ResultSummary._outcome
-  if (testOutcome === 'Failed') {
-    core.setFailed('At least one test failed')
+export async function transformAllTrxToJson(
+  trxFiles: string[]
+): Promise<TrxData[]> {
+  const transformedTrxReports: TrxData[] = []
+  for (const trx of trxFiles) {
+    transformedTrxReports.push(await transformTrxToJson(trx))
   }
+
+  return transformedTrxReports
+}
+
+export function areThereAnyFailingTests(trxJsonReports: TrxData[]): boolean {
+  for (const trxData of trxJsonReports) {
+    if (trxData.TestRun.ResultSummary._outcome === 'Failed') {
+      return true
+    }
+  }
+  return false
 }

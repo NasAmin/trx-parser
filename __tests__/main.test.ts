@@ -1,6 +1,10 @@
 import * as core from '@actions/core'
 import {run} from '../src/main'
-import {getAbsoluteFilePaths, loadXmlFile, validateTrx} from '../src/utils'
+import {
+  getAbsoluteFilePaths,
+  transformTrxToJson,
+  areThereAnyFailingTests
+} from '../src/utils'
 jest.mock('@actions/core')
 
 describe('When parsing tests', () => {
@@ -29,7 +33,7 @@ describe('Test GetAbsolutePath returns correct values', () => {
 
 describe('when loading xml from a trx file', () => {
   test('LoadXml Should have an outcome of Completed()', async () => {
-    var data = await loadXmlFile(
+    var data = await transformTrxToJson(
       './test-data/_staging-tests-tktr8_2020-10-09_13_04_50.trx'
     )
 
@@ -37,6 +41,6 @@ describe('when loading xml from a trx file', () => {
     expect(data.TestRun.ResultSummary.Counters._total).toEqual(4)
     expect(data.TestRun.ResultSummary.Counters._passed).toEqual(4)
     expect(data.TestRun.ResultSummary.Counters._failed).toEqual(0)
-    console.log(JSON.stringify(data))
+    core.debug(JSON.stringify(data))
   })
 })
