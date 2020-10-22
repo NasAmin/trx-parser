@@ -15,15 +15,22 @@ jobs:
     steps:
         - name: Get Source Code
           uses: actions/checkout@v2
-        - name: Run Action
-          id: trx-parser
+        - name: Passing Tests
+          id: passing-tests
           uses: ./
           with:
-            TRX_PATH: ${{ github.workspace }}/test-data
+            TRX_PATH: ${{ github.workspace }}/test-data/passing-tests
+            repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+        - name: Failing tests
+          id: failing-tests
+          uses: ./
+          with:
+            TRX_PATH: ${{ github.workspace }}/test-data/failing-tests
             repo-token: ${{ secrets.GITHUB_TOKEN }}
 
         - name: Print Test Outcome
           run: |
-            echo Outcome is: ${{ steps.trx-parser.outputs.test-outcome }}
-            echo Path is: ${{ steps.trx-parser.outputs.trx-path }}
-            echo trx files: ${{ steps.trx-parser.outputs.trx-files }}
+            echo Outcome is: ${{ steps.passing-tests.outputs.test-outcome }}
+            echo Path is: ${{ steps.passing-tests.outputs.trx-path }}
+            echo trx files: ${{ steps.passing-tests.outputs.trx-files }}
