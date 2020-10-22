@@ -5,7 +5,7 @@
 
 $xslFile = Resolve-Path -Path "$PSScriptRoot\trx2md.xsl"
 $xmlFile = Resolve-Path -Path "$PSScriptRoot\sample-test-results.trx"
-$outFile = Resolve-Path -Path "$PSScriptRoot\sample-test.results.md"
+$outFile = "$PSScriptRoot\sample-test.results.md"
 
 class TrxFn {
     [double]DiffSeconds([datetime]$from, [datetime]$till) {
