@@ -46,5 +46,6 @@ jobs:
             ls
             ls trx-reports
             Write-Output 'Powershell test finished'
+            cat ./trx-report/sample-test.results.md
 
 
