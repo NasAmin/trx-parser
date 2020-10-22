@@ -24,6 +24,8 @@ jobs:
 
         - name: Failing tests
           id: failing-tests
+          # This one is expected to fail
+          continue-on-error: true          
           uses: ./
           with:
             TRX_PATH: ${{ github.workspace }}/test-data/failing-tests
