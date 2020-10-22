@@ -36,3 +36,9 @@ jobs:
             echo Outcome is: ${{ steps.passing-tests.outputs.test-outcome }}
             echo Path is: ${{ steps.passing-tests.outputs.trx-path }}
             echo trx files: ${{ steps.passing-tests.outputs.trx-files }}
+
+        - name: Try powershell
+          shell: pwsh
+          run: |
+            Write-ActionInfo 'Testing on: ${{ matrix.os }}'
+
