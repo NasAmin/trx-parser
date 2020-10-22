@@ -8,8 +8,6 @@ import * as he from 'he'
 import {promises} from 'fs'
 import {TrxData} from './types/types'
 
-// import {promises as promises} from 'fs'
-
 export async function getTrxFiles(trxPath: string): Promise<string[]> {
   if (!fs.existsSync(trxPath)) return []
 
@@ -39,7 +37,7 @@ export async function transformTrxToJson(filePath: string): Promise<TrxData> {
   if (fs.existsSync(filePath)) {
     core.info(`Transforming file ${filePath}`)
 
-    const xmlData = await promises.readFile(filePath, 'utf8')
+    const xmlData = await readTrxFile(filePath)
     const options = {
       attributeNamePrefix: '_',
       // attrNodeName: 'attr', //default is 'false'
@@ -68,6 +66,10 @@ export async function transformTrxToJson(filePath: string): Promise<TrxData> {
     core.warning(`Trx file ${filePath} does not exist`)
   }
   return jsonObj
+}
+
+export async function readTrxFile(filePath: string): Promise<string> {
+  return await promises.readFile(filePath, 'utf8')
 }
 
 export async function transformAllTrxToJson(

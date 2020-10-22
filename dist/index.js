@@ -183,7 +183,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.areThereAnyFailingTests = exports.transformAllTrxToJson = exports.transformTrxToJson = exports.getAbsoluteFilePaths = exports.getTrxFiles = void 0;
+exports.areThereAnyFailingTests = exports.transformAllTrxToJson = exports.readTrxFile = exports.transformTrxToJson = exports.getAbsoluteFilePaths = exports.getTrxFiles = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const fs = __importStar(__webpack_require__(5747));
 const path = __importStar(__webpack_require__(5622));
@@ -192,7 +192,6 @@ const core = __importStar(__webpack_require__(2186));
 const xmlParser = __importStar(__webpack_require__(7448));
 const he = __importStar(__webpack_require__(3527));
 const fs_1 = __webpack_require__(5747);
-// import {promises as promises} from 'fs'
 function getTrxFiles(trxPath) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!fs.existsSync(trxPath))
@@ -220,7 +219,7 @@ function transformTrxToJson(filePath) {
         let jsonObj;
         if (fs.existsSync(filePath)) {
             core.info(`Transforming file ${filePath}`);
-            const xmlData = yield fs_1.promises.readFile(filePath, 'utf8');
+            const xmlData = yield readTrxFile(filePath);
             const options = {
                 attributeNamePrefix: '_',
                 // attrNodeName: 'attr', //default is 'false'
@@ -252,6 +251,12 @@ function transformTrxToJson(filePath) {
     });
 }
 exports.transformTrxToJson = transformTrxToJson;
+function readTrxFile(filePath) {
+    return __awaiter(this, void 0, void 0, function* () {
+        return yield fs_1.promises.readFile(filePath, 'utf8');
+    });
+}
+exports.readTrxFile = readTrxFile;
 function transformAllTrxToJson(trxFiles) {
     return __awaiter(this, void 0, void 0, function* () {
         const transformedTrxReports = [];
