@@ -43,5 +43,7 @@ jobs:
             Write-Output 'Testing on: ${{ matrix.os }}'
             Write-Output 'Trasformting trx to md'
             .\trx-reports\sample-test-results.ps1
+            ls
+            Write-Output 'Powershell test finished'
 
 
