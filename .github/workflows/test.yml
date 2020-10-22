@@ -44,6 +44,7 @@ jobs:
             Write-Output 'Trasformting trx to md'
             .\trx-reports\sample-test-results.ps1
             ls
+            ls .\trx-reports
             Write-Output 'Powershell test finished'
 
 
