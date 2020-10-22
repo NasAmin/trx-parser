@@ -21,7 +21,3 @@ outputs:
 runs:
   using: 'node12'
   main: 'dist/index.js'
-
-# ToDO
-# Write a test that expects a failure on a failing test in trx
-# 
