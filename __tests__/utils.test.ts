@@ -17,12 +17,24 @@ describe('Test GetAbsolutePath returns correct values', () => {
 describe('when loading xml from a trx file', () => {
   test('LoadXml Should have an outcome of Completed()', async () => {
     const data = await transformTrxToJson(
-      './test-data/_staging-tests-tktr8_2020-10-09_13_04_50.trx'
+      './test-data/passing-tests/auditlog.trx'
     )
-
     expect(data.TestRun.ResultSummary._outcome).toEqual('Completed')
-    expect(data.TestRun.ResultSummary.Counters._total).toEqual(4)
-    expect(data.TestRun.ResultSummary.Counters._passed).toEqual(4)
+    expect(data.TestRun.ResultSummary.Counters._total).toEqual(21)
+    expect(data.TestRun.ResultSummary.Counters._passed).toEqual(10)
+    expect(data.TestRun.ResultSummary.Counters._passed).toEqual(
+      data.TestRun.ResultSummary.Counters._executed
+    )
     expect(data.TestRun.ResultSummary.Counters._failed).toEqual(0)
+  })
+
+  test('LoadXml Should have an outcome of Failed', async () => {
+    const data = await transformTrxToJson(
+      './test-data/failing-tests/dummy-tests.trx'
+    )
+    expect(data.TestRun.ResultSummary._outcome).toEqual('Failed')
+    expect(data.TestRun.ResultSummary.Counters._total).toEqual(4)
+    expect(data.TestRun.ResultSummary.Counters._passed).toEqual(3)
+    expect(data.TestRun.ResultSummary.Counters._failed).toEqual(1)
   })
 })
