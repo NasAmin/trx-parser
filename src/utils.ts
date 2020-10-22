@@ -55,10 +55,10 @@ export async function transformTrxToJson(filePath: string): Promise<TrxData> {
       parseTrueNumberOnly: false,
       arrayMode: false, //"strict"
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      attrValueProcessor: (val: string, attrName: string) =>
+      attrValueProcessor: (val: string, _attrName: string) =>
         he.decode(val, {isAttributeValue: true}), //default is a=>a
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      tagValueProcessor: (val: string, tagName: string) => he.decode(val), //default is a=>a
+      tagValueProcessor: (val: string, _tagName: string) => he.decode(val), //default is a=>a
       stopNodes: ['parse-me-as-string']
     }
     if (xmlParser.validate(xmlData.toString()) === true) {

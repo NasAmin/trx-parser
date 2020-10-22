@@ -236,9 +236,9 @@ function transformTrxToJson(filePath) {
                 parseTrueNumberOnly: false,
                 arrayMode: false,
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                attrValueProcessor: (val, attrName) => he.decode(val, { isAttributeValue: true }),
+                attrValueProcessor: (val, _attrName) => he.decode(val, { isAttributeValue: true }),
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-                tagValueProcessor: (val, tagName) => he.decode(val),
+                tagValueProcessor: (val, _tagName) => he.decode(val),
                 stopNodes: ['parse-me-as-string']
             };
             if (xmlParser.validate(xmlData.toString()) === true) {

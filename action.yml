@@ -23,25 +23,5 @@ runs:
   main: 'dist/index.js'
 
 # ToDO
-# 1. Define inputs
-# 2. Define outputs
-# 3. Define psuedo logic
-
-# 1. Inputs
-    # GitHub_TOKEN
-    # GIST_TOKEN
-    # TRX_PATH
-    # Report Title
-# 2. Outputs
-    # Test outcome e.g. passed/failed
-    # Update PR check
-# 3. Psuedo Logic
-     # - Read all files from the TRX_PATH
-     # - If no files found then end the check with Neutral
-     # - If files are found then load the report name for each trx file from xpath:
-     #   TestRun.TestDefinitions.UnitTest[0].Storage or CodeBase. Trim down the name on / and then get the last part
-     #   Convert the trx project name to upper case
-     #   Read ResultSummary.Outcome
-     #   Read all other info e.g. duration, test stats e.g. no of passed/failed etc.
-     #   Associate any stacktrace etc to the failed tests.
-     # - Generate gist for each trx or put all results on the same gist.
+# Write a test that expects a failure on a failing test in trx
+# 
