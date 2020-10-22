@@ -40,5 +40,6 @@ jobs:
         - name: Try powershell
           shell: pwsh
           run: |
-            Write-ActionInfo 'Testing on: ${{ matrix.os }}'
+            # Write-ActionInfo 'Testing on: ${{ matrix.os }}'
+            Write-Output 'Testing on: ${{ matrix.os }}'
 
