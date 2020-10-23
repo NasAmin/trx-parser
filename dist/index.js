@@ -215,7 +215,7 @@ function generateMarkupFile(reportTitle, reportName) {
         core.info(`Powershell scripts path is ${pwshScript}`);
         options.cwd = pwshScript;
         if (fs.existsSync(pwshScript)) {
-            yield exec.exec('pwsh', ['-f', 'sample-test-results.ps1'], options);
+            yield exec.exec('pwsh', ['-f', `${pwshScript}/sample-test-results.ps1`], options);
         }
         else {
             core.info(`The file ${pwshScript} does not exist`);

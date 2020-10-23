@@ -38,7 +38,11 @@ export async function generateMarkupFile(
   options.cwd = pwshScript
 
   if (fs.existsSync(pwshScript)) {
-    await exec.exec('pwsh', ['-f', 'sample-test-results.ps1'], options)
+    await exec.exec(
+      'pwsh',
+      ['-f', `${pwshScript}/sample-test-results.ps1`],
+      options
+    )
   } else {
     core.info(`The file ${pwshScript} does not exist`)
   }
