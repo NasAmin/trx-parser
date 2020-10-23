@@ -1,5 +1,6 @@
 import * as path from 'path'
 import {getAbsoluteFilePaths, transformTrxToJson} from '../src/utils'
+import {generateMarkupFile} from '../src/test-reporter'
 
 describe('Test GetAbsolutePath returns correct values', () => {
   it('getAbsoluteFilePaths()', async () => {
@@ -36,5 +37,12 @@ describe('when loading xml from a trx file', () => {
     expect(data.TestRun.ResultSummary.Counters._total).toEqual(4)
     expect(data.TestRun.ResultSummary.Counters._passed).toEqual(3)
     expect(data.TestRun.ResultSummary.Counters._failed).toEqual(1)
+  })
+})
+
+describe('Generate Gist for test reports', () => {
+  test('Generate Markup gist', async () => {
+    await generateMarkupFile('abc', 'xyz')
+    expect(true).toBeTruthy()
   })
 })
