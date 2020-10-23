@@ -1,3 +1,4 @@
+#!/usr/bin/env pwsh
 
 #$xslFile = "$PSScriptRoot\example.xsl"
 #$xmlFile = "$PSScriptRoot\example.xml"
