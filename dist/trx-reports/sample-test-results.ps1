@@ -5,7 +5,7 @@
 Write-Output 'Starting transformation'
 $xslFile = Resolve-Path -Path "$PSScriptRoot\trx2md.xsl"
 $xmlFile = Resolve-Path -Path "$PSScriptRoot\sample-test-results.trx"
-$outFile = Resolve-Path -Path "$PSScriptRoot\sample-test.results.md"
+$outFile = "$PSScriptRoot\sample-test.results.md"
 
 class TrxFn {
     [double]DiffSeconds([datetime]$from, [datetime]$till) {
@@ -43,5 +43,6 @@ finally {
 }
 
 Write-Output 'MD file created, view content below'
-cat $outFile
+$resolvedOutFile = Resolve-Path -Path $outFile
+cat $resolvedOutFile
 ls
