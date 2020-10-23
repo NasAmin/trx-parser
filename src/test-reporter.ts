@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import * as exec from '@actions/exec'
 import * as core from '@actions/core'
 

@@ -186,7 +186,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.generateMarkupFile = void 0;
-/* eslint-disable @typescript-eslint/no-unused-vars */
 const exec = __importStar(__webpack_require__(1514));
 const core = __importStar(__webpack_require__(2186));
 function generateMarkupFile(reportTitle, reportName) {
