@@ -1,49 +1,25 @@
 #!/usr/bin/env pwsh
 
-#$xslFile = "$PSScriptRoot\example.xsl"
-#$xmlFile = "$PSScriptRoot\example.xml"
-#$outFile = "$PSScriptRoot\example.out"
-Write-Output 'Starting transformation'
-$xslFile = Resolve-Path -Path "$PSScriptRoot\trx2md.xsl"
-$xmlFile = Resolve-Path -Path "$PSScriptRoot\sample-test-results.trx"
-$outFile = "$PSScriptRoot\sample-test.results.md"
+function Build-MarkdownReport {
+    $script:report_name = "abc"
+    $script:report_title = "abc - name"
 
-class TrxFn {
-    [double]DiffSeconds([datetime]$from, [datetime]$till) {
-        return ($till - $from).TotalSeconds
+    if (-not $script:report_name) {
+        $script:report_name = "TEST_RESULTS_$([datetime]::Now.ToString('yyyyMMdd_hhmmss'))"
     }
-}
-
-
-if (-not $script:xslt) {
-    Write-Output "Loading xsl file"
-    $script:urlr = [System.Xml.XmlUrlResolver]::new()
-    $script:opts = [System.Xml.Xsl.XsltSettings]::new()
-    #$script:opts.EnableScript = $true
-    $script:xslt = [System.Xml.Xsl.XslCompiledTransform]::new()
-    try {
-        $script:xslt.Load($xslFile, $script:opts, $script:urlr)
+    if (-not $report_title) {
+        $script:report_title = $report_name
     }
-    catch {
-        Write-Output "There was an error loading the xslFile"
-        $Error[0]
-        return
-    }
+
+    $test_results_path = "$PSScriptRoot/trx-report/sample-test-results.trx"
+    $test_report_path = "$PSScriptRoot/trx-report/sample-test-results.md"
+    $script:test_report_path = Join-Path $tmpDir test-results.md
+    & "$PSScriptRoot/trx-report/trx2md.ps1" -Verbose `
+        -trxFile $script:test_results_path `
+        -mdFile $script:test_report_path -xslParams @{
+            reportTitle = $script:report_title
+        }
 }
 
-$script:list = [System.Xml.Xsl.XsltArgumentList]::new()
-$script:list.AddExtensionObject("urn:trxfn", [TrxFn]::new())
-$script:wrtr = [System.IO.StreamWriter]::new($outFile)
-try {
-    Write-Output 'Writing file'
-    $script:xslt.Transform(
-        [string]$xmlFile,
-        [System.Xml.Xsl.XsltArgumentList]$script:list,
-        [System.IO.TextWriter]$script:wrtr)
-}
-finally {
-    $script:wrtr.Dispose()
-}
-
-Write-Output 'MD file created, view content below'
-ls
+Write-ActionInfo "Generating Markdown Report from TRX file"
+Build-MarkdownReport
