@@ -16,6 +16,7 @@ class TrxFn {
 
 
 if (-not $script:xslt) {
+    Write-Output "Loading xsl file"
     $script:urlr = [System.Xml.XmlUrlResolver]::new()
     $script:opts = [System.Xml.Xsl.XsltSettings]::new()
     #$script:opts.EnableScript = $true
@@ -24,6 +25,7 @@ if (-not $script:xslt) {
         $script:xslt.Load($xslFile, $script:opts, $script:urlr)
     }
     catch {
+        Write-Output "There was an error loading the xslFile"
         $Error[0]
         return
     }
@@ -44,6 +46,4 @@ finally {
 }
 
 Write-Output 'MD file created, view content below'
-$resolvedOutFile = Resolve-Path -Path $outFile
-cat $resolvedOutFile
 ls
