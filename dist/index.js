@@ -208,7 +208,12 @@ function generateMarkupFile(reportTitle, reportName) {
         //   ['-f', 'sample-test-results.ps1', reportTitle, reportName],
         //   options
         // )
-        yield exec.exec('bash -c', ['ls && echo blah'], options);
+        const workspace = __dirname.replace(/[/\\]$/, '');
+        core.info(`Current workspace is: ${workspace}`);
+        const pwshScript = `${workspace}/trx-reports`;
+        core.info(`Powershell scripts path is ${pwshScript}`);
+        options.cwd = pwshScript;
+        yield exec.exec('pwsh', ['-f', 'sample-test-results.ps1'], options);
         core.info(`Generating Markup for ${reportName}`);
         core.info(`Generating Markup for ${reportTitle}`);
         core.info(`Stdout ${stdOutString}`);
