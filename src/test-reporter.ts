@@ -1,5 +1,6 @@
 import * as exec from '@actions/exec'
 import * as core from '@actions/core'
+import * as fs from 'fs'
 
 export async function generateMarkupFile(
   reportTitle: string,
@@ -32,9 +33,15 @@ export async function generateMarkupFile(
   core.info(`Current workspace is: ${workspace}`)
 
   const pwshScript = `${workspace}/trx-reports`
+
   core.info(`Powershell scripts path is ${pwshScript}`)
   options.cwd = pwshScript
-  await exec.exec('pwsh', ['-f', 'sample-test-results.ps1'], options)
+
+  if (fs.existsSync(pwshScript)) {
+    await exec.exec('pwsh', ['-f', 'sample-test-results.ps1'], options)
+  } else {
+    core.info(`The file ${pwshScript} does not exist`)
+  }
 
   core.info(`Generating Markup for ${reportName}`)
   core.info(`Generating Markup for ${reportTitle}`)

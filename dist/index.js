@@ -188,6 +188,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.generateMarkupFile = void 0;
 const exec = __importStar(__webpack_require__(1514));
 const core = __importStar(__webpack_require__(2186));
+const fs = __importStar(__webpack_require__(5747));
 function generateMarkupFile(reportTitle, reportName) {
     return __awaiter(this, void 0, void 0, function* () {
         let stdOutString = '';
@@ -213,7 +214,12 @@ function generateMarkupFile(reportTitle, reportName) {
         const pwshScript = `${workspace}/trx-reports`;
         core.info(`Powershell scripts path is ${pwshScript}`);
         options.cwd = pwshScript;
-        yield exec.exec('pwsh', ['-f', 'sample-test-results.ps1'], options);
+        if (fs.existsSync(pwshScript)) {
+            yield exec.exec('pwsh', ['-f', 'sample-test-results.ps1'], options);
+        }
+        else {
+            core.info(`The file ${pwshScript} does not exist`);
+        }
         core.info(`Generating Markup for ${reportName}`);
         core.info(`Generating Markup for ${reportTitle}`);
         core.info(`Stdout ${stdOutString}`);
