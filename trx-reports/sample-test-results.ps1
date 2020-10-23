@@ -12,8 +12,7 @@ function Build-MarkdownReport {
     }
 
     $test_results_path = "$PSScriptRoot/trx-report/sample-test-results.trx"
-    $test_report_path = "$PSScriptRoot/trx-report/sample-test-results.md"
-    $script:test_report_path = Join-Path $tmpDir test-results.md
+    $test_report_path = "$PSScriptRoot/trx-report/sample-test-results.md"    
     & "$PSScriptRoot/trx-report/trx2md.ps1" -Verbose `
         -trxFile $script:test_results_path `
         -mdFile $script:test_report_path -xslParams @{
