@@ -40,3 +40,5 @@ try {
 finally {
     $script:wrtr.Dispose()
 }
+
+ls
