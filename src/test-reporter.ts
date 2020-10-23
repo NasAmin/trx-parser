@@ -9,6 +9,8 @@ export async function generateMarkupFile(
   let stdOutString = ''
   let stdErrString = ''
 
+  core.info(`Generating Markup for ${reportName}`)
+
   const options: exec.ExecOptions = {}
 
   options.listeners = {
@@ -30,6 +32,5 @@ export async function generateMarkupFile(
   core.info(stdOutString)
   core.warning(stdErrString)
 
-  core.info(reportName)
-  core.warning(reportTitle)
+  core.info(`Report generated ${reportName}`)
 }
