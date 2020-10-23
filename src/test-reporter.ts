@@ -29,8 +29,8 @@ export async function generateMarkupFile(
   // )
   await exec.exec('bash -c', ['ls && echo blah'], options)
 
-  core.info(stdOutString)
-  core.warning(stdErrString)
-
-  core.info(`Report generated ${reportName}`)
+  core.info(`Generating Markup for ${reportName}`)
+  core.info(`Generating Markup for ${reportTitle}`)
+  core.info(`Stdout ${stdOutString}`)
+  core.info(`StdErr ${stdErrString}`)
 }

@@ -193,6 +193,7 @@ function generateMarkupFile(reportTitle, reportName) {
     return __awaiter(this, void 0, void 0, function* () {
         let stdOutString = '';
         let stdErrString = '';
+        core.info(`Generating Markup for ${reportName}`);
         const options = {};
         options.listeners = {
             stdout: (data) => {
@@ -209,10 +210,10 @@ function generateMarkupFile(reportTitle, reportName) {
         //   options
         // )
         yield exec.exec('bash -c', ['ls && echo blah'], options);
-        core.info(stdOutString);
-        core.warning(stdErrString);
-        core.info(reportName);
-        core.warning(reportTitle);
+        core.info(`Generating Markup for ${reportName}`);
+        core.info(`Generating Markup for ${reportTitle}`);
+        core.info(`Stdout ${stdOutString}`);
+        core.info(`StdErr ${stdErrString}`);
     });
 }
 exports.generateMarkupFile = generateMarkupFile;
