@@ -2,7 +2,7 @@
 #$xslFile = "$PSScriptRoot\example.xsl"
 #$xmlFile = "$PSScriptRoot\example.xml"
 #$outFile = "$PSScriptRoot\example.out"
-
+Write-Output 'Starting transformation'
 $xslFile = Resolve-Path -Path "$PSScriptRoot\trx2md.xsl"
 $xmlFile = Resolve-Path -Path "$PSScriptRoot\sample-test-results.trx"
 $outFile = "$PSScriptRoot\sample-test.results.md"
@@ -32,6 +32,7 @@ $script:list = [System.Xml.Xsl.XsltArgumentList]::new()
 $script:list.AddExtensionObject("urn:trxfn", [TrxFn]::new())
 $script:wrtr = [System.IO.StreamWriter]::new($outFile)
 try {
+    Write-Output 'Writing file'
     $script:xslt.Transform(
         [string]$xmlFile,
         [System.Xml.Xsl.XsltArgumentList]$script:list,
@@ -40,5 +41,7 @@ try {
 finally {
     $script:wrtr.Dispose()
 }
+
+Write-Output 'MD file created'
 
 ls
