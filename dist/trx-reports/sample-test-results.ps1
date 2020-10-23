@@ -21,5 +21,5 @@ function Build-MarkdownReport {
         }
 }
 
-Write-ActionInfo "Generating Markdown Report from TRX file"
+Write-Output "Generating Markdown Report from TRX file"
 Build-MarkdownReport
