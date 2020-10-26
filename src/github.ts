@@ -1,10 +1,10 @@
 import * as github from '@actions/github'
 import * as core from '@actions/core'
-import {TrxData} from './types/types'
+import {TrxDataWrapper} from './types/types'
 
 export async function createCheckRun(
   repoToken: string,
-  reportData: TrxData
+  reportData: TrxDataWrapper
 ): Promise<void> {
   try {
     core.info('Trying to create check')

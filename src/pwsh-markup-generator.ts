@@ -1,8 +1,10 @@
 import * as exec from '@actions/exec'
 import * as core from '@actions/core'
 import * as fs from 'fs'
-import {TrxData} from './types/types'
-export async function generateMarkupFile(testData: TrxData): Promise<void> {
+import {TrxDataWrapper} from './types/types'
+export async function generateMarkupFile(
+  testData: TrxDataWrapper
+): Promise<void> {
   let stdOutString = ''
   let stdErrString = ''
 
@@ -62,7 +64,7 @@ export async function generateMarkupFile(testData: TrxData): Promise<void> {
 }
 
 export async function generateMarkupReports(
-  testData: TrxData[]
+  testData: TrxDataWrapper[]
 ): Promise<void> {
   for (const data of testData) {
     await generateMarkupFile(data)

@@ -114,6 +114,10 @@ export interface TestRun {
 
 export interface TrxData {
   TestRun: TestRun
+}
+
+export interface TrxDataWrapper {
+  TestRun: TestRun
   ReportMetaData: {
     TrxFilePath: string
     MarkupFilePath: string

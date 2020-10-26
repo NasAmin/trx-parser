@@ -6,7 +6,7 @@ import * as core from '@actions/core'
 import * as xmlParser from 'fast-xml-parser'
 import * as he from 'he'
 import {promises} from 'fs'
-import {TrxData} from './types/types'
+import {TrxData, TrxDataWrapper} from './types/types'
 
 export async function getTrxFiles(trxPath: string): Promise<string[]> {
   if (!fs.existsSync(trxPath)) return []
@@ -31,7 +31,9 @@ export function getAbsoluteFilePaths(
   return absolutePaths
 }
 
-export async function transformTrxToJson(filePath: string): Promise<TrxData> {
+export async function transformTrxToJson(
+  filePath: string
+): Promise<TrxDataWrapper> {
   let jsonObj: any
 
   if (fs.existsSync(filePath)) {
@@ -85,8 +87,8 @@ export async function readTrxFile(filePath: string): Promise<string> {
 
 export async function transformAllTrxToJson(
   trxFiles: string[]
-): Promise<TrxData[]> {
-  const transformedTrxReports: TrxData[] = []
+): Promise<TrxDataWrapper[]> {
+  const transformedTrxReports: TrxDataWrapper[] = []
   for (const trx of trxFiles) {
     transformedTrxReports.push(await transformTrxToJson(trx))
   }
@@ -94,7 +96,9 @@ export async function transformAllTrxToJson(
   return transformedTrxReports
 }
 
-export function areThereAnyFailingTests(trxJsonReports: TrxData[]): boolean {
+export function areThereAnyFailingTests(
+  trxJsonReports: TrxDataWrapper[]
+): boolean {
   for (const trxData of trxJsonReports) {
     if (trxData.TestRun.ResultSummary._outcome === 'Failed') {
       return true
