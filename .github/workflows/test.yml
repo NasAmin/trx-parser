@@ -37,13 +37,6 @@ jobs:
             echo Path is: ${{ steps.passing-tests.outputs.trx-path }}
             echo trx files: ${{ steps.passing-tests.outputs.trx-files }}
 
-        - name: Try powershell
-          shell: pwsh
-          run: |            
-            Write-Output 'Testing on: ${{ matrix.os }}'            
-            ls trx-reports
-            Write-Output 'Powershell test finished'
-
         - name: Upload test reports
           uses: actions/upload-artifact@v2
           with:
