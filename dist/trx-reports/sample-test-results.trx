@@ -3,7 +3,7 @@
          xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
   <Times creation="2020-08-04T23:30:03.6997384-04:00" queuing="2020-08-04T23:30:03.6997404-04:00" start="2020-08-04T23:29:43.8676181-04:00" finish="2020-08-04T23:31:12.1776276-04:00" />
   <TestSettings name="default" id="06553f41-a9ad-40ef-9d8d-cdcffba61cad">
-    <Deployment runDeploymentRoot="ebekker_EZS-001388_2020-08-04_23_30_03" />
+    <Deployment runDeploymentRoot="nasamin_EZS-001388_2020-08-04_23_30_03" />
   </TestSettings>
   <Results>
     <UnitTestResult executionId="cb537244-a2a0-48de-a2c9-8f6c4cc1afe3" testId="47f44031-ef62-4da7-92d9-69fc40cd7770" testName="CreateAndExportEcdsaCsr (384,Sha256)" computerName="EZS-001388" duration="00:00:00.5552387" startTime="2020-08-04T23:30:16.2494142-04:00" endTime="2020-08-04T23:30:19.0708741-04:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cb537244-a2a0-48de-a2c9-8f6c4cc1afe3" />
