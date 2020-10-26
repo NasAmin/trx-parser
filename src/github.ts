@@ -14,21 +14,7 @@ export async function createCheckRun(
 
     core.info(`Head sha from the payload ${prPayload.pull_request.head.sha}`)
     const octokit = github.getOctokit(repoToken)
-    const {data: pullRequest} = await octokit.pulls.get({
-      owner: github.context.repo.owner,
-      repo: github.context.repo.repo,
-      pull_number: prPayload.number,
-      mediaType: {
-        format: 'diff'
-      }
-    })
-
-    core.info(`Print head sha from PR object ${pullRequest}`)
-    core.info(
-      `Print merge_commit sha from PR object ${pullRequest.merge_commit_sha}`
-    )
-
-    const git_sha = github.context.sha
+    const git_sha = prPayload.pull_request.head.sha
     if (github.context.eventName === 'pull_request') {
       core.info(`PR Ref: ${github.context.ref}`)
       core.info(`Creating status check for GitSha: ${git_sha}`)
