@@ -39,7 +39,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.createCheckRun = void 0;
 const github = __importStar(__webpack_require__(5438));
 const core = __importStar(__webpack_require__(2186));
-function createCheckRun(repoToken) {
+function createCheckRun(repoToken, reportData) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             core.info('Trying to create check');
@@ -51,11 +51,13 @@ function createCheckRun(repoToken) {
                     name: 'trx-parser',
                     head_sha: github.context.sha,
                     status: 'completed',
-                    conclusion: 'neutral',
+                    conclusion: reportData.TestRun.ResultSummary._outcome === 'Failed'
+                        ? 'failure'
+                        : 'success',
                     output: {
-                        title: 'My test report',
+                        title: reportData.ReportMetaData.ReportTitle,
                         summary: `This test run completed at ${Date.now()}`,
-                        text: 'test'
+                        text: reportData.ReportMetaData.TrxXmlString
                     }
                 });
                 if (response.status !== 201) {
@@ -133,9 +135,11 @@ function run() {
             core.info(`Checking for failing tests`);
             const failingTestsFound = utils_1.areThereAnyFailingTests(trxToJson);
             yield pwsh_markup_generator_1.generateMarkupReports(trxToJson);
+            for (const data of trxToJson) {
+                yield github_1.createCheckRun(token, data);
+            }
             if (failingTestsFound) {
                 core.error(`At least one failing test was found`);
-                yield github_1.createCheckRun(token);
                 core.setFailed('Failing tests found');
             }
             core.setOutput('trx-files', trxFiles);
@@ -189,11 +193,11 @@ exports.generateMarkupReports = exports.generateMarkupFile = void 0;
 const exec = __importStar(__webpack_require__(1514));
 const core = __importStar(__webpack_require__(2186));
 const fs = __importStar(__webpack_require__(5747));
-function generateMarkupFile(reportTitle, reportName, trxPath, markupPath) {
+function generateMarkupFile(testData) {
     return __awaiter(this, void 0, void 0, function* () {
         let stdOutString = '';
         let stdErrString = '';
-        core.info(`Generating Markup for ${reportName}`);
+        core.info(`Generating Markup for ${testData.ReportMetaData}`);
         const options = {};
         options.listeners = {
             stdout: (data) => {
@@ -213,23 +217,23 @@ function generateMarkupFile(reportTitle, reportName, trxPath, markupPath) {
                 '-f',
                 `${pwshScript}/markup.ps1`,
                 '-reportName',
-                reportName,
+                testData.ReportMetaData.ReportName,
                 '-reportTitle',
-                reportTitle,
+                testData.ReportMetaData.ReportTitle,
                 '-trxPath',
-                trxPath,
+                testData.ReportMetaData.TrxFilePath,
                 '-markupPath',
-                markupPath
+                testData.ReportMetaData.MarkupFilePath
             ], options);
         }
         else {
             core.info(`The file ${pwshScript} does not exist`);
         }
-        if (fs.existsSync(markupPath)) {
-            core.info(`Markup file ${markupPath} exists`);
+        if (fs.existsSync(testData.ReportMetaData.MarkupFilePath)) {
+            core.info(`Markup file ${testData.ReportMetaData.MarkupFilePath} exists`);
         }
         else {
-            core.info(`Markup file ${markupPath} does not exist`);
+            core.info(`Markup file ${testData.ReportMetaData.MarkupFilePath} does not exist`);
         }
         core.info(`Stdout ${stdOutString}`);
         core.warning(`StdErr ${stdErrString}`);
@@ -239,24 +243,11 @@ exports.generateMarkupFile = generateMarkupFile;
 function generateMarkupReports(testData) {
     return __awaiter(this, void 0, void 0, function* () {
         for (const data of testData) {
-            const reportHeaders = getReportHeaders(data);
-            yield generateMarkupFile(reportHeaders.reportTitle, reportHeaders.reportName, data.TrxFilePath, data.MarkupFilePath);
+            yield generateMarkupFile(data);
         }
     });
 }
 exports.generateMarkupReports = generateMarkupReports;
-function getReportHeaders(data) {
-    let reportTitle = '';
-    let reportName = '';
-    const dllName = data.TestRun.TestDefinitions.UnitTest[0]._storage
-        .split('/')
-        .pop();
-    if (dllName) {
-        reportTitle = dllName.replace('.dll', '').toUpperCase().replace('.', ' ');
-        reportName = dllName.replace('.dll', '').toUpperCase();
-    }
-    return { reportName, reportTitle };
-}
 
 
 /***/ }),
@@ -354,9 +345,14 @@ function transformTrxToJson(filePath) {
             };
             if (xmlParser.validate(xmlData.toString()) === true) {
                 jsonObj = xmlParser.parse(xmlData, options, true);
-                jsonObj.TrxFilePath = filePath;
-                jsonObj.MarkupFilePath = filePath.replace('.trx', '.md');
-                jsonObj.TrxXmlString = xmlData;
+                const reportHeaders = getReportHeaders(jsonObj);
+                jsonObj.ReportMetaData = {
+                    TrxFilePath: filePath,
+                    TrxXmlString: xmlData,
+                    MarkupFilePath: filePath.replace('.trx', '.md'),
+                    ReportName: reportHeaders.reportName,
+                    ReportTitle: reportHeaders.reportTitle
+                };
             }
         }
         else {
@@ -391,6 +387,18 @@ function areThereAnyFailingTests(trxJsonReports) {
     return false;
 }
 exports.areThereAnyFailingTests = areThereAnyFailingTests;
+function getReportHeaders(data) {
+    let reportTitle = '';
+    let reportName = '';
+    const dllName = data.TestRun.TestDefinitions.UnitTest[0]._storage
+        .split('/')
+        .pop();
+    if (dllName) {
+        reportTitle = dllName.replace('.dll', '').toUpperCase().replace('.', ' ');
+        reportName = dllName.replace('.dll', '').toUpperCase();
+    }
+    return { reportName, reportTitle };
+}
 
 
 /***/ }),

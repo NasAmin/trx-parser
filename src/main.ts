@@ -27,9 +27,12 @@ export async function run(): Promise<void> {
 
     await generateMarkupReports(trxToJson)
 
+    for (const data of trxToJson) {
+      await createCheckRun(token, data)
+    }
+
     if (failingTestsFound) {
       core.error(`At least one failing test was found`)
-      await createCheckRun(token)
       core.setFailed('Failing tests found')
     }
 

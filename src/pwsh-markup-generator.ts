@@ -2,17 +2,11 @@ import * as exec from '@actions/exec'
 import * as core from '@actions/core'
 import * as fs from 'fs'
 import {TrxData} from './types/types'
-
-export async function generateMarkupFile(
-  reportTitle: string,
-  reportName: string,
-  trxPath: string,
-  markupPath: string
-): Promise<void> {
+export async function generateMarkupFile(testData: TrxData): Promise<void> {
   let stdOutString = ''
   let stdErrString = ''
 
-  core.info(`Generating Markup for ${reportName}`)
+  core.info(`Generating Markup for ${testData.ReportMetaData}`)
 
   const options: exec.ExecOptions = {}
 
@@ -41,13 +35,13 @@ export async function generateMarkupFile(
         '-f',
         `${pwshScript}/markup.ps1`,
         '-reportName',
-        reportName,
+        testData.ReportMetaData.ReportName,
         '-reportTitle',
-        reportTitle,
+        testData.ReportMetaData.ReportTitle,
         '-trxPath',
-        trxPath,
+        testData.ReportMetaData.TrxFilePath,
         '-markupPath',
-        markupPath
+        testData.ReportMetaData.MarkupFilePath
       ],
       options
     )
@@ -55,10 +49,12 @@ export async function generateMarkupFile(
     core.info(`The file ${pwshScript} does not exist`)
   }
 
-  if (fs.existsSync(markupPath)) {
-    core.info(`Markup file ${markupPath} exists`)
+  if (fs.existsSync(testData.ReportMetaData.MarkupFilePath)) {
+    core.info(`Markup file ${testData.ReportMetaData.MarkupFilePath} exists`)
   } else {
-    core.info(`Markup file ${markupPath} does not exist`)
+    core.info(
+      `Markup file ${testData.ReportMetaData.MarkupFilePath} does not exist`
+    )
   }
 
   core.info(`Stdout ${stdOutString}`)
@@ -69,29 +65,6 @@ export async function generateMarkupReports(
   testData: TrxData[]
 ): Promise<void> {
   for (const data of testData) {
-    const reportHeaders = getReportHeaders(data)
-    await generateMarkupFile(
-      reportHeaders.reportTitle,
-      reportHeaders.reportName,
-      data.TrxFilePath,
-      data.MarkupFilePath
-    )
+    await generateMarkupFile(data)
   }
-}
-
-function getReportHeaders(
-  data: TrxData
-): {reportName: string; reportTitle: string} {
-  let reportTitle = ''
-  let reportName = ''
-  const dllName = data.TestRun.TestDefinitions.UnitTest[0]._storage
-    .split('/')
-    .pop()
-
-  if (dllName) {
-    reportTitle = dllName.replace('.dll', '').toUpperCase().replace('.', ' ')
-    reportName = dllName.replace('.dll', '').toUpperCase()
-  }
-
-  return {reportName, reportTitle}
 }

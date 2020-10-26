@@ -1,7 +1,11 @@
 import * as github from '@actions/github'
 import * as core from '@actions/core'
+import {TrxData} from './types/types'
 
-export async function createCheckRun(repoToken: string): Promise<void> {
+export async function createCheckRun(
+  repoToken: string,
+  reportData: TrxData
+): Promise<void> {
   try {
     core.info('Trying to create check')
     const octokit = github.getOctokit(repoToken)
@@ -12,11 +16,14 @@ export async function createCheckRun(repoToken: string): Promise<void> {
         name: 'trx-parser',
         head_sha: github.context.sha,
         status: 'completed',
-        conclusion: 'neutral',
+        conclusion:
+          reportData.TestRun.ResultSummary._outcome === 'Failed'
+            ? 'failure'
+            : 'success',
         output: {
-          title: 'My test report',
+          title: reportData.ReportMetaData.ReportTitle,
           summary: `This test run completed at ${Date.now()}`,
-          text: 'test'
+          text: reportData.ReportMetaData.TrxXmlString
         }
       })
 

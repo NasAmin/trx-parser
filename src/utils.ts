@@ -59,11 +59,17 @@ export async function transformTrxToJson(filePath: string): Promise<TrxData> {
       tagValueProcessor: (val: string, _tagName: string) => he.decode(val), //default is a=>a
       stopNodes: ['parse-me-as-string']
     }
+
     if (xmlParser.validate(xmlData.toString()) === true) {
       jsonObj = xmlParser.parse(xmlData, options, true)
-      jsonObj.TrxFilePath = filePath
-      jsonObj.MarkupFilePath = filePath.replace('.trx', '.md')
-      jsonObj.TrxXmlString = xmlData
+      const reportHeaders = getReportHeaders(jsonObj as TrxData)
+      jsonObj.ReportMetaData = {
+        TrxFilePath: filePath,
+        TrxXmlString: xmlData,
+        MarkupFilePath: filePath.replace('.trx', '.md'),
+        ReportName: reportHeaders.reportName,
+        ReportTitle: reportHeaders.reportTitle
+      }
     }
   } else {
     core.warning(`Trx file ${filePath} does not exist`)
@@ -93,4 +99,21 @@ export function areThereAnyFailingTests(trxJsonReports: TrxData[]): boolean {
     }
   }
   return false
+}
+
+function getReportHeaders(
+  data: TrxData
+): {reportName: string; reportTitle: string} {
+  let reportTitle = ''
+  let reportName = ''
+  const dllName = data.TestRun.TestDefinitions.UnitTest[0]._storage
+    .split('/')
+    .pop()
+
+  if (dllName) {
+    reportTitle = dllName.replace('.dll', '').toUpperCase().replace('.', ' ')
+    reportName = dllName.replace('.dll', '').toUpperCase()
+  }
+
+  return {reportName, reportTitle}
 }
