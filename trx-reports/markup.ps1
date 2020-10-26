@@ -29,3 +29,4 @@ function Build-MarkdownReport {
 Write-Output "Generating Markdown Report from TRX file"
 Build-MarkdownReport
 ls
+cat $test_report_path
