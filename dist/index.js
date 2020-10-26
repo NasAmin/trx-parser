@@ -203,12 +203,6 @@ function generateMarkupFile(reportTitle, reportName) {
                 stdErrString += data.toString();
             }
         };
-        // options.cwd = './lib'
-        // await exec(
-        //   'pwsh',
-        //   ['-f', 'sample-test-results.ps1', reportTitle, reportName],
-        //   options
-        // )
         const workspace = __dirname.replace(/[/\\]$/, '');
         core.info(`Current workspace is: ${workspace}`);
         const pwshScript = `${workspace}/trx-reports`;
@@ -227,10 +221,14 @@ function generateMarkupFile(reportTitle, reportName) {
         else {
             core.info(`The file ${pwshScript} does not exist`);
         }
-        core.info(`Generating Markup for ${reportName}`);
-        core.info(`Generating Markup for ${reportTitle}`);
+        if (fs.existsSync(`${pwshScript}/sample-test-results.md`)) {
+            core.info('Markup file exists');
+        }
+        else {
+            core.info('Markup file does not exist');
+        }
         core.info(`Stdout ${stdOutString}`);
-        core.info(`StdErr ${stdErrString}`);
+        core.warning(`StdErr ${stdErrString}`);
     });
 }
 exports.generateMarkupFile = generateMarkupFile;
