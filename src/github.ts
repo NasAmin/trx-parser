@@ -1,6 +1,7 @@
 import * as github from '@actions/github'
 import * as core from '@actions/core'
 import {TrxDataWrapper} from './types/types'
+import * as Webhooks from '@octokit/webhooks'
 
 export async function createCheckRun(
   repoToken: string,
@@ -8,11 +9,15 @@ export async function createCheckRun(
 ): Promise<void> {
   try {
     core.info('Trying to create check')
+    const prPayload = github.context
+      .payload as Webhooks.EventPayloads.WebhookPayloadPullRequest
+
+    core.info(`Head sha from the payload ${prPayload.pull_request.head.sha}`)
     const octokit = github.getOctokit(repoToken)
     const {data: pullRequest} = await octokit.pulls.get({
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
-      pull_number: 13,
+      pull_number: prPayload.number,
       mediaType: {
         format: 'diff'
       }

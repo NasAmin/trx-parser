@@ -43,16 +43,19 @@ function createCheckRun(repoToken, reportData) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             core.info('Trying to create check');
+            const prPayload = github.context
+                .payload;
+            core.info(`Head sha from the payload ${prPayload.pull_request.head.sha}`);
             const octokit = github.getOctokit(repoToken);
             const { data: pullRequest } = yield octokit.pulls.get({
                 owner: github.context.repo.owner,
                 repo: github.context.repo.repo,
-                pull_number: 13,
+                pull_number: prPayload.number,
                 mediaType: {
                     format: 'diff'
                 }
             });
-            core.info(`Print head sha from PR object ${pullRequest.head.sha}`);
+            core.info(`Print head sha from PR object ${pullRequest}`);
             core.info(`Print merge_commit sha from PR object ${pullRequest.merge_commit_sha}`);
             const git_sha = github.context.sha;
             if (github.context.eventName === 'pull_request') {
