@@ -44,4 +44,10 @@ jobs:
             ls trx-reports
             Write-Output 'Powershell test finished'
 
+        - name: Upload test reports
+          uses: actions/upload-artifact@v2
+          with:
+            name: TestReports
+            path: test-data/**/*.md
+
 
