@@ -37,7 +37,7 @@ function Build-MarkdownReport {
         $script:report_title = $report_name
     }
     
-    "$PSScriptRoot/trx2md.ps1" -Verbose `
+    & "$PSScriptRoot/trx2md.ps1" -Verbose `
         -trxFile $trxPath `
         -mdFile $markupPath -xslParams @{
             reportTitle = $script:report_title
