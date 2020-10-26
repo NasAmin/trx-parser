@@ -38,10 +38,10 @@ export async function generateMarkupFile(
       [
         '-f',
         `${pwshScript}/markup.ps1`,
-        reportName,
-        reportTitle,
-        `${pwshScript}/sample-test-results.trx`,
-        `${pwshScript}/sample-test-results.md`
+        `-reportName ${reportName}`,
+        `- reportTitle ${reportTitle}`,
+        `-trxPath ${pwshScript}/sample-test-results.trx`,
+        `-markupPath ${pwshScript}/sample-test-results.md`
       ],
       options
     )
