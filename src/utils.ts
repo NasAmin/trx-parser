@@ -62,6 +62,8 @@ export async function transformTrxToJson(filePath: string): Promise<TrxData> {
     if (xmlParser.validate(xmlData.toString()) === true) {
       jsonObj = xmlParser.parse(xmlData, options, true)
       jsonObj.TrxFilePath = filePath
+      jsonObj.MarkupFilePath = filePath.replace('.trx', '.md')
+      jsonObj.TrxXmlString = xmlData
     }
   } else {
     core.warning(`Trx file ${filePath} does not exist`)

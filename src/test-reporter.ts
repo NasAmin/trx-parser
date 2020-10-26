@@ -6,7 +6,8 @@ import {TrxData} from './types/types'
 export async function generateMarkupFile(
   reportTitle: string,
   reportName: string,
-  trxPath: string
+  trxPath: string,
+  markupPath: string
 ): Promise<void> {
   let stdOutString = ''
   let stdErrString = ''
@@ -44,7 +45,9 @@ export async function generateMarkupFile(
         '-reportTitle',
         reportTitle,
         '-trxPath',
-        trxPath
+        trxPath,
+        '-markupPath',
+        markupPath
       ],
       options
     )
@@ -69,7 +72,8 @@ export async function generateMarkupReports(
     await generateMarkupFile(
       reportHeaders.reportTitle,
       reportHeaders.reportName,
-      data.TrxFilePath
+      data.TrxFilePath,
+      data.MarkupFilePath
     )
   }
 }

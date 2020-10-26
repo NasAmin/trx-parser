@@ -189,7 +189,7 @@ exports.generateMarkupReports = exports.generateMarkupFile = void 0;
 const exec = __importStar(__webpack_require__(1514));
 const core = __importStar(__webpack_require__(2186));
 const fs = __importStar(__webpack_require__(5747));
-function generateMarkupFile(reportTitle, reportName, trxPath) {
+function generateMarkupFile(reportTitle, reportName, trxPath, markupPath) {
     return __awaiter(this, void 0, void 0, function* () {
         let stdOutString = '';
         let stdErrString = '';
@@ -217,7 +217,9 @@ function generateMarkupFile(reportTitle, reportName, trxPath) {
                 '-reportTitle',
                 reportTitle,
                 '-trxPath',
-                trxPath
+                trxPath,
+                '-markupPath',
+                markupPath
             ], options);
         }
         else {
@@ -238,7 +240,7 @@ function generateMarkupReports(testData) {
     return __awaiter(this, void 0, void 0, function* () {
         for (const data of testData) {
             const reportHeaders = getReportHeaders(data);
-            yield generateMarkupFile(reportHeaders.reportTitle, reportHeaders.reportName, data.TrxFilePath);
+            yield generateMarkupFile(reportHeaders.reportTitle, reportHeaders.reportName, data.TrxFilePath, data.MarkupFilePath);
         }
     });
 }
@@ -353,6 +355,8 @@ function transformTrxToJson(filePath) {
             if (xmlParser.validate(xmlData.toString()) === true) {
                 jsonObj = xmlParser.parse(xmlData, options, true);
                 jsonObj.TrxFilePath = filePath;
+                jsonObj.MarkupFilePath = filePath.replace('.trx', '.md');
+                jsonObj.TrxXmlString = xmlData;
             }
         }
         else {
