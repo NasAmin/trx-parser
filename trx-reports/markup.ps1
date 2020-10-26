@@ -1,5 +1,13 @@
 #!/usr/bin/env pwsh
 
+param(    
+    [string]$reportName=$null,
+    [string]$reportTitle=$null,
+    [Parameter(Mandatory)]
+    [string]$trxPath,
+    [string]$markupPath=$null
+)
+
 ## You interface with the Actions/Workflow system by interacting
 ## with the environment.  The `GitHubActions` module makes this
 ## easier and more natural by wrapping up access to the Workflow
@@ -12,15 +20,6 @@ if (-not (Get-Module -ListAvailable GitHubActions)) {
 ## Load up some common functionality for interacting
 ## with the GitHub Actions/Workflow environment
 Import-Module GitHubActions
-
-
-param(    
-    [string]$reportName=$null,
-    [string]$reportTitle=$null,
-    [Parameter(Mandatory)]
-    [string]$trxPath,
-    [string]$markupPath=$null
-)
 
 function Build-MarkdownReport {
     $script:report_name = $reportName
@@ -37,9 +36,8 @@ function Build-MarkdownReport {
     if (-not $report_title) {
         $script:report_title = $report_name
     }
-
-    $script:test_report_path = Join-Path $tmpDir test-results.md
-    & "$PSScriptRoot/trx2md.ps1" -Verbose `
+    
+    "$PSScriptRoot/trx2md.ps1" -Verbose `
         -trxFile $trxPath `
         -mdFile $markupPath -xslParams @{
             reportTitle = $script:report_title
