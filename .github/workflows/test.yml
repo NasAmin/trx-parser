@@ -40,10 +40,7 @@ jobs:
         - name: Try powershell
           shell: pwsh
           run: |            
-            Write-Output 'Testing on: ${{ matrix.os }}'
-            Write-Output 'Trasformting trx to md'
-            .\trx-reports\sample-test-results.ps1
-            ls
+            Write-Output 'Testing on: ${{ matrix.os }}'            
             ls trx-reports
             Write-Output 'Powershell test finished'
 
