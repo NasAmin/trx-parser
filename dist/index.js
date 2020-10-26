@@ -57,7 +57,7 @@ function createCheckRun(repoToken, reportData) {
                     output: {
                         title: reportData.ReportMetaData.ReportTitle,
                         summary: `This test run completed at ${Date.now()}`,
-                        text: reportData.ReportMetaData.TrxXmlString
+                        text: reportData.ReportMetaData.TrxJSonString
                     }
                 });
                 if (response.status !== 201) {
@@ -344,14 +344,16 @@ function transformTrxToJson(filePath) {
                 stopNodes: ['parse-me-as-string']
             };
             if (xmlParser.validate(xmlData.toString()) === true) {
-                jsonObj = xmlParser.parse(xmlData, options, true);
+                const jsonString = xmlParser.parse(xmlData, options, true);
+                jsonObj = jsonString;
                 const reportHeaders = getReportHeaders(jsonObj);
                 jsonObj.ReportMetaData = {
                     TrxFilePath: filePath,
-                    TrxXmlString: xmlData,
                     MarkupFilePath: filePath.replace('.trx', '.md'),
                     ReportName: reportHeaders.reportName,
-                    ReportTitle: reportHeaders.reportTitle
+                    ReportTitle: reportHeaders.reportTitle,
+                    TrxJSonString: jsonString,
+                    TrxXmlString: xmlData
                 };
             }
         }

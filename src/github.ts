@@ -23,7 +23,7 @@ export async function createCheckRun(
         output: {
           title: reportData.ReportMetaData.ReportTitle,
           summary: `This test run completed at ${Date.now()}`,
-          text: reportData.ReportMetaData.TrxXmlString
+          text: reportData.ReportMetaData.TrxJSonString
         }
       })
 

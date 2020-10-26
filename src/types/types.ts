@@ -116,9 +116,10 @@ export interface TrxData {
   TestRun: TestRun
   ReportMetaData: {
     TrxFilePath: string
-    TrxXmlString: string
     MarkupFilePath: string
     ReportName: string
     ReportTitle: string
+    TrxXmlString: string
+    TrxJSonString: string
   }
 }
