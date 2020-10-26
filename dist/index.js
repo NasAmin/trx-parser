@@ -65,7 +65,7 @@ function createCheckRun(repoToken, reportData) {
                     throw new Error(`Failed to create status check. Error code: ${response.status}`);
                 }
                 else {
-                    core.info(`Created check: ${response.data.name}`);
+                    core.info(`Created check: ${response.data.name} with response status ${response.status}`);
                 }
             }
             else {
