@@ -18,11 +18,9 @@ function Build-MarkdownReport {
         $script:report_title = $report_name
     }
 
-    $test_results_path = $trxPath
-    $test_report_path = $markupPath
-    & "$PSScriptRoot/trx2md.ps1" -Verbose `
-        -trxFile $test_results_path `
-        -mdFile $test_report_path -xslParams @{
+    "$PSScriptRoot/trx2md.ps1" -Verbose `
+        -trxFile $trxPath `
+        -mdFile $markupPath -xslParams @{
             reportTitle = $script:report_title
         }
 }
@@ -30,8 +28,8 @@ function Build-MarkdownReport {
 Write-Output "Generating Markdown Report from TRX file"
 Build-MarkdownReport
 ls
-if (Test-Path -Path $test_report_path) {
-    Get-Content -Path $test_report_path    
+if (Test-Path -Path $markupPath) {
+    Get-Content -Path $markupPath    
 }else {
     Write-Output 'Test report does not exist'
 }
