@@ -9,13 +9,15 @@ export async function createCheckRun(
   try {
     core.info('Trying to create check')
     const octokit = github.getOctokit(repoToken)
+    const git_sha = github.context.sha
     if (github.context.eventName === 'pull_request') {
-      core.info(`Creating status check for GitSha: ${github.context.sha}`)
+      core.info(`PR Ref: ${github.context.ref}`)
+      core.info(`Creating status check for GitSha: ${git_sha}`)
       const response = await octokit.checks.create({
         owner: github.context.repo.owner,
         repo: github.context.repo.repo,
         name: reportData.ReportMetaData.ReportName.toLowerCase(),
-        head_sha: github.context.sha,
+        head_sha: git_sha,
         status: 'completed',
         conclusion:
           reportData.TrxData.TestRun.ResultSummary._outcome === 'Failed'
