@@ -18,7 +18,7 @@ export async function createCheckRun(
       }
     })
 
-    core.info(`Print head sha from PR object ${pullRequest.head.sha}`)
+    core.info(`Print head sha from PR object ${pullRequest}`)
     core.info(
       `Print merge_commit sha from PR object ${pullRequest.merge_commit_sha}`
     )
