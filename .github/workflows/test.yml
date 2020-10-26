@@ -36,6 +36,7 @@ jobs:
             echo Outcome is: ${{ steps.passing-tests.outputs.test-outcome }}
             echo Path is: ${{ steps.passing-tests.outputs.trx-path }}
             echo trx files: ${{ steps.passing-tests.outputs.trx-files }}
+            echo head_sha: ${{ github.event.pull_request.head.sha }}
 
         - name: Upload test reports
           uses: actions/upload-artifact@v2
