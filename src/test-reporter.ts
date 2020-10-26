@@ -22,12 +22,6 @@ export async function generateMarkupFile(
       stdErrString += data.toString()
     }
   }
-  // options.cwd = './lib'
-  // await exec(
-  //   'pwsh',
-  //   ['-f', 'sample-test-results.ps1', reportTitle, reportName],
-  //   options
-  // )
 
   const workspace = __dirname.replace(/[/\\]$/, '')
 
@@ -55,6 +49,11 @@ export async function generateMarkupFile(
     core.info(`The file ${pwshScript} does not exist`)
   }
 
+  if (fs.existsSync(`${pwshScript}/sample-test-results.md`)) {
+    core.info('Markup file exists')
+  } else {
+    core.info('Markup file does not exist')
+  }
   core.info(`Stdout ${stdOutString}`)
   core.warning(`StdErr ${stdErrString}`)
 }
