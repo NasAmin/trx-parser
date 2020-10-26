@@ -19,22 +19,22 @@ describe('when loading xml from a trx file', () => {
     const data = await transformTrxToJson(
       './test-data/passing-tests/auditlog.trx'
     )
-    expect(data.TestRun.ResultSummary._outcome).toEqual('Completed')
-    expect(data.TestRun.ResultSummary.Counters._total).toEqual(21)
-    expect(data.TestRun.ResultSummary.Counters._passed).toEqual(10)
-    expect(data.TestRun.ResultSummary.Counters._passed).toEqual(
-      data.TestRun.ResultSummary.Counters._executed
+    expect(data.TrxData.TestRun.ResultSummary._outcome).toEqual('Completed')
+    expect(data.TrxData.TestRun.ResultSummary.Counters._total).toEqual(21)
+    expect(data.TrxData.TestRun.ResultSummary.Counters._passed).toEqual(10)
+    expect(data.TrxData.TestRun.ResultSummary.Counters._passed).toEqual(
+      data.TrxData.TestRun.ResultSummary.Counters._executed
     )
-    expect(data.TestRun.ResultSummary.Counters._failed).toEqual(0)
+    expect(data.TrxData.TestRun.ResultSummary.Counters._failed).toEqual(0)
   })
 
   test('LoadXml Should have an outcome of Failed', async () => {
     const data = await transformTrxToJson(
       './test-data/failing-tests/dummy-tests.trx'
     )
-    expect(data.TestRun.ResultSummary._outcome).toEqual('Failed')
-    expect(data.TestRun.ResultSummary.Counters._total).toEqual(4)
-    expect(data.TestRun.ResultSummary.Counters._passed).toEqual(3)
-    expect(data.TestRun.ResultSummary.Counters._failed).toEqual(1)
+    expect(data.TrxData.TestRun.ResultSummary._outcome).toEqual('Failed')
+    expect(data.TrxData.TestRun.ResultSummary.Counters._total).toEqual(4)
+    expect(data.TrxData.TestRun.ResultSummary.Counters._passed).toEqual(3)
+    expect(data.TrxData.TestRun.ResultSummary.Counters._failed).toEqual(1)
   })
 })

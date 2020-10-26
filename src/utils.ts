@@ -34,7 +34,7 @@ export function getAbsoluteFilePaths(
 export async function transformTrxToJson(
   filePath: string
 ): Promise<TrxDataWrapper> {
-  let jsonObj: any
+  let trxDataWrapper: any
 
   if (fs.existsSync(filePath)) {
     core.info(`Transforming file ${filePath}`)
@@ -64,21 +64,23 @@ export async function transformTrxToJson(
 
     if (xmlParser.validate(xmlData.toString()) === true) {
       const jsonString = xmlParser.parse(xmlData, options, true)
-      jsonObj = jsonString
-      const reportHeaders = getReportHeaders(jsonObj as TrxData)
-      jsonObj.ReportMetaData = {
-        TrxFilePath: filePath,
-        MarkupFilePath: filePath.replace('.trx', '.md'),
-        ReportName: reportHeaders.reportName,
-        ReportTitle: reportHeaders.reportTitle,
-        TrxJSonString: jsonString,
-        TrxXmlString: xmlData
+      const reportHeaders = getReportHeaders(jsonString)
+      trxDataWrapper = {
+        TrxData: jsonString as TrxData,
+        ReportMetaData: {
+          TrxFilePath: filePath,
+          MarkupFilePath: filePath.replace('.trx', '.md'),
+          ReportName: reportHeaders.reportName,
+          ReportTitle: reportHeaders.reportTitle,
+          TrxJSonString: JSON.stringify(jsonString),
+          TrxXmlString: xmlData
+        }
       }
     }
   } else {
     core.warning(`Trx file ${filePath} does not exist`)
   }
-  return jsonObj
+  return trxDataWrapper
 }
 
 export async function readTrxFile(filePath: string): Promise<string> {
@@ -100,7 +102,7 @@ export function areThereAnyFailingTests(
   trxJsonReports: TrxDataWrapper[]
 ): boolean {
   for (const trxData of trxJsonReports) {
-    if (trxData.TestRun.ResultSummary._outcome === 'Failed') {
+    if (trxData.TrxData.TestRun.ResultSummary._outcome === 'Failed') {
       return true
     }
   }

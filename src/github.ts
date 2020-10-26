@@ -17,7 +17,7 @@ export async function createCheckRun(
         head_sha: github.context.sha,
         status: 'completed',
         conclusion:
-          reportData.TestRun.ResultSummary._outcome === 'Failed'
+          reportData.TrxData.TestRun.ResultSummary._outcome === 'Failed'
             ? 'failure'
             : 'success',
         output: {

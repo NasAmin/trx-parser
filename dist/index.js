@@ -51,7 +51,7 @@ function createCheckRun(repoToken, reportData) {
                     name: 'trx-parser',
                     head_sha: github.context.sha,
                     status: 'completed',
-                    conclusion: reportData.TestRun.ResultSummary._outcome === 'Failed'
+                    conclusion: reportData.TrxData.TestRun.ResultSummary._outcome === 'Failed'
                         ? 'failure'
                         : 'success',
                     output: {
@@ -319,7 +319,7 @@ function getAbsoluteFilePaths(fileNames, directoryName) {
 exports.getAbsoluteFilePaths = getAbsoluteFilePaths;
 function transformTrxToJson(filePath) {
     return __awaiter(this, void 0, void 0, function* () {
-        let jsonObj;
+        let trxDataWrapper;
         if (fs.existsSync(filePath)) {
             core.info(`Transforming file ${filePath}`);
             const xmlData = yield readTrxFile(filePath);
@@ -345,22 +345,24 @@ function transformTrxToJson(filePath) {
             };
             if (xmlParser.validate(xmlData.toString()) === true) {
                 const jsonString = xmlParser.parse(xmlData, options, true);
-                jsonObj = jsonString;
-                const reportHeaders = getReportHeaders(jsonObj);
-                jsonObj.ReportMetaData = {
-                    TrxFilePath: filePath,
-                    MarkupFilePath: filePath.replace('.trx', '.md'),
-                    ReportName: reportHeaders.reportName,
-                    ReportTitle: reportHeaders.reportTitle,
-                    TrxJSonString: jsonString,
-                    TrxXmlString: xmlData
+                const reportHeaders = getReportHeaders(jsonString);
+                trxDataWrapper = {
+                    TrxData: jsonString,
+                    ReportMetaData: {
+                        TrxFilePath: filePath,
+                        MarkupFilePath: filePath.replace('.trx', '.md'),
+                        ReportName: reportHeaders.reportName,
+                        ReportTitle: reportHeaders.reportTitle,
+                        TrxJSonString: JSON.stringify(jsonString),
+                        TrxXmlString: xmlData
+                    }
                 };
             }
         }
         else {
             core.warning(`Trx file ${filePath} does not exist`);
         }
-        return jsonObj;
+        return trxDataWrapper;
     });
 }
 exports.transformTrxToJson = transformTrxToJson;
@@ -382,7 +384,7 @@ function transformAllTrxToJson(trxFiles) {
 exports.transformAllTrxToJson = transformAllTrxToJson;
 function areThereAnyFailingTests(trxJsonReports) {
     for (const trxData of trxJsonReports) {
-        if (trxData.TestRun.ResultSummary._outcome === 'Failed') {
+        if (trxData.TrxData.TestRun.ResultSummary._outcome === 'Failed') {
             return true;
         }
     }
