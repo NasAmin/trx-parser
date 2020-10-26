@@ -55,10 +55,8 @@ export async function generateMarkupFile(
     core.info(`The file ${pwshScript} does not exist`)
   }
 
-  core.info(`Generating Markup for ${reportName}`)
-  core.info(`Generating Markup for ${reportTitle}`)
   core.info(`Stdout ${stdOutString}`)
-  core.info(`StdErr ${stdErrString}`)
+  core.warning(`StdErr ${stdErrString}`)
 }
 
 export async function generateMarkupReports(
