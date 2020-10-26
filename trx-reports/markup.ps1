@@ -1,8 +1,14 @@
 #!/usr/bin/env pwsh
+param(
+    $reportName,
+    $reportTitle,
+    $trxPath,
+    $markupPath
+)
 
 function Build-MarkdownReport {
-    $script:report_name = "abc"
-    $script:report_title = "abc - name"
+    $script:report_name = $reportName
+    $script:report_title = $reportTitle
 
     if (-not $script:report_name) {
         $script:report_name = "TEST_RESULTS_$([datetime]::Now.ToString('yyyyMMdd_hhmmss'))"
@@ -11,8 +17,8 @@ function Build-MarkdownReport {
         $script:report_title = $report_name
     }
 
-    $test_results_path = "$PSScriptRoot/sample-test-results.trx"
-    $test_report_path = "$PSScriptRoot/sample-test-results.md"    
+    $test_results_path = $trxPath
+    $test_report_path = $markupPath
     & "$PSScriptRoot/trx2md.ps1" -Verbose `
         -trxFile $test_results_path `
         -mdFile $test_report_path -xslParams @{

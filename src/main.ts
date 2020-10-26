@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 import {createCheckRun} from './github'
-import {generateMarkupFile} from './test-reporter'
+import {generateMarkupReports} from './test-reporter'
 import {
   areThereAnyFailingTests,
   getTrxFiles,
@@ -25,7 +25,7 @@ export async function run(): Promise<void> {
     core.info(`Checking for failing tests`)
     const failingTestsFound = areThereAnyFailingTests(trxToJson)
 
-    await generateMarkupFile('abc', 'xyz')
+    await generateMarkupReports(trxToJson)
 
     if (failingTestsFound) {
       core.error(`At least one failing test was found`)

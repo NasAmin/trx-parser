@@ -1,6 +1,7 @@
 import * as exec from '@actions/exec'
 import * as core from '@actions/core'
 import * as fs from 'fs'
+import {TrxData} from './types/types'
 
 export async function generateMarkupFile(
   reportTitle: string,
@@ -40,7 +41,14 @@ export async function generateMarkupFile(
   if (fs.existsSync(pwshScript)) {
     await exec.exec(
       'pwsh',
-      ['-f', `${pwshScript}/sample-test-results.ps1`],
+      [
+        '-f',
+        `${pwshScript}/markup.ps1`,
+        reportName,
+        reportTitle,
+        `${pwshScript}/sample-test-results.trx`,
+        `${pwshScript}/sample-test-results.md`
+      ],
       options
     )
   } else {
@@ -51,4 +59,33 @@ export async function generateMarkupFile(
   core.info(`Generating Markup for ${reportTitle}`)
   core.info(`Stdout ${stdOutString}`)
   core.info(`StdErr ${stdErrString}`)
+}
+
+export async function generateMarkupReports(
+  testData: TrxData[]
+): Promise<void> {
+  for (const data of testData) {
+    const reportHeaders = getReportHeaders(data)
+    await generateMarkupFile(
+      reportHeaders.reportTitle,
+      reportHeaders.reportName
+    )
+  }
+}
+
+function getReportHeaders(
+  data: TrxData
+): {reportName: string; reportTitle: string} {
+  let reportTitle = ''
+  let reportName = ''
+  const dllName = data.TestRun.TestDefinitions.UnitTest[0]._storage
+    .split('/')
+    .pop()
+
+  if (dllName) {
+    reportTitle = dllName.replace('.dll', '').toUpperCase().replace('.', ' ')
+    reportName = dllName.replace('.dll', '').toUpperCase()
+  }
+
+  return {reportName, reportTitle}
 }

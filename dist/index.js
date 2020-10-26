@@ -132,7 +132,7 @@ function run() {
             const trxToJson = yield utils_1.transformAllTrxToJson(trxFiles);
             core.info(`Checking for failing tests`);
             const failingTestsFound = utils_1.areThereAnyFailingTests(trxToJson);
-            yield test_reporter_1.generateMarkupFile('abc', 'xyz');
+            yield test_reporter_1.generateMarkupReports(trxToJson);
             if (failingTestsFound) {
                 core.error(`At least one failing test was found`);
                 yield github_1.createCheckRun(token);
@@ -185,7 +185,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.generateMarkupFile = void 0;
+exports.generateMarkupReports = exports.generateMarkupFile = void 0;
 const exec = __importStar(__webpack_require__(1514));
 const core = __importStar(__webpack_require__(2186));
 const fs = __importStar(__webpack_require__(5747));
@@ -215,7 +215,14 @@ function generateMarkupFile(reportTitle, reportName) {
         core.info(`Powershell scripts path is ${pwshScript}`);
         options.cwd = pwshScript;
         if (fs.existsSync(pwshScript)) {
-            yield exec.exec('pwsh', ['-f', `${pwshScript}/sample-test-results.ps1`], options);
+            yield exec.exec('pwsh', [
+                '-f',
+                `${pwshScript}/markup.ps1`,
+                reportName,
+                reportTitle,
+                `${pwshScript}/sample-test-results.trx`,
+                `${pwshScript}/sample-test-results.md`
+            ], options);
         }
         else {
             core.info(`The file ${pwshScript} does not exist`);
@@ -227,6 +234,27 @@ function generateMarkupFile(reportTitle, reportName) {
     });
 }
 exports.generateMarkupFile = generateMarkupFile;
+function generateMarkupReports(testData) {
+    return __awaiter(this, void 0, void 0, function* () {
+        for (const data of testData) {
+            const reportHeaders = getReportHeaders(data);
+            yield generateMarkupFile(reportHeaders.reportTitle, reportHeaders.reportName);
+        }
+    });
+}
+exports.generateMarkupReports = generateMarkupReports;
+function getReportHeaders(data) {
+    let reportTitle = '';
+    let reportName = '';
+    const dllName = data.TestRun.TestDefinitions.UnitTest[0]._storage
+        .split('/')
+        .pop();
+    if (dllName) {
+        reportTitle = dllName.replace('.dll', '').toUpperCase().replace('.', ' ');
+        reportName = dllName.replace('.dll', '').toUpperCase();
+    }
+    return { reportName, reportTitle };
+}
 
 
 /***/ }),
