@@ -13,7 +13,7 @@ export async function createCheckRun(
       const response = await octokit.checks.create({
         owner: github.context.repo.owner,
         repo: github.context.repo.repo,
-        name: 'trx-parser',
+        name: reportData.ReportMetaData.ReportName,
         head_sha: github.context.sha,
         status: 'completed',
         conclusion:
