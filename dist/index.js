@@ -212,10 +212,14 @@ function generateMarkupFile(reportTitle, reportName) {
             yield exec.exec('pwsh', [
                 '-f',
                 `${pwshScript}/markup.ps1`,
-                `-reportName ${reportName}`,
-                `- reportTitle ${reportTitle}`,
-                `-trxPath ${pwshScript}/sample-test-results.trx`,
-                `-markupPath ${pwshScript}/sample-test-results.md`
+                '-reportName',
+                reportName,
+                '-reportTitle',
+                reportTitle,
+                '-trxPath',
+                `${pwshScript}/sample-test-results.trx`,
+                '-markupPath',
+                `${pwshScript}/sample-test-results.md`
             ], options);
         }
         else {
