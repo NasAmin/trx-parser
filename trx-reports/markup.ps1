@@ -1,9 +1,10 @@
 #!/usr/bin/env pwsh
-param(
-    $reportName,
-    $reportTitle,
-    $trxPath,
-    $markupPath
+param(    
+    [string]$reportName=$null,
+    [string]$reportTitle=$null,
+    [Parameter(Mandatory)]
+    [string]$trxPath,
+    [string]$markupPath=$null
 )
 
 function Build-MarkdownReport {
