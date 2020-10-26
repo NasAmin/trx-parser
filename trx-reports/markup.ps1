@@ -29,8 +29,8 @@ function Build-MarkdownReport {
 Write-Output "Generating Markdown Report from TRX file"
 Build-MarkdownReport
 ls
-if (Test-Path -path $test_report_path) {
-    cat $test_report_path    
+if (Test-Path -Path $test_report_path) {
+    Get-Content -Path $test_report_path    
 }else {
     Write-Output 'Test report does not exist'
 }
