@@ -2,6 +2,7 @@ import * as github from '@actions/github'
 import * as core from '@actions/core'
 import {TrxDataWrapper} from './types/types'
 import * as Webhooks from '@octokit/webhooks'
+import {getMarkupForTrx} from './markup'
 
 export async function createCheckRun(
   repoToken: string,
@@ -31,7 +32,8 @@ export async function createCheckRun(
         output: {
           title: reportData.ReportMetaData.ReportTitle,
           summary: `This test run completed at ${Date.now()}`,
-          text: reportData.ReportMetaData.TrxJSonString
+          // text: reportData.ReportMetaData.TrxJSonString
+          text: getMarkupForTrx()
         }
       })
 
