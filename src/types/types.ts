@@ -114,4 +114,5 @@ export interface TestRun {
 
 export interface TrxData {
   TestRun: TestRun
+  TrxFilePath: string
 }

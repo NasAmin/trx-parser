@@ -42,6 +42,6 @@ jobs:
           run: |            
             Write-Output 'Testing on: ${{ matrix.os }}'            
             ls trx-reports
-            Write-Output 'Powershell test finished'            
+            Write-Output 'Powershell test finished'
 
 

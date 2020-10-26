@@ -42,7 +42,7 @@ describe('when loading xml from a trx file', () => {
 
 describe('Generate Gist for test reports', () => {
   test('Generate Markup gist', async () => {
-    await generateMarkupFile('abc', 'xyz')
+    await generateMarkupFile('abc', 'xyz', 'abc')
     expect(true).toBeTruthy()
   })
 })

@@ -189,7 +189,7 @@ exports.generateMarkupReports = exports.generateMarkupFile = void 0;
 const exec = __importStar(__webpack_require__(1514));
 const core = __importStar(__webpack_require__(2186));
 const fs = __importStar(__webpack_require__(5747));
-function generateMarkupFile(reportTitle, reportName) {
+function generateMarkupFile(reportTitle, reportName, trxPath) {
     return __awaiter(this, void 0, void 0, function* () {
         let stdOutString = '';
         let stdErrString = '';
@@ -217,9 +217,7 @@ function generateMarkupFile(reportTitle, reportName) {
                 '-reportTitle',
                 reportTitle,
                 '-trxPath',
-                `${pwshScript}/sample-test-results.trx`,
-                '-markupPath',
-                `${pwshScript}/sample-test-results.md`
+                trxPath
             ], options);
         }
         else {
@@ -240,7 +238,7 @@ function generateMarkupReports(testData) {
     return __awaiter(this, void 0, void 0, function* () {
         for (const data of testData) {
             const reportHeaders = getReportHeaders(data);
-            yield generateMarkupFile(reportHeaders.reportTitle, reportHeaders.reportName);
+            yield generateMarkupFile(reportHeaders.reportTitle, reportHeaders.reportName, data.TrxFilePath);
         }
     });
 }
@@ -354,6 +352,7 @@ function transformTrxToJson(filePath) {
             };
             if (xmlParser.validate(xmlData.toString()) === true) {
                 jsonObj = xmlParser.parse(xmlData, options, true);
+                jsonObj.TrxFilePath = filePath;
             }
         }
         else {
