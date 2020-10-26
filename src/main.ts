@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 import {createCheckRun} from './github'
-import {generateMarkupReports} from './test-reporter'
+import {generateMarkupReports} from './pwsh-markup-generator'
 import {
   areThereAnyFailingTests,
   getTrxFiles,

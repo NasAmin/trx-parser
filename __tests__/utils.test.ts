@@ -1,6 +1,6 @@
 import * as path from 'path'
 import {getAbsoluteFilePaths, transformTrxToJson} from '../src/utils'
-import {generateMarkupFile} from '../src/test-reporter'
+import {generateMarkupFile} from '../src/pwsh-markup-generator'
 
 describe('Test GetAbsolutePath returns correct values', () => {
   it('getAbsoluteFilePaths()', async () => {

@@ -55,11 +55,12 @@ export async function generateMarkupFile(
     core.info(`The file ${pwshScript} does not exist`)
   }
 
-  if (fs.existsSync(`${pwshScript}/sample-test-results.md`)) {
-    core.info('Markup file exists')
+  if (fs.existsSync(markupPath)) {
+    core.info(`Markup file ${markupPath} exists`)
   } else {
-    core.info('Markup file does not exist')
+    core.info(`Markup file ${markupPath} does not exist`)
   }
+
   core.info(`Stdout ${stdOutString}`)
   core.warning(`StdErr ${stdErrString}`)
 }

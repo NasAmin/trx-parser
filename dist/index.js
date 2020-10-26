@@ -116,7 +116,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = void 0;
 const core = __importStar(__webpack_require__(2186));
 const github_1 = __webpack_require__(5928);
-const test_reporter_1 = __webpack_require__(9877);
+const pwsh_markup_generator_1 = __webpack_require__(8894);
 const utils_1 = __webpack_require__(918);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -132,7 +132,7 @@ function run() {
             const trxToJson = yield utils_1.transformAllTrxToJson(trxFiles);
             core.info(`Checking for failing tests`);
             const failingTestsFound = utils_1.areThereAnyFailingTests(trxToJson);
-            yield test_reporter_1.generateMarkupReports(trxToJson);
+            yield pwsh_markup_generator_1.generateMarkupReports(trxToJson);
             if (failingTestsFound) {
                 core.error(`At least one failing test was found`);
                 yield github_1.createCheckRun(token);
@@ -151,7 +151,7 @@ run();
 
 /***/ }),
 
-/***/ 9877:
+/***/ 8894:
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 "use strict";
@@ -225,11 +225,11 @@ function generateMarkupFile(reportTitle, reportName, trxPath, markupPath) {
         else {
             core.info(`The file ${pwshScript} does not exist`);
         }
-        if (fs.existsSync(`${pwshScript}/sample-test-results.md`)) {
-            core.info('Markup file exists');
+        if (fs.existsSync(markupPath)) {
+            core.info(`Markup file ${markupPath} exists`);
         }
         else {
-            core.info('Markup file does not exist');
+            core.info(`Markup file ${markupPath} does not exist`);
         }
         core.info(`Stdout ${stdOutString}`);
         core.warning(`StdErr ${stdErrString}`);
