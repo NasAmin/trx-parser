@@ -1,3 +1,6 @@
+import * as fs from 'fs'
+import {promises} from 'fs'
+
 export function getMarkupForTrx(): string {
   return `
 # Test Results - Staging Tests
@@ -18,4 +21,14 @@ export function getMarkupForTrx(): string {
    </table>
 </details>
 <p>Please ensure your jira story is in one of the allowed statuses</p>`.trimLeft()
+}
+
+export async function getMarkupForTrxFromGist(
+  markupPath: string
+): Promise<string> {
+  let markup = ''
+  if (fs.existsSync(markupPath)) {
+    markup = await promises.readFile(markupPath, 'utf8')
+  }
+  return markup
 }
