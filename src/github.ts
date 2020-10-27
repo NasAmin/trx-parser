@@ -35,7 +35,7 @@ export async function createCheckRun(
             : 'success',
         output: {
           title: reportData.ReportMetaData.ReportTitle,
-          summary: `This test run completed at ${Date.now()}`,
+          summary: `This test run completed at ${new Date().toLocaleDateString()}`,
           // text: reportData.ReportMetaData.TrxJSonString
           text: markupData
         }
