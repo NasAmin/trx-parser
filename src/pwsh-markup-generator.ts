@@ -4,7 +4,7 @@ import * as fs from 'fs'
 import {TrxDataWrapper} from './types/types'
 export async function generateMarkupFile(
   testData: TrxDataWrapper
-): Promise<void> {
+): Promise<string> {
   let stdOutString = ''
   let stdErrString = ''
 
@@ -59,8 +59,15 @@ export async function generateMarkupFile(
     )
   }
 
-  core.info(`Stdout ${stdOutString}`)
-  core.warning(`StdErr ${stdErrString}`)
+  core.debug('************* Printing stdOutString as markuip *************')
+  core.debug(`Stdout ${stdOutString}`)
+  core.debug('************* Finished printing markup *************')
+
+  if (stdErrString) {
+    core.warning(`StdErr ${stdErrString}`)
+  }
+
+  return stdOutString
 }
 
 export async function generateMarkupReports(
