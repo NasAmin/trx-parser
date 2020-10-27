@@ -22,8 +22,7 @@ export async function createCheckRun(
       const markupData = await getMarkupForTrxFromGist(
         reportData.ReportMetaData.MarkupFilePath
       )
-      core.info('*********** Markup Data **************')
-      core.info(markupData)
+
       const response = await octokit.checks.create({
         owner: github.context.repo.owner,
         repo: github.context.repo.repo,
