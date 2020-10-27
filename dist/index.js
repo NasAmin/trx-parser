@@ -54,18 +54,17 @@ function createCheckRun(repoToken, reportData) {
                 core.info(`Creating status check for GitSha: ${git_sha}`);
                 const markupData = yield markup_1.getMarkupForTrxFromGist(reportData.ReportMetaData.MarkupFilePath);
                 const checkTime = new Date().toUTCString();
-                const reportTitle = `${reportData.ReportMetaData.ReportTitle} Check`;
                 const response = yield octokit.checks.create({
                     owner: github.context.repo.owner,
                     repo: github.context.repo.repo,
-                    name: reportData.ReportMetaData.ReportName.toLowerCase(),
+                    name: `${reportData.ReportMetaData.ReportName.toLowerCase()} Check`,
                     head_sha: git_sha,
                     status: 'completed',
                     conclusion: reportData.TrxData.TestRun.ResultSummary._outcome === 'Failed'
                         ? 'failure'
                         : 'success',
                     output: {
-                        title: reportTitle,
+                        title: reportData.ReportMetaData.ReportTitle,
                         summary: `This test run completed at ${checkTime}`,
                         // text: reportData.ReportMetaData.TrxJSonString
                         text: markupData

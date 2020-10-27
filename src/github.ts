@@ -23,11 +23,10 @@ export async function createCheckRun(
         reportData.ReportMetaData.MarkupFilePath
       )
       const checkTime = new Date().toUTCString()
-      const reportTitle = `${reportData.ReportMetaData.ReportTitle} Check`
       const response = await octokit.checks.create({
         owner: github.context.repo.owner,
         repo: github.context.repo.repo,
-        name: reportData.ReportMetaData.ReportName.toLowerCase(),
+        name: `${reportData.ReportMetaData.ReportName.toLowerCase()} Check`,
         head_sha: git_sha,
         status: 'completed',
         conclusion:
@@ -35,7 +34,7 @@ export async function createCheckRun(
             ? 'failure'
             : 'success',
         output: {
-          title: reportTitle,
+          title: reportData.ReportMetaData.ReportTitle,
           summary: `This test run completed at ${checkTime}`,
           // text: reportData.ReportMetaData.TrxJSonString
           text: markupData
