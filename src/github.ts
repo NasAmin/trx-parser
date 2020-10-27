@@ -23,7 +23,7 @@ export async function createCheckRun(
         reportData.ReportMetaData.MarkupFilePath
       )
       const checkTime = new Date().toUTCString()
-      const reportName = `${reportData.ReportMetaData.ReportName} Check`
+      const reportName = `${reportData.ReportMetaData.ReportName.toLowerCase()}-check`
       const response = await octokit.checks.create({
         owner: github.context.repo.owner,
         repo: github.context.repo.repo,
