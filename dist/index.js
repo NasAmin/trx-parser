@@ -52,6 +52,9 @@ function createCheckRun(repoToken, reportData) {
             if (github.context.eventName === 'pull_request') {
                 core.info(`PR Ref: ${github.context.ref}`);
                 core.info(`Creating status check for GitSha: ${git_sha}`);
+                const markupData = yield markup_1.getMarkupForTrxFromGist(reportData.ReportMetaData.MarkupFilePath);
+                core.info('*********** Markup Data **************');
+                core.info(markupData);
                 const response = yield octokit.checks.create({
                     owner: github.context.repo.owner,
                     repo: github.context.repo.repo,
@@ -65,7 +68,7 @@ function createCheckRun(repoToken, reportData) {
                         title: reportData.ReportMetaData.ReportTitle,
                         summary: `This test run completed at ${Date.now()}`,
                         // text: reportData.ReportMetaData.TrxJSonString
-                        text: yield markup_1.getMarkupForTrxFromGist(reportData.ReportMetaData.MarkupFilePath)
+                        text: markupData
                     }
                 });
                 if (response.status !== 201) {

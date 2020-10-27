@@ -19,6 +19,11 @@ export async function createCheckRun(
     if (github.context.eventName === 'pull_request') {
       core.info(`PR Ref: ${github.context.ref}`)
       core.info(`Creating status check for GitSha: ${git_sha}`)
+      const markupData = await getMarkupForTrxFromGist(
+        reportData.ReportMetaData.MarkupFilePath
+      )
+      core.info('*********** Markup Data **************')
+      core.info(markupData)
       const response = await octokit.checks.create({
         owner: github.context.repo.owner,
         repo: github.context.repo.repo,
@@ -33,9 +38,7 @@ export async function createCheckRun(
           title: reportData.ReportMetaData.ReportTitle,
           summary: `This test run completed at ${Date.now()}`,
           // text: reportData.ReportMetaData.TrxJSonString
-          text: await getMarkupForTrxFromGist(
-            reportData.ReportMetaData.MarkupFilePath
-          )
+          text: markupData
         }
       })
 
