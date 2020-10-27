@@ -437,7 +437,7 @@ function transformTrxToJson(filePath) {
                     ReportMetaData: {
                         TrxFilePath: filePath,
                         MarkupFilePath: filePath.replace('.trx', '.md'),
-                        ReportName: reportHeaders.reportName,
+                        ReportName: `${reportHeaders.reportName}-check`,
                         ReportTitle: reportHeaders.reportTitle,
                         TrxJSonString: JSON.stringify(jsonString),
                         TrxXmlString: xmlData
