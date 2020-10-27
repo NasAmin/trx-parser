@@ -46,9 +46,13 @@ function Build-MarkdownReport {
 
 Write-Output "Generating Markdown Report from TRX file"
 Build-MarkdownReport
+$markupData=$null
 if (Test-Path -Path $markupPath) {
     Write-Output "Markup file $markupPath exists"
+    $markupData = [System.IO.File]::ReadAllText($markupPath)
     # Get-Content -Path $markupPath
 }else {
     Write-Output 'Test report does not exist'
 }
+
+return $markupData
