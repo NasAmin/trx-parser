@@ -54,11 +54,10 @@ function createCheckRun(repoToken, reportData) {
                 core.info(`Creating status check for GitSha: ${git_sha}`);
                 const markupData = yield markup_1.getMarkupForTrxFromGist(reportData.ReportMetaData.MarkupFilePath);
                 const checkTime = new Date().toUTCString();
-                const reportName = `${reportData.ReportMetaData.ReportName.toLowerCase()}-check`;
                 const response = yield octokit.checks.create({
                     owner: github.context.repo.owner,
                     repo: github.context.repo.repo,
-                    name: reportName,
+                    name: reportData.ReportMetaData.ReportName.toLowerCase(),
                     head_sha: git_sha,
                     status: 'completed',
                     conclusion: reportData.TrxData.TestRun.ResultSummary._outcome === 'Failed'
