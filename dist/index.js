@@ -276,9 +276,9 @@ function generateMarkupFile(testData) {
         else {
             core.info(`Markup file ${testData.ReportMetaData.MarkupFilePath} does not exist`);
         }
-        core.debug('************* Printing stdOutString as markuip *************');
-        core.debug(`Stdout ${stdOutString}`);
-        core.debug('************* Finished printing markup *************');
+        core.info('************* Printing stdOutString as markuip *************');
+        core.info(`Stdout ${stdOutString}`);
+        core.info('************* Finished printing markup *************');
         if (stdErrString) {
             core.warning(`StdErr ${stdErrString}`);
         }
