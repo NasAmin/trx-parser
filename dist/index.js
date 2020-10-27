@@ -53,6 +53,7 @@ function createCheckRun(repoToken, reportData) {
                 core.info(`PR Ref: ${github.context.ref}`);
                 core.info(`Creating status check for GitSha: ${git_sha}`);
                 const markupData = yield markup_1.getMarkupForTrxFromGist(reportData.ReportMetaData.MarkupFilePath);
+                const checkTime = new Date().toLocaleDateString();
                 const response = yield octokit.checks.create({
                     owner: github.context.repo.owner,
                     repo: github.context.repo.repo,
@@ -64,7 +65,7 @@ function createCheckRun(repoToken, reportData) {
                         : 'success',
                     output: {
                         title: reportData.ReportMetaData.ReportTitle,
-                        summary: `This test run completed at ${new Date().toLocaleDateString()}`,
+                        summary: `This test run completed at ${checkTime}`,
                         // text: reportData.ReportMetaData.TrxJSonString
                         text: markupData
                     }
