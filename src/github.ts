@@ -22,7 +22,7 @@ export async function createCheckRun(
       const markupData = await getMarkupForTrxFromGist(
         reportData.ReportMetaData.MarkupFilePath
       )
-      const checkTime = new Date().toString()
+      const checkTime = new Date().toUTCString()
       const reportTitle = `${reportData.ReportMetaData.ReportTitle} Check`
       const response = await octokit.checks.create({
         owner: github.context.repo.owner,
