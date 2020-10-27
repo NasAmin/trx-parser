@@ -59,9 +59,7 @@ export async function generateMarkupFile(
     )
   }
 
-  core.info('************* Printing stdOutString as markuip *************')
-  core.info(`Stdout ${stdOutString}`)
-  core.info('************* Finished printing markup *************')
+  core.debug(`Stdout ${stdOutString}`)
 
   if (stdErrString) {
     core.warning(`StdErr ${stdErrString}`)
