@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
 import {createCheckRun} from './github'
+import {generateMarkupReports} from './pwsh-markup-generator'
 import {
   areThereAnyFailingTests,
   getTrxFiles,
@@ -8,9 +9,10 @@ import {
 
 export async function run(): Promise<void> {
   try {
-    const token = core.getInput('repo-token')
+    const token = core.getInput('REPO_TOKEN')
     const trxPath = core.getInput('TRX_PATH')
-    core.setCommandEcho(true)
+    const ignoreTestFailures: boolean =
+      core.getInput('IGNORE_FAILURE', {required: false}) === 'true'
 
     core.setOutput('test-outcome', 'Passed')
     core.setOutput('trx-path', trxPath)
@@ -24,10 +26,19 @@ export async function run(): Promise<void> {
     core.info(`Checking for failing tests`)
     const failingTestsFound = areThereAnyFailingTests(trxToJson)
 
+    await generateMarkupReports(trxToJson)
+
+    for (const data of trxToJson) {
+      await createCheckRun(token, ignoreTestFailures, data)
+    }
+
     if (failingTestsFound) {
-      core.error(`At least one failing test was found`)
-      await createCheckRun(token)
-      core.setFailed('Failing tests found')
+      if (ignoreTestFailures) {
+        core.warning(`Workflow configured to ignore test failures`)
+      } else {
+        core.error(`At least one failing test was found`)
+        core.setFailed('Failing tests found')
+      }
     }
 
     core.setOutput('trx-files', trxFiles)

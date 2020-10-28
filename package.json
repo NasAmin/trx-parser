@@ -12,7 +12,8 @@
     "lint-fix": "eslint --fix src/**/*.ts",
     "package": "ncc build --source-map --license licenses.txt",
     "test": "jest",
-    "all": "npm run build && npm run format && npm run lint && npm run package && npm test"
+    "assets": "cp -r trx-reports dist/",
+    "all": "npm run build && npm run format && npm run lint && npm run package && npm test && npm run assets"
   },
   "repository": {
     "type": "git",
@@ -44,6 +45,7 @@
   },
   "dependencies": {
     "@actions/core": "^1.2.6",
+    "@actions/exec": "^1.0.4",
     "@actions/github": "^4.0.0",
     "@octokit/webhooks": "^7.15.0",
     "@types/he": "^1.1.1",
