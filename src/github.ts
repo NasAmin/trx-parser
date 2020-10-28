@@ -23,7 +23,6 @@ export async function createCheckRun(
         reportData.ReportMetaData.MarkupFilePath
       )
       const checkTime = new Date().toUTCString()
-      core.info(`Check time is: ${checkTime}`)
       const response = await octokit.checks.create({
         owner: github.context.repo.owner,
         repo: github.context.repo.repo,
