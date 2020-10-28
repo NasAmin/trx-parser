@@ -39,10 +39,5 @@ jobs:
             echo git_sha: ${{ github.sha}}
             echo git_ref: ${{ github.ref}}
 
-        - name: Upload test reports
-          uses: actions/upload-artifact@v2
-          with:
-            name: TestReports
-            path: test-data/**/*.md
 
 
