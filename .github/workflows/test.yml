@@ -3,8 +3,7 @@ on: # rebuild any PRs and main branch changes
   pull_request:
   push:
     branches:
-      - main
-  create:
+      - main 
 
 jobs:
   test:
