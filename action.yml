@@ -11,6 +11,10 @@ inputs:
     REPO_TOKEN:
       description: 'Pass in the repository token. This should be generally be secrets.GITHUB_TOKEN. This is used for GitHub checks api'
       required: true
+    IGNORE_FAILURE:
+      description: 'Set to true if you want test failures not to block the pull requests. The check status will be set to neutral'
+      required: false
+      default: 'false'
 outputs:
   test-outcome:
     description: 'Test outcome Failed/Passed'

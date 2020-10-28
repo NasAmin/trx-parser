@@ -11,7 +11,8 @@ export async function run(): Promise<void> {
   try {
     const token = core.getInput('REPO_TOKEN')
     const trxPath = core.getInput('TRX_PATH')
-    core.setCommandEcho(true)
+    const ignoreTestFailures: boolean =
+      core.getInput('IGNORE_FAILURE', {required: false}) === 'true'
 
     core.setOutput('test-outcome', 'Passed')
     core.setOutput('trx-path', trxPath)
@@ -28,12 +29,16 @@ export async function run(): Promise<void> {
     await generateMarkupReports(trxToJson)
 
     for (const data of trxToJson) {
-      await createCheckRun(token, data)
+      await createCheckRun(token, ignoreTestFailures, data)
     }
 
     if (failingTestsFound) {
-      core.error(`At least one failing test was found`)
-      core.setFailed('Failing tests found')
+      if (ignoreTestFailures) {
+        core.warning(`Workflow configured to ignore test failures`)
+      } else {
+        core.error(`At least one failing test was found`)
+        core.setFailed('Failing tests found')
+      }
     }
 
     core.setOutput('trx-files', trxFiles)

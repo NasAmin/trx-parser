@@ -6,6 +6,7 @@ import {getMarkupForTrxFromGist} from './markup'
 
 export async function createCheckRun(
   repoToken: string,
+  ignoreTestFailures: boolean,
   reportData: TrxDataWrapper
 ): Promise<void> {
   try {
@@ -32,7 +33,9 @@ export async function createCheckRun(
         status: 'completed',
         conclusion:
           reportData.TrxData.TestRun.ResultSummary._outcome === 'Failed'
-            ? 'failure'
+            ? ignoreTestFailures
+              ? 'neutral'
+              : 'failure'
             : 'success',
         output: {
           title: reportData.ReportMetaData.ReportTitle,

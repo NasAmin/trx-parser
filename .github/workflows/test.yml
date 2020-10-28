@@ -29,6 +29,7 @@ jobs:
           with:
             TRX_PATH: ${{ github.workspace }}/test-data/failing-tests
             REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            IGNORE_FAILURE: true
 
         - name: Print Test Outcome
           run: |

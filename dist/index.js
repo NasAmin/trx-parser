@@ -40,7 +40,7 @@ exports.createCheckRun = void 0;
 const github = __importStar(__webpack_require__(5438));
 const core = __importStar(__webpack_require__(2186));
 const markup_1 = __webpack_require__(2727);
-function createCheckRun(repoToken, reportData) {
+function createCheckRun(repoToken, ignoreTestFailures, reportData) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             core.info('Trying to create check');
@@ -62,7 +62,9 @@ function createCheckRun(repoToken, reportData) {
                     head_sha: git_sha,
                     status: 'completed',
                     conclusion: reportData.TrxData.TestRun.ResultSummary._outcome === 'Failed'
-                        ? 'failure'
+                        ? ignoreTestFailures
+                            ? 'neutral'
+                            : 'failure'
                         : 'success',
                     output: {
                         title: reportData.ReportMetaData.ReportTitle,
@@ -136,7 +138,7 @@ function run() {
         try {
             const token = core.getInput('REPO_TOKEN');
             const trxPath = core.getInput('TRX_PATH');
-            core.setCommandEcho(true);
+            const ignoreTestFailures = core.getInput('IGNORE_FAILURE', { required: false }) === 'true';
             core.setOutput('test-outcome', 'Passed');
             core.setOutput('trx-path', trxPath);
             core.info(`Finding Trx files in: ${trxPath}`);
@@ -147,11 +149,16 @@ function run() {
             const failingTestsFound = utils_1.areThereAnyFailingTests(trxToJson);
             yield pwsh_markup_generator_1.generateMarkupReports(trxToJson);
             for (const data of trxToJson) {
-                yield github_1.createCheckRun(token, data);
+                yield github_1.createCheckRun(token, ignoreTestFailures, data);
             }
             if (failingTestsFound) {
-                core.error(`At least one failing test was found`);
-                core.setFailed('Failing tests found');
+                if (ignoreTestFailures) {
+                    core.warning(`Workflow configured to ignore test failures`);
+                }
+                else {
+                    core.error(`At least one failing test was found`);
+                    core.setFailed('Failing tests found');
+                }
             }
             core.setOutput('trx-files', trxFiles);
         }
