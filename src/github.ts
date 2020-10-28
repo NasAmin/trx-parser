@@ -22,7 +22,8 @@ export async function createCheckRun(
       const markupData = await getMarkupForTrxFromGist(
         reportData.ReportMetaData.MarkupFilePath
       )
-      const checkTime = new Date().toUTCString()
+      let checkTime = new Date().toUTCString()
+      checkTime = `\`${checkTime}\``
       const response = await octokit.checks.create({
         owner: github.context.repo.owner,
         repo: github.context.repo.repo,
@@ -35,7 +36,7 @@ export async function createCheckRun(
             : 'success',
         output: {
           title: reportData.ReportMetaData.ReportTitle,
-          summary: `This test run completed at \`${checkTime}\``,
+          summary: `This test run completed at ${checkTime}`,
           // text: reportData.ReportMetaData.TrxJSonString
           text: markupData
         }
