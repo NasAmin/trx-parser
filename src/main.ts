@@ -9,7 +9,7 @@ import {
 
 export async function run(): Promise<void> {
   try {
-    const token = core.getInput('repo-token')
+    const token = core.getInput('REPO_TOKEN')
     const trxPath = core.getInput('TRX_PATH')
     core.setCommandEcho(true)
 

@@ -134,7 +134,7 @@ const utils_1 = __webpack_require__(918);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const token = core.getInput('repo-token');
+            const token = core.getInput('REPO_TOKEN');
             const trxPath = core.getInput('TRX_PATH');
             core.setCommandEcho(true);
             core.setOutput('test-outcome', 'Passed');
