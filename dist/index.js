@@ -44,12 +44,12 @@ function createCheckRun(repoToken, ignoreTestFailures, reportData) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             core.info('Trying to create check');
-            const prPayload = github.context
-                .payload;
-            core.info(`Head sha from the payload ${prPayload.pull_request.head.sha}`);
             const octokit = github.getOctokit(repoToken);
-            const git_sha = prPayload.pull_request.head.sha;
             if (github.context.eventName === 'pull_request') {
+                const prPayload = github.context
+                    .payload;
+                core.info(`Head sha from the payload ${prPayload.pull_request.head.sha}`);
+                const git_sha = prPayload.pull_request.head.sha;
                 core.info(`PR Ref: ${github.context.ref}`);
                 core.info(`Creating status check for GitSha: ${git_sha}`);
                 const markupData = yield markup_1.getMarkupForTrxFromGist(reportData.ReportMetaData.MarkupFilePath);
