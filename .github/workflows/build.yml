@@ -15,7 +15,7 @@ jobs:
         id: get_branch
         shell: bash
         run: |
-          branch="$(echo ${GITHUB_REF#refs/heads/})"
+          branch=$(echo ${GITHUB_REF#refs/heads/})
           echo outer $branch
           if [ ${{ github.event_name == 'pull_request' }} ]
           then
@@ -43,11 +43,14 @@ jobs:
         id: extract_pr_branch
 
       # extract branch name on pull request
-      - name: Print branch name        
+      - name: Print branch name
+        env:
+          branch_name: ${{ steps.get_branch.outputs.BRANCH_NAME }} || ${{ steps.extract_pr_branch.outputs.BRANCH_NAME }}
         run: |          
           echo Branch name is ${{ steps.get_branch.outputs.BRANCH_NAME }}
           echo Push branch ${{ steps.extract_branch.outputs.BRANCH_NAME }}
-          echo PR branch ${{ steps.extract_pr_branch.outputs.BRANCH_NAME }}    
+          echo PR branch ${{ steps.extract_pr_branch.outputs.BRANCH_NAME }}
+          echo env branch is $branch_name
 
    
   build:
