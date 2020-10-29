@@ -43,7 +43,7 @@ jobs:
         run: |          
           echo Branch name is ${{ steps.get_branch.outputs.BRANCH_NAME }}
           echo Pus branch ${{ steps.extract_branch.outputs.BRANCH_NAME }}
-          echo PR branch ${{ steps.extract_branch.outputs.BRANCH_NAME }}
+          echo PR branch ${{ steps.extract_pr_branch.outputs.BRANCH_NAME }}
 
    
   build:
