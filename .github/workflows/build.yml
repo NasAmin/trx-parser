@@ -19,7 +19,7 @@ jobs:
             branch=$(echo ${PR_HEAD#refs/heads/} | tr / - | tr  A-Z a-z)
             echo "::set-output name=branch::$branch"
             echo "::set-output name=namespace::$branch"
-            echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_HEAD_REF})"     
+            echo "::set-output name=BRANCH_NAME::$(echo ${GITHUB_HEAD_REF})"     
           elif [ ${{ github.event_name == 'push' }} ]
           then
             branch=$(echo ${PUSH_REF#refs/heads/} | tr / - | tr  A-Z a-z)
