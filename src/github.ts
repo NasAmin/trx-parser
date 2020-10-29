@@ -2,7 +2,7 @@ import * as github from '@actions/github'
 import * as core from '@actions/core'
 import {TrxDataWrapper} from './types/types'
 import * as Webhooks from '@octokit/webhooks'
-import {getMarkupForTrxFromGist} from './markup'
+import {getMarkupForTrx} from './markup'
 
 export async function createCheckRun(
   repoToken: string,
@@ -21,9 +21,10 @@ export async function createCheckRun(
 
       core.info(`PR Ref: ${github.context.ref}`)
       core.info(`Creating status check for GitSha: ${git_sha}`)
-      const markupData = await getMarkupForTrxFromGist(
-        reportData.ReportMetaData.MarkupFilePath
-      )
+      // const markupData = await getMarkupForTrxFromGist(
+      //   reportData.ReportMetaData.MarkupFilePath
+      // )
+      const markupData = getMarkupForTrx(reportData)
       const checkTime = new Date().toUTCString()
       core.info(`Check time is: ${checkTime}`)
       const response = await octokit.checks.create({

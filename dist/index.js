@@ -52,7 +52,10 @@ function createCheckRun(repoToken, ignoreTestFailures, reportData) {
                 const git_sha = prPayload.pull_request.head.sha;
                 core.info(`PR Ref: ${github.context.ref}`);
                 core.info(`Creating status check for GitSha: ${git_sha}`);
-                const markupData = yield markup_1.getMarkupForTrxFromGist(reportData.ReportMetaData.MarkupFilePath);
+                // const markupData = await getMarkupForTrxFromGist(
+                //   reportData.ReportMetaData.MarkupFilePath
+                // )
+                const markupData = markup_1.getMarkupForTrx(reportData);
                 const checkTime = new Date().toUTCString();
                 core.info(`Check time is: ${checkTime}`);
                 const response = yield octokit.checks.create({
@@ -210,26 +213,23 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getMarkupForTrxFromGist = exports.getMarkupForTrx = void 0;
 const fs = __importStar(__webpack_require__(5747));
 const fs_1 = __webpack_require__(5747);
-function getMarkupForTrx() {
+function getMarkupForTrx(testData) {
     return `
-# Test Results - Staging Tests
+# Test Results - \`${testData.ReportMetaData.ReportTitle}\`
 <p>Expand the following summaries for more details:</p>
-<details>
-   <summary>Duration: 0.7564394 seconds </summary>
-   <table>
-      <tr>
-         <th>Detected Status</th>
-         <td>Closed</td>
-         <td>:x:</td>
-      </tr>
-      <tr>
-         <th>Allowed Statuses</th>
-         <td>Assessment, Open</td>
-         <td>:heavy_check_mark:</td>
-      </tr>
-   </table>
+<details>;
+    <summary Duration: blah seconds
+    </summary>
+| **Times** | |
+|--|--|
+| **Started:**  | \`heh\` |
+| **Creation:** | \`beh\` 
+| **Queuing:**  | \`ha\`
+| **Finished:** | \`help\` |
+| **Duration:** | \`time\` seconds |
+
 </details>
-<p>Please ensure your jira story is in one of the allowed statuses</p>`.trimLeft();
+`;
 }
 exports.getMarkupForTrx = getMarkupForTrx;
 function getMarkupForTrxFromGist(markupPath) {
