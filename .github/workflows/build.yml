@@ -12,9 +12,9 @@ jobs:
         uses: actions/checkout@v2
       # print branch name
       - name: Get branch name
-        id: get-branch
-        run: |          
-          if ${{ github.event_name == 'pull_request' }}
+        id: get_branch
+        run: |
+          if [ ${{ github.event_name == 'pull_request' }} ]
           then
             branch=$(echo ${PR_HEAD#refs/heads/} | tr / - | tr  A-Z a-z)
             echo "::set-output name=branch::$branch"
@@ -32,19 +32,20 @@ jobs:
       - name: Branch name for push
         if: github.event_name != 'pull_request'
         shell: bash
-        run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_REF#refs/heads/})"
+        run: echo "::set-output name=BRANCH_NAME::$(echo ${GITHUB_REF#refs/heads/})"
         id: extract_branch
 
       # extract branch name on pull request
       - name: Branch name for PR
         if: github.event_name == 'pull_request'
-        run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_HEAD_REF})"
+        run: echo "::set-output name=BRANCH_NAME::$(echo ${GITHUB_HEAD_REF})"
 
       # extract branch name on pull request
       - name: Print branch name        
         run: |
           echo Branch name is ${{ steps.get_branch.outputs.branch }}
           echo new Branch name is ${{ steps.get_branch.outputs.BRANCH_NAME }}
+          echo new Branch name is ${{ steps.extract_branch.outputs.BRANCH_NAME }}
           
 
    
