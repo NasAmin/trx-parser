@@ -43,14 +43,11 @@ jobs:
         id: extract_pr_branch
 
       # extract branch name on pull request
-      - name: Print branch name
-        env:
-          branch_name: ${{ steps.get_branch.outputs.BRANCH_NAME }} || ${{ steps.extract_pr_branch.outputs.BRANCH_NAME }}
+      - name: Print branch name        
         run: |          
           echo Branch name is ${{ steps.get_branch.outputs.BRANCH_NAME }}
           echo Push branch ${{ steps.extract_branch.outputs.BRANCH_NAME }}
-          echo PR branch ${{ steps.extract_pr_branch.outputs.BRANCH_NAME }}
-          echo env branch is $branch_name
+          echo PR branch ${{ steps.extract_pr_branch.outputs.BRANCH_NAME }}         
 
    
   build:
