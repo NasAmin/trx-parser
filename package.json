@@ -67,7 +67,7 @@
     "ts-jest": "^24.3.0",
     "typescript": "^4.0.5",
     "husky": "^4.2.5",
-    "lint-staged": "^10.1.5"
+    "lint-staged": "^10.5.0"
   },
   "jest": {
     "testEnvironment": "node"
