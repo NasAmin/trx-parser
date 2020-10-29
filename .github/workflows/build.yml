@@ -18,11 +18,12 @@ jobs:
           branch=$(echo ${GITHUB_REF#refs/heads/})
           if [ ${{ github.event_name == 'pull_request' }} ]
           then
-            branch=$(echo ${GITHUB_REF#refs/heads/})
+            branch=$(echo ${GITHUB_HEAD_REF})            
           elif [ ${{ github.event_name == 'push' }} ]
           then            
-            branch=$(echo ${GITHUB_REF#refs/heads/})
+            branch=$(echo ${GITHUB_REF#refs/heads/})            
           fi
+          echo $branch
           echo "::set-output name=BRANCH_NAME::$branch"
   
       # extract branch name
