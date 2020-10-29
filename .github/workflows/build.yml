@@ -36,13 +36,14 @@ jobs:
       - name: Branch name for PR
         if: github.event_name == 'pull_request'
         run: echo "::set-output name=BRANCH_NAME::$(echo ${GITHUB_HEAD_REF})"
-        id: extract_branch
+        id: extract_pr_branch
 
       # extract branch name on pull request
       - name: Print branch name        
         run: |          
           echo Branch name is ${{ steps.get_branch.outputs.BRANCH_NAME }}
-          echo Branch name from task is ${{ steps.extract_branch.outputs.BRANCH_NAME }}         
+          echo Pus branch ${{ steps.extract_branch.outputs.BRANCH_NAME }}
+          echo PR branch ${{ steps.extract_branch.outputs.BRANCH_NAME }}
 
    
   build:
