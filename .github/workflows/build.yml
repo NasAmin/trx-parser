@@ -9,30 +9,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get Source Code
-        uses: actions/checkout@v2
-      - name: extract branch name
-        id: get_branch
+        uses: actions/checkout@v2      
+      # extract branch name
+      - name: Extract branch name
+        if: github.event_name != 'pull_request'
         shell: bash
-        env:
-          PR_HEAD: ${{ github.head_ref }}
-          PUSH_REF: ${{ github.ref }}
-        run: |        
-          if [ ${{ github.event_name == 'pull_request' }} ]
-          then
-            branch=$(echo ${PR_HEAD#refs/heads/} | tr / - | tr  A-Z a-z)
-            echo "::set-output name=branch::$branch"
-            echo "::set-output name=namespace::$branch"
-          elif [ ${{ github.event_name == 'push' }} ]
-          then
-            branch=$(echo ${PUSH_REF#refs/heads/} | tr / - | tr  A-Z a-z)
-            echo "::set-output name=namespace::default"
-            echo "::set-output name=branch::$branch"
-          fi
+        run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
 
-          echo Branch Name: $branch
-      - name: print branch name
-        run: |
-          echo ${{ steps.get_branch.outputs.branch }}
+      # extract branch name on pull request
+      - name: Print branch name
+        if: github.event_name == 'pull_request'
+        run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_HEAD_REF})"
+
+      # print branch name
+      - name: Get branch name
+        run: echo 'The branch name is' $BRANCH_NAME
    
   build:
     runs-on: ${{ matrix.os }}
