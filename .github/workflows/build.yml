@@ -32,7 +32,7 @@ jobs:
           echo Branch Name: $branch
       - name: print branch name
         run: |
-          echo ${{ needs.get_branch.outputs.branch }}
+          echo ${{ steps.get_branch.outputs.branch }}
   build:
     runs-on: ${{ matrix.os }}
     strategy:        
