@@ -17,15 +17,9 @@ jobs:
         run: |          
           if [ ${{ github.event_name == 'pull_request' }} ]
           then
-            branch=$(echo ${PR_HEAD#refs/heads/} | tr / - | tr  A-Z a-z)
-            echo "::set-output name=branch::$branch"
-            echo "::set-output name=namespace::$branch"
             echo "::set-output name=BRANCH_NAME::$(echo ${GITHUB_HEAD_REF})"     
           elif [ ${{ github.event_name == 'push' }} ]
-          then
-            branch=$(echo ${PUSH_REF#refs/heads/} | tr / - | tr  A-Z a-z)
-            echo "::set-output name=namespace::default"
-            echo "::set-output name=branch::$branch"
+          then            
             echo "::set-output name=BRANCH_NAME::$(echo ${GITHUB_REF#refs/heads/})"
           fi
   
@@ -43,11 +37,9 @@ jobs:
 
       # extract branch name on pull request
       - name: Print branch name        
-        run: |
-          echo Branch name is ${{ steps.get_branch.outputs.branch }}
-          echo new Branch name is ${{ steps.get_branch.outputs.BRANCH_NAME }}
-          echo new Branch name is ${{ steps.extract_branch.outputs.BRANCH_NAME }}
-          
+        run: |          
+          echo Branch name is ${{ steps.get_branch.outputs.BRANCH_NAME }}
+          echo Branch name from task is ${{ steps.extract_branch.outputs.BRANCH_NAME }}         
 
    
   build:
