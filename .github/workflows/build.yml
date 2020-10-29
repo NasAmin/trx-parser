@@ -41,9 +41,10 @@ jobs:
         run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_HEAD_REF})"
 
       # extract branch name on pull request
-      - name: Print branch name
-        if: github.event_name == 'pull_request'
-        run: "echo Branch name is ${{ steps.get_branch.outputs.branch }}"
+      - name: Print branch name        
+        run: |
+          echo Branch name is ${{ steps.get_branch.outputs.branch }}
+          
 
    
   build:
