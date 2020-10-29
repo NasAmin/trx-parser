@@ -43,7 +43,7 @@ jobs:
       # extract branch name on pull request
       - name: Print branch name
         if: github.event_name == 'pull_request'
-        run: echo Branch name is: ${{ steps.get-branch.outputs.BRANCH_NAME }}
+        run: "echo Branch name is ${{ steps.get_branch.outputs.branch }}"
 
    
   build:
