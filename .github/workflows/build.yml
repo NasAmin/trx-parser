@@ -15,15 +15,15 @@ jobs:
         id: get_branch
         shell: bash
         run: |
-          branch=$(echo ${GITHUB_REF#refs/heads/})
+          branch="$(echo ${GITHUB_REF#refs/heads/})"
           echo outer $branch
           if [ ${{ github.event_name == 'pull_request' }} ]
           then
-            branch=$(echo ${GITHUB_HEAD_REF})
+            branch=$(echo "${GITHUB_HEAD_REF}")
             echo inner $branch         
           elif [ ${{ github.event_name == 'push' }} ]
           then            
-            branch=$(echo ${GITHUB_REF#refs/heads/})
+            branch=$(echo "${GITHUB_REF#refs/heads/}")
             echo inner $branch
           fi
           echo final $branch
