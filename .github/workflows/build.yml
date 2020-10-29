@@ -14,6 +14,7 @@ jobs:
       - name: Get branch name
         id: get_branch
         run: |
+          echo "::set-output name=BRANCH_NAME::$(echo ${GITHUB_REF#refs/heads/})"
           if [ ${{ github.event_name == 'pull_request' }} ]
           then
             branch=$(echo ${PR_HEAD#refs/heads/} | tr / - | tr  A-Z a-z)
