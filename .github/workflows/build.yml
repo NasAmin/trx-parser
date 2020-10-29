@@ -13,7 +13,7 @@ jobs:
       # print branch name
       - name: Get branch name
         id: get-branch
-        run: echo 'The branch name is' $BRANCH_NAME
+        run: |          
           if ${{ github.event_name == 'pull_request' }}
           then
             branch=$(echo ${PR_HEAD#refs/heads/} | tr / - | tr  A-Z a-z)
@@ -44,6 +44,7 @@ jobs:
       - name: Print branch name        
         run: |
           echo Branch name is ${{ steps.get_branch.outputs.branch }}
+          echo new Branch name is ${{ steps.get_branch.outputs.BRANCH_NAME }}
           
 
    
