@@ -21,14 +21,6 @@ jobs:
           echo event name: $event_name
           if [ $event_name = 'pull_request' ]
           then
-<<<<<<< HEAD
-            branch=$(echo ${GITHUB_HEAD_REF})            
-          elif [ ${{ github.event_name == 'push' }} ]
-          then            
-            branch=$(echo ${GITHUB_REF#refs/heads/})            
-          fi
-          echo $branch
-=======
             echo branch before setting PR $branch
             branch=$(echo ${GITHUB_HEAD_REF})
             echo inner $branch
@@ -39,7 +31,6 @@ jobs:
             echo inner $branch
           fi
           echo final $branch
->>>>>>> main
           echo "::set-output name=BRANCH_NAME::$branch"
   
       # extract branch name
@@ -59,13 +50,8 @@ jobs:
       - name: Print branch name        
         run: |          
           echo Branch name is ${{ steps.get_branch.outputs.BRANCH_NAME }}
-<<<<<<< HEAD
-          echo Pus branch ${{ steps.extract_branch.outputs.BRANCH_NAME }}
-          echo PR branch ${{ steps.extract_pr_branch.outputs.BRANCH_NAME }}
-=======
           echo Push branch ${{ steps.extract_branch.outputs.BRANCH_NAME }}
           echo PR branch ${{ steps.extract_pr_branch.outputs.BRANCH_NAME }}         
->>>>>>> main
 
    
   build:
