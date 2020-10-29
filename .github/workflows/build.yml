@@ -7,24 +7,44 @@ on:
 jobs:
   meta-data:
     runs-on: ubuntu-latest
-    steps:
+    steps:      
       - name: Get Source Code
-        uses: actions/checkout@v2      
+        uses: actions/checkout@v2
+      # print branch name
+      - name: Get branch name
+        id: get-branch
+        run: echo 'The branch name is' $BRANCH_NAME
+          if ${{ github.event_name == 'pull_request' }}
+          then
+            branch=$(echo ${PR_HEAD#refs/heads/} | tr / - | tr  A-Z a-z)
+            echo "::set-output name=branch::$branch"
+            echo "::set-output name=namespace::$branch"
+            echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_HEAD_REF})"     
+          elif [ ${{ github.event_name == 'push' }} ]
+          then
+            branch=$(echo ${PUSH_REF#refs/heads/} | tr / - | tr  A-Z a-z)
+            echo "::set-output name=namespace::default"
+            echo "::set-output name=branch::$branch"
+            echo "::set-output name=BRANCH_NAME::$(echo ${GITHUB_REF#refs/heads/})"
+          fi
+  
       # extract branch name
-      - name: Extract branch name
+      - name: Branch name for push
         if: github.event_name != 'pull_request'
         shell: bash
         run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_REF#refs/heads/})"
         id: extract_branch
 
       # extract branch name on pull request
-      - name: Print branch name
+      - name: Branch name for PR
         if: github.event_name == 'pull_request'
         run: echo "::set-env name=BRANCH_NAME::$(echo ${GITHUB_HEAD_REF})"
 
-      # print branch name
-      - name: Get branch name
-        run: echo 'The branch name is' $BRANCH_NAME
+      # extract branch name on pull request
+      - name: Print branch name
+        if: github.event_name == 'pull_request'
+        run: echo Branch name is: ${{ steps.get-branch.outputs.BRANCH_NAME }}
+
    
   build:
     runs-on: ${{ matrix.os }}
