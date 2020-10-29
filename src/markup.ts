@@ -4,9 +4,9 @@ import {TrxDataWrapper} from './types/types'
 
 export function getMarkupForTrx(testData: TrxDataWrapper): string {
   return `
-# Test Results - \`${testData.ReportMetaData.ReportTitle}\`
+# Test Results - ${testData.ReportMetaData.ReportTitle}
 <p>Expand the following summaries for more details:</p>
-<details>;
+<details>
     <summary Duration: blah seconds
     </summary>
 | **Times** | |
