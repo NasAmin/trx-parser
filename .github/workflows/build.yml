@@ -5,6 +5,34 @@ on:
       branches:
       - main
 jobs:
+  meta-data:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Source Code
+        uses: actions/checkout@v2
+      - name: extract branch name
+        id: get_branch
+        shell: bash
+        env:
+          PR_HEAD: ${{ github.head_ref }}
+          PUSH_REF: ${{ github.ref }}
+        run: |        
+          if [ ${{ github.event_name == 'pull_request' }} ]
+          then
+            branch=$(echo ${PR_HEAD#refs/heads/} | tr / - | tr  A-Z a-z)
+            echo "::set-output name=branch::$branch"
+            echo "::set-output name=namespace::$branch"
+          elif [ ${{ github.event_name == 'push' }} ]
+          then
+            branch=$(echo ${PUSH_REF#refs/heads/} | tr / - | tr  A-Z a-z)
+            echo "::set-output name=namespace::default"
+            echo "::set-output name=branch::$branch"
+          fi
+
+          echo Branch Name: $branch
+      - name: print branch name
+        run: |
+          echo ${{ needs.get_branch.outputs.branch }}
   build:
     runs-on: ${{ matrix.os }}
     strategy:        
