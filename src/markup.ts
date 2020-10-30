@@ -161,11 +161,21 @@ function getTestResultsMarkup(testData: TrxDataWrapper): string {
 
   <details>
       <summary>
-        Test Method Details:
-        * Code Base: ${data.TestMethod._codeBase}
-        * Class Name: ${data.TestMethod._className}
-        * Method Name: ${data.TestMethod._name}
-      </summary>      
+      <table>
+        <tr>
+          <th>Code Base</th>
+          <td>${data.TestMethod._codeBase}</td>
+        </tr>
+        <tr>
+          <th>Class Name</th>
+          <td>${data.TestMethod._className}</td>
+        </tr>
+        <tr>
+          <th>Method Name</th>
+          <td>${data.TestMethod._name}</td>
+        </tr>
+      </table>
+      </summary>
   </details>
 </details>
       `
