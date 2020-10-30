@@ -127,11 +127,9 @@ function getTestResultsMarkup(testData: TrxDataWrapper): string {
       const testResultIcon = getTestOutcomeIcon(testResult?._computerName)
       const testMarkup = `
 <details>
-  <summary>
-    ${testResultIcon} ${data._name}
+  <summary>${testResultIcon} ${data._name}</summary>    
     <p>${data.TestMethod._name}</p>
-    <p>${testResult._outcome}</p>
-  </summary>
+    <p>${testResult._outcome}</p>  
 </details>
       `
       resultsMarkup += testMarkup

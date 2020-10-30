@@ -327,11 +327,9 @@ function getTestResultsMarkup(testData) {
             const testResultIcon = getTestOutcomeIcon(testResult === null || testResult === void 0 ? void 0 : testResult._computerName);
             const testMarkup = `
 <details>
-  <summary>
-    ${testResultIcon} ${data._name}
+  <summary>${testResultIcon} ${data._name}</summary>    
     <p>${data.TestMethod._name}</p>
-    <p>${testResult._outcome}</p>
-  </summary>
+    <p>${testResult._outcome}</p>  
 </details>
       `;
             resultsMarkup += testMarkup;
