@@ -215,23 +215,23 @@ const fs = __importStar(__webpack_require__(5747));
 const fs_1 = __webpack_require__(5747);
 function getMarkupForTrx(testData) {
     return `
-# Test Results - ${testData.ReportMetaData.ReportTitle}
-<p>Expand the following summaries for more details:</p>
-<details>
-    <summary Duration: \`blah\` seconds
-    </summary>
-    <table>
-    <tr>
-       <th>Started</th>
-       <td>heh</td>       
-    </tr>
-    <tr>
-       <th>Allowed Statuses</th>
-       <td>blah</td>
-       <td>:heavy_check_mark:</td>
-     </tr>
-  </table>
-</details>
+# Test Results - ${testData.ReportMetaData.ReportTitle}\
+<p>Expand the following summaries for more details:</p>\
+<details>\
+    <summary Duration: \`blah\` seconds\
+    </summary>\
+    <table>\
+    <tr>\
+       <th>Started</th>\
+       <td>heh</td>\  
+    </tr>\
+    <tr>\
+       <th>Allowed Statuses</th>\
+       <td>blah</td>\
+       <td>:heavy_check_mark:</td>\
+     </tr>\
+  </table>\
+</details>\
 `;
 }
 exports.getMarkupForTrx = getMarkupForTrx;
