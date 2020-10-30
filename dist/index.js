@@ -225,36 +225,27 @@ function getMarkupForTrx(testData) {
   <table>
     <tr>
        <th>Started:</th>
-       <td>\`${testData.TrxData.TestRun.Times._start}\`</td>
+       <td>${testData.TrxData.TestRun.Times._start}</td>
     </tr>
     <tr>
        <th>Creation:</th>
-       <td>\`${testData.TrxData.TestRun.Times._finish}\`</td>
+       <td>${testData.TrxData.TestRun.Times._finish}</td>
     </tr>
     <tr>
        <th>Queuing:</th>
-       <td>\`${testData.TrxData.TestRun.Times._queuing}\`</td>
+       <td>\`\`\`${testData.TrxData.TestRun.Times._queuing}\`\`\`</td>
     </tr>
     <tr>
        <th>Finished:</th>
-       <td>\`${testData.TrxData.TestRun.Times._finish}\`</td>    
+       <td>${testData.TrxData.TestRun.Times._finish}</td>    
     </tr>
     <tr>
        <th>Duration:</th>
-       <td>\`${duration}\`</td>
+       <td>${duration}</td>
     </tr>
 
   </table>
 </details>
-| Status | Response  |
-| ------ | --------- |
-| 200    | \`json\`                          |
-|        | \`   {\`                          |
-|        | \` "id": 10,\`                    |
-|        | \` "username": "alanpartridge",\` |
-|        | \` more code...\`                 |
-|        | \`}\`                             |
-| 400    |                                 |
 `;
 }
 exports.getMarkupForTrx = getMarkupForTrx;
