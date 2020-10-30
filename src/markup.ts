@@ -125,7 +125,7 @@ function getTestResultsMarkup(testData: TrxDataWrapper): string {
     )
     if (testResult) {
       const testResultIcon = getTestOutcomeIcon(testResult?._outcome)
-      const testMarkup = `
+      let testMarkup = `
 <details>
   <summary>${testResultIcon} ${data._name}</summary>    
   <table>
@@ -160,7 +160,7 @@ function getTestResultsMarkup(testData: TrxDataWrapper): string {
   </table>
 
   <details>
-      <summary> Test Method Details </summary>
+      <summary> Test Method Details: </summary>
       <table>
         <tr>
           <th>Code Base</th>
@@ -176,8 +176,23 @@ function getTestResultsMarkup(testData: TrxDataWrapper): string {
         </tr>
       </table>      
   </details>
+`
+
+      if (testResult._outcome === 'Failed') {
+        const failedTestDetails = `
+  <details>
+        <summary>Error Message:</summary>
+        <pre>${testResult.Output?.ErrorInfo.Message}</pre>
+  </details>
+  <details>
+        <summary>Stack Trace:</summary>
+        <pre>${testResult.Output?.ErrorInfo.StackTrace}</pre>
+  </details>
 </details>
-      `
+  `
+        testMarkup += failedTestDetails
+      }
+
       resultsMarkup += testMarkup
     }
   }

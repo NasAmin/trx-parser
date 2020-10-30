@@ -27,6 +27,16 @@ export interface UnitTestResult {
   _outcome: string
   _testListId: string
   _relativeResultsDirectory: string
+  Output?: Output
+}
+
+export interface Output {
+  ErrorInfo: ErrorInfo
+}
+
+export interface ErrorInfo {
+  Message: string
+  StackTrace: string
 }
 
 export interface Results {

@@ -320,12 +320,13 @@ ${getTestResultsMarkup(testData)}
 }
 exports.getMarkupForTrx = getMarkupForTrx;
 function getTestResultsMarkup(testData) {
+    var _a, _b;
     let resultsMarkup = '';
     for (const data of testData.TrxData.TestRun.TestDefinitions.UnitTest) {
         const testResult = getUnitTestResult(data._id, testData.TrxData.TestRun.Results);
         if (testResult) {
             const testResultIcon = getTestOutcomeIcon(testResult === null || testResult === void 0 ? void 0 : testResult._outcome);
-            const testMarkup = `
+            let testMarkup = `
 <details>
   <summary>${testResultIcon} ${data._name}</summary>    
   <table>
@@ -360,7 +361,7 @@ function getTestResultsMarkup(testData) {
   </table>
 
   <details>
-      <summary> Test Method Details </summary>
+      <summary> Test Method Details: </summary>
       <table>
         <tr>
           <th>Code Base</th>
@@ -376,8 +377,21 @@ function getTestResultsMarkup(testData) {
         </tr>
       </table>      
   </details>
+`;
+            if (testResult._outcome === 'Failed') {
+                const failedTestDetails = `
+  <details>
+        <summary>Error Message:</summary>
+        <pre>${(_a = testResult.Output) === null || _a === void 0 ? void 0 : _a.ErrorInfo.Message}</pre>
+  </details>
+  <details>
+        <summary>Stack Trace:</summary>
+        <pre>${(_b = testResult.Output) === null || _b === void 0 ? void 0 : _b.ErrorInfo.StackTrace}</pre>
+  </details>
 </details>
-      `;
+  `;
+                testMarkup += failedTestDetails;
+            }
             resultsMarkup += testMarkup;
         }
     }
