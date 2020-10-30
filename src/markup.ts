@@ -14,23 +14,23 @@ export function getMarkupForTrx(testData: TrxDataWrapper): string {
   <table>
     <tr>
        <th>Started:</th>
-       <td>${testData.TrxData.TestRun.Times._start}</td>
+       <td><code>${testData.TrxData.TestRun.Times._start}</code></td>
     </tr>
     <tr>
        <th>Creation:</th>
-       <td>${testData.TrxData.TestRun.Times._finish}</td>
+       <td><code>${testData.TrxData.TestRun.Times._finish}</code></td>
     </tr>
     <tr>
        <th>Queuing:</th>
-       <td>${testData.TrxData.TestRun.Times._queuing}</td>
+       <td><code>${testData.TrxData.TestRun.Times._queuing}</code></td>
     </tr>
     <tr>
        <th>Finished:</th>
-       <td>${testData.TrxData.TestRun.Times._finish}</td>    
+       <td><code>${testData.TrxData.TestRun.Times._finish}</code></td>    
     </tr>
     <tr>
        <th>Duration:</th>
-       <td>${duration} seconds</td>
+       <td><code>${duration} seconds</code></td>
     </tr>
 
   </table>
@@ -131,31 +131,31 @@ function getTestResultsMarkup(testData: TrxDataWrapper): string {
   <table>
     <tr>
        <th>ID:</th>
-       <td>${data._id}</td>
+       <td><code>${data._id}</code></td>
     </tr>
     <tr>
        <th>Name:</th>
-       <td>${data._name}</td>
+       <td><code>${data._name}</code></td>
     </tr>
     <tr>
        <th>Outcome:</th>
-       <td>${testResult._outcome}</td>
+       <td><code>${testResult._outcome}</code></td>
     </tr>
     <tr>
        <th>Computer Name:</th>
-       <td>${testResult._computerName}</td>    
+       <td><code>${testResult._computerName}</code></td>    
     </tr>
     <tr>
        <th>Start:</th>
-       <td>${testResult._startTime}</td>
+       <td><code>${testResult._startTime}</code></td>
     </tr>
     <tr>
        <th>End:</th>
-       <td>${testResult._endTime}</td>
+       <td><code>${testResult._endTime}</code></td>
     </tr>
     <tr>
        <th>Duration:</th>
-       <td>${testResult._duration}</td>
+       <td><code>${testResult._duration}</code></td>
     </tr>
   </table>
 
@@ -164,15 +164,15 @@ function getTestResultsMarkup(testData: TrxDataWrapper): string {
       <table>
         <tr>
           <th>Code Base</th>
-          <td>${data.TestMethod._codeBase}</td>
+          <td><code>${data.TestMethod._codeBase}</code></td>
         </tr>
         <tr>
           <th>Class Name</th>
-          <td>${data.TestMethod._className}</td>
+          <td><code>${data.TestMethod._className}</code></td>
         </tr>
         <tr>
           <th>Method Name</th>
-          <td>${data.TestMethod._name}</td>
+          <td><code>${data.TestMethod._name}</code></td>
         </tr>
       </table>      
   </details>
