@@ -315,9 +315,41 @@ function getMarkupForTrx(testData) {
     </tr>
   </table>
 </details>
+${getTestResultsMarkup(testData)}
 `;
 }
 exports.getMarkupForTrx = getMarkupForTrx;
+function getTestResultsMarkup(testData) {
+    let resultsMarkup = '';
+    for (const data of testData.TrxData.TestRun.TestDefinitions.UnitTest) {
+        const testResult = getUnitTestResult(data._id, testData.TrxData.TestRun.Results);
+        if (testResult) {
+            const testResultIcon = getTestOutcomeIcon(testResult === null || testResult === void 0 ? void 0 : testResult._computerName);
+            const testMarkup = `
+      <details>
+        <summary>
+          ${testResultIcon}
+        </summary>
+      </details>
+      `;
+            resultsMarkup += testMarkup;
+        }
+    }
+    return resultsMarkup;
+}
+function getUnitTestResult(unitTestId, testResults) {
+    const result = testResults.UnitTestResult.find(x => x._testId === unitTestId);
+    return result;
+}
+function getTestOutcomeIcon(testOutcome) {
+    if (testOutcome === 'Passed')
+        return ':heavy_check_mark:';
+    if (testOutcome === 'Failed')
+        return ':x:';
+    if (testOutcome === 'NotExecuted')
+        return ':radio_button:';
+    return ':grey_question:';
+}
 function getMarkupForTrxFromGist(markupPath) {
     return __awaiter(this, void 0, void 0, function* () {
         let markup = '';

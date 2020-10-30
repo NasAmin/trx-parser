@@ -1,6 +1,6 @@
 import * as fs from 'fs'
 import {promises} from 'fs'
-import {TrxDataWrapper} from './types/types'
+import {Results, TrxDataWrapper, UnitTestResult} from './types/types'
 
 export function getMarkupForTrx(testData: TrxDataWrapper): string {
   const startTime = new Date(testData.TrxData.TestRun.Times._start).getSeconds()
@@ -36,7 +36,13 @@ export function getMarkupForTrx(testData: TrxDataWrapper): string {
   </table>
 </details>
 <details>  
-  <summary> Outcome: ${testData.TrxData.TestRun.ResultSummary._outcome} | Total Tests: ${testData.TrxData.TestRun.ResultSummary.Counters._total} | Failed: ${testData.TrxData.TestRun.ResultSummary.Counters._failed} </summary>
+  <summary> Outcome: ${
+    testData.TrxData.TestRun.ResultSummary._outcome
+  } | Total Tests: ${
+    testData.TrxData.TestRun.ResultSummary.Counters._total
+  } | Failed: ${
+    testData.TrxData.TestRun.ResultSummary.Counters._failed
+  } </summary>
   <table>
     <tr>
        <th>Total:</th>
@@ -72,7 +78,9 @@ export function getMarkupForTrx(testData: TrxDataWrapper): string {
     </tr>
     <tr>
        <th>PassedButRunAborted:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._passedButRunAborted}</td>
+       <td>${
+         testData.TrxData.TestRun.ResultSummary.Counters._passedButRunAborted
+       }</td>
     </tr>
     <tr>
        <th>NotRunnable:</th>
@@ -104,7 +112,46 @@ export function getMarkupForTrx(testData: TrxDataWrapper): string {
     </tr>
   </table>
 </details>
+${getTestResultsMarkup(testData)}
 `
+}
+
+function getTestResultsMarkup(testData: TrxDataWrapper): string {
+  let resultsMarkup = ''
+  for (const data of testData.TrxData.TestRun.TestDefinitions.UnitTest) {
+    const testResult = getUnitTestResult(
+      data._id,
+      testData.TrxData.TestRun.Results
+    )
+    if (testResult) {
+      const testResultIcon = getTestOutcomeIcon(testResult?._computerName)
+      const testMarkup = `
+      <details>
+        <summary>
+          ${testResultIcon}
+        </summary>
+      </details>
+      `
+      resultsMarkup += testMarkup
+    }
+  }
+  return resultsMarkup
+}
+
+function getUnitTestResult(
+  unitTestId: string,
+  testResults: Results
+): UnitTestResult | undefined {
+  const result = testResults.UnitTestResult.find(x => x._testId === unitTestId)
+  return result
+}
+
+function getTestOutcomeIcon(testOutcome: string): string {
+  if (testOutcome === 'Passed') return ':heavy_check_mark:'
+  if (testOutcome === 'Failed') return ':x:'
+  if (testOutcome === 'NotExecuted') return ':radio_button:'
+
+  return ':grey_question:'
 }
 
 export async function getMarkupForTrxFromGist(
