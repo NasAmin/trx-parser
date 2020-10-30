@@ -35,6 +35,15 @@ export function getMarkupForTrx(testData: TrxDataWrapper): string {
 
   </table>
 </details>
+| Status | Response  |
+| ------ | --------- |
+| 200    | \`json\`                          |
+|        | \`   {\`                          |
+|        | \` "id": 10,\`                    |
+|        | \` "username": "alanpartridge",\` |
+|        | \` more code...\`                 |
+|        | \`}\`                             |
+| 400    |                                 |
 `
 }
 
