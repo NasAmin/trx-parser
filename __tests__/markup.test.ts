@@ -8,6 +8,16 @@ describe('when loading xml from a trx file', () => {
     )
     const testData = getMarkupForTrx(data)
     expect(data.TrxData.TestRun.ResultSummary._outcome).toEqual('Completed')
+    expect(testData).toContain(
+      `Test Results - ${data.ReportMetaData.ReportTitle}`
+    )
+    expect(testData).toContain(
+      `Total Tests: ${data.TrxData.TestRun.ResultSummary.Counters._total}`
+    )
+    expect(testData).toContain(
+      `Failed: ${data.TrxData.TestRun.ResultSummary.Counters._failed}`
+    )
+
     console.log(testData)
   })
 })

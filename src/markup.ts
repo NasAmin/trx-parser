@@ -157,8 +157,16 @@ function getTestResultsMarkup(testData: TrxDataWrapper): string {
        <th>Duration:</th>
        <td>${testResult._duration}</td>
     </tr>
-
   </table>
+
+  <details>
+      <summary>
+        Test Method Details:
+        * Code Base: ${data.TestMethod._codeBase}
+        * Class Name: ${data.TestMethod._className}
+        * Method Name: ${data.TestMethod._name}
+      </summary>      
+  </details>
 </details>
       `
       resultsMarkup += testMarkup
