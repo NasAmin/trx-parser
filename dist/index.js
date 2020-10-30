@@ -223,7 +223,7 @@ function getMarkupForTrx(testData) {
     <table>\
     <tr>\
        <th>Started</th>\
-       <td>heh</td>\  
+       <td>heh</td>  
     </tr>\
     <tr>\
        <th>Allowed Statuses</th>\
