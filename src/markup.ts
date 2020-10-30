@@ -176,6 +176,7 @@ function getTestResultsMarkup(testData: TrxDataWrapper): string {
         </tr>
       </table>      
   </details>
+</details>
 `
 
       if (testResult._outcome === 'Failed') {
@@ -188,11 +189,8 @@ function getTestResultsMarkup(testData: TrxDataWrapper): string {
         <summary>Stack Trace:</summary>
         <pre>${testResult.Output?.ErrorInfo.StackTrace}</pre>
   </details>
-</details>
   `
         testMarkup += failedTestDetails
-      } else {
-        testMarkup += '</details'
       }
 
       resultsMarkup += testMarkup

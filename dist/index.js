@@ -377,6 +377,7 @@ function getTestResultsMarkup(testData) {
         </tr>
       </table>      
   </details>
+</details>
 `;
             if (testResult._outcome === 'Failed') {
                 const failedTestDetails = `
@@ -388,12 +389,8 @@ function getTestResultsMarkup(testData) {
         <summary>Stack Trace:</summary>
         <pre>${(_b = testResult.Output) === null || _b === void 0 ? void 0 : _b.ErrorInfo.StackTrace}</pre>
   </details>
-</details>
   `;
                 testMarkup += failedTestDetails;
-            }
-            else {
-                testMarkup += '</details';
             }
             resultsMarkup += testMarkup;
         }
