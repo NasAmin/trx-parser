@@ -218,7 +218,7 @@ function getMarkupForTrx(testData) {
 # Test Results - ${testData.ReportMetaData.ReportTitle}
 <p>Expand the following summaries for more details:</p>
 <details>
-  <summary Duration: blah seconds </summary>
+  <summary> Duration: blah seconds </summary>
   <table>
     <tr>
        <th>Started</th>
