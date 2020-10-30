@@ -360,7 +360,7 @@ function getTestResultsMarkup(testData) {
   </table>
 
   <details>
-      <summary>
+      <summary> Test Method Details </summary>
       <table>
         <tr>
           <th>Code Base</th>
@@ -374,8 +374,7 @@ function getTestResultsMarkup(testData) {
           <th>Method Name</th>
           <td>${data.TestMethod._name}</td>
         </tr>
-      </table>
-      </summary>
+      </table>      
   </details>
 </details>
       `;
