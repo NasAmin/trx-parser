@@ -4,22 +4,22 @@ import {TrxDataWrapper} from './types/types'
 
 export function getMarkupForTrx(testData: TrxDataWrapper): string {
   return `
-# Test Results - ${testData.ReportMetaData.ReportTitle}\
-<p>Expand the following summaries for more details:</p>\
-<details>\
+# Test Results - ${testData.ReportMetaData.ReportTitle}
+<p>Expand the following summaries for more details:</p>
+<details>
     <summary Duration: \`blah\` seconds\
-    </summary>\
+    </summary>
     <table>\
     <tr>\
        <th>Started</th>\
        <td>heh</td>  
-    </tr>\
+    </tr>
     <tr>\
        <th>Allowed Statuses</th>\
        <td>blah</td>\
        <td>:heavy_check_mark:</td>\
      </tr>\
-  </table>\
+  </table>
 </details>\
 `
 }
