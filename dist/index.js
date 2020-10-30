@@ -218,20 +218,20 @@ function getMarkupForTrx(testData) {
 # Test Results - ${testData.ReportMetaData.ReportTitle}
 <p>Expand the following summaries for more details:</p>
 <details>
-    <summary Duration: \`blah\` seconds\
+    <summary Duration: \`blah\` seconds
     </summary>
-    <table>\
-    <tr>\
-       <th>Started</th>\
+    <table>
+    <tr>
+       <th>Started</th>
        <td>heh</td>  
     </tr>
-    <tr>\
-       <th>Allowed Statuses</th>\
-       <td>blah</td>\
-       <td>:heavy_check_mark:</td>\
-     </tr>\
+    <tr>
+       <th>Allowed Statuses</th>
+       <td>blah</td>
+       <td>:heavy_check_mark:</td>
+     </tr>
   </table>
-</details>\
+</details>
 `;
 }
 exports.getMarkupForTrx = getMarkupForTrx;
