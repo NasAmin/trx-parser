@@ -124,12 +124,41 @@ function getTestResultsMarkup(testData: TrxDataWrapper): string {
       testData.TrxData.TestRun.Results
     )
     if (testResult) {
-      const testResultIcon = getTestOutcomeIcon(testResult?._computerName)
+      const testResultIcon = getTestOutcomeIcon(testResult?._outcome)
       const testMarkup = `
 <details>
   <summary>${testResultIcon} ${data._name}</summary>    
-    <p>${data.TestMethod._name}</p>
-    <p>${testResult._outcome}</p>  
+  <table>
+    <tr>
+       <th>ID:</th>
+       <td>${data._id}</td>
+    </tr>
+    <tr>
+       <th>Name:</th>
+       <td>${data._name}</td>
+    </tr>
+    <tr>
+       <th>Outcome:</th>
+       <td>${testResult._outcome}</td>
+    </tr>
+    <tr>
+       <th>Computer Name:</th>
+       <td>${testResult._computerName}</td>    
+    </tr>
+    <tr>
+       <th>Start:</th>
+       <td>${testResult._startTime}</td>
+    </tr>
+    <tr>
+       <th>End:</th>
+       <td>${testResult._endTime}</td>
+    </tr>
+    <tr>
+       <th>Duration:</th>
+       <td>${testResult._duration}</td>
+    </tr>
+
+  </table>
 </details>
       `
       resultsMarkup += testMarkup
