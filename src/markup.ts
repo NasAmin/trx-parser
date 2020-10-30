@@ -126,16 +126,18 @@ function getTestResultsMarkup(testData: TrxDataWrapper): string {
     if (testResult) {
       const testResultIcon = getTestOutcomeIcon(testResult?._computerName)
       const testMarkup = `
-      <details>
-        <summary>
-          ${testResultIcon}
-        </summary>
-      </details>
+<details>
+  <summary>
+    ${testResultIcon} ${data._name}
+    <p>${data.TestMethod._name}</p>
+    <p>${testResult._outcome}</p>
+  </summary>
+</details>
       `
       resultsMarkup += testMarkup
     }
   }
-  return resultsMarkup
+  return resultsMarkup.trim()
 }
 
 function getUnitTestResult(

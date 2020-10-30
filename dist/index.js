@@ -326,16 +326,18 @@ function getTestResultsMarkup(testData) {
         if (testResult) {
             const testResultIcon = getTestOutcomeIcon(testResult === null || testResult === void 0 ? void 0 : testResult._computerName);
             const testMarkup = `
-      <details>
-        <summary>
-          ${testResultIcon}
-        </summary>
-      </details>
+<details>
+  <summary>
+    ${testResultIcon} ${data._name}
+    <p>${data.TestMethod._name}</p>
+    <p>${testResult._outcome}</p>
+  </summary>
+</details>
       `;
             resultsMarkup += testMarkup;
         }
     }
-    return resultsMarkup;
+    return resultsMarkup.trim();
 }
 function getUnitTestResult(unitTestId, testResults) {
     const result = testResults.UnitTestResult.find(x => x._testId === unitTestId);
