@@ -3,9 +3,10 @@ import {promises} from 'fs'
 import {Results, TrxDataWrapper, UnitTestResult} from './types/types'
 
 export function getMarkupForTrx(testData: TrxDataWrapper): string {
-  const startTime = new Date(testData.TrxData.TestRun.Times._start).getSeconds()
-  const endTime = new Date(testData.TrxData.TestRun.Times._finish).getSeconds()
-  const duration = startTime - endTime
+  const duration = getTestRunDuration(
+    testData.TrxData.TestRun.Times._start,
+    testData.TrxData.TestRun.Times._finish
+  )
   return `
 # Test Results - ${testData.ReportMetaData.ReportTitle}
 <p>Expand the following summaries for more details:</p>
@@ -114,6 +115,13 @@ export function getMarkupForTrx(testData: TrxDataWrapper): string {
 </details>
 ${getTestResultsMarkup(testData)}
 `
+}
+
+export function getTestRunDuration(startTime: Date, endTime: Date): number {
+  const startTimeSeconds = new Date(startTime).valueOf()
+  const endTimeSeconds = new Date(endTime).valueOf()
+  const duration = endTimeSeconds - startTimeSeconds
+  return duration / 1000
 }
 
 function getTestResultsMarkup(testData: TrxDataWrapper): string {

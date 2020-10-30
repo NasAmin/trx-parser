@@ -210,13 +210,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getMarkupForTrxFromGist = exports.getMarkupForTrx = void 0;
+exports.getMarkupForTrxFromGist = exports.getTestRunDuration = exports.getMarkupForTrx = void 0;
 const fs = __importStar(__webpack_require__(5747));
 const fs_1 = __webpack_require__(5747);
 function getMarkupForTrx(testData) {
-    const startTime = new Date(testData.TrxData.TestRun.Times._start).getSeconds();
-    const endTime = new Date(testData.TrxData.TestRun.Times._finish).getSeconds();
-    const duration = startTime - endTime;
+    const duration = getTestRunDuration(testData.TrxData.TestRun.Times._start, testData.TrxData.TestRun.Times._finish);
     return `
 # Test Results - ${testData.ReportMetaData.ReportTitle}
 <p>Expand the following summaries for more details:</p>
@@ -319,6 +317,13 @@ ${getTestResultsMarkup(testData)}
 `;
 }
 exports.getMarkupForTrx = getMarkupForTrx;
+function getTestRunDuration(startTime, endTime) {
+    const startTimeSeconds = new Date(startTime).valueOf();
+    const endTimeSeconds = new Date(endTime).valueOf();
+    const duration = endTimeSeconds - startTimeSeconds;
+    return duration / 1000;
+}
+exports.getTestRunDuration = getTestRunDuration;
 function getTestResultsMarkup(testData) {
     var _a, _b;
     let resultsMarkup = '';

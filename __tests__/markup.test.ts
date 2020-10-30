@@ -1,4 +1,4 @@
-import {getMarkupForTrx} from '../src//markup'
+import {getMarkupForTrx, getTestRunDuration} from '../src//markup'
 import {transformTrxToJson} from '../src/utils'
 
 describe('when loading xml from a trx file', () => {
@@ -19,5 +19,13 @@ describe('when loading xml from a trx file', () => {
     )
 
     console.log(testData)
+  })
+
+  test('getTestRunDuration', async () => {
+    const duration = getTestRunDuration(
+      new Date('2020-01-09T14:05:40.5069954+00:00'),
+      new Date('2020-01-09T14:07:31.9132227+00:00')
+    )
+    expect(duration).toEqual(111.407)
   })
 })
