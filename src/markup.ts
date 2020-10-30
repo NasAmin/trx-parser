@@ -14,12 +14,7 @@ export function getMarkupForTrx(testData: TrxDataWrapper): string {
   <table>
     <tr>
        <th>Started:</th>
-       <td>
-
-          \`\`\`csharp
-          ${testData.TrxData.TestRun.Times._start}
-          \`\`\`
-       </td>
+       <td>${testData.TrxData.TestRun.Times._start}</td>
     </tr>
     <tr>
        <th>Creation:</th>
