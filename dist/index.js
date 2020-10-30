@@ -392,6 +392,9 @@ function getTestResultsMarkup(testData) {
   `;
                 testMarkup += failedTestDetails;
             }
+            else {
+                testMarkup += '</details';
+            }
             resultsMarkup += testMarkup;
         }
     }

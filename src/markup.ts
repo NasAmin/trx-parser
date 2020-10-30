@@ -191,6 +191,8 @@ function getTestResultsMarkup(testData: TrxDataWrapper): string {
 </details>
   `
         testMarkup += failedTestDetails
+      } else {
+        testMarkup += '</details'
       }
 
       resultsMarkup += testMarkup
