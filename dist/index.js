@@ -225,7 +225,12 @@ function getMarkupForTrx(testData) {
   <table>
     <tr>
        <th>Started:</th>
-       <td>${testData.TrxData.TestRun.Times._start}</td>
+       <td>
+
+          \`\`\`csharp
+          ${testData.TrxData.TestRun.Times._start}
+          \`\`\`
+       </td>
     </tr>
     <tr>
        <th>Creation:</th>
@@ -377,7 +382,6 @@ function getTestResultsMarkup(testData) {
         </tr>
       </table>      
   </details>
-</details>
 `;
             if (testResult._outcome === 'Failed') {
                 const failedTestDetails = `
@@ -393,6 +397,9 @@ function getTestResultsMarkup(testData) {
                 testMarkup += failedTestDetails;
             }
             resultsMarkup += testMarkup;
+            resultsMarkup += `
+</details>
+`;
         }
     }
     return resultsMarkup.trim();

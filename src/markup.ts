@@ -14,7 +14,12 @@ export function getMarkupForTrx(testData: TrxDataWrapper): string {
   <table>
     <tr>
        <th>Started:</th>
-       <td>${testData.TrxData.TestRun.Times._start}</td>
+       <td>
+
+          \`\`\`csharp
+          ${testData.TrxData.TestRun.Times._start}
+          \`\`\`
+       </td>
     </tr>
     <tr>
        <th>Creation:</th>
@@ -176,7 +181,6 @@ function getTestResultsMarkup(testData: TrxDataWrapper): string {
         </tr>
       </table>      
   </details>
-</details>
 `
 
       if (testResult._outcome === 'Failed') {
@@ -194,6 +198,9 @@ function getTestResultsMarkup(testData: TrxDataWrapper): string {
       }
 
       resultsMarkup += testMarkup
+      resultsMarkup += `
+</details>
+`
     }
   }
   return resultsMarkup.trim()
