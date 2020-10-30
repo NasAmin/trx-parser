@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 import {createCheckRun} from './github'
-import {generateMarkupReports} from './pwsh-markup-generator'
+// import {generateMarkupReports} from './pwsh-markup-generator'
 import {
   areThereAnyFailingTests,
   getTrxFiles,
@@ -26,7 +26,7 @@ export async function run(): Promise<void> {
     core.info(`Checking for failing tests`)
     const failingTestsFound = areThereAnyFailingTests(trxToJson)
 
-    await generateMarkupReports(trxToJson)
+    // await generateMarkupReports(trxToJson)
 
     for (const data of trxToJson) {
       await createCheckRun(token, ignoreTestFailures, data)
