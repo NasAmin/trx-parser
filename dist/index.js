@@ -245,7 +245,7 @@ function getMarkupForTrx(testData) {
   </table>
 </details>
 <details>  
-  <summary> Outcome: ${testData.TrxData.TestRun.ResultSummary._outcome} | Total Tests: ${testData.TrxData.TestRun.ResultSummary.Counters._total} | Failed: ${testData.TrxData.TestRun.ResultSummary.Counters._failed} </summary>
+  <summary> Outcome: ${testData.TrxData.TestRun.ResultSummary._outcome} | Total Tests: ${testData.TrxData.TestRun.ResultSummary.Counters._total} | Passed: ${testData.TrxData.TestRun.ResultSummary.Counters._passed} | Failed: ${testData.TrxData.TestRun.ResultSummary.Counters._failed} </summary>
   <table>
     <tr>
        <th>Total:</th>

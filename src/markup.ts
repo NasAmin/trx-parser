@@ -41,6 +41,8 @@ export function getMarkupForTrx(testData: TrxDataWrapper): string {
     testData.TrxData.TestRun.ResultSummary._outcome
   } | Total Tests: ${
     testData.TrxData.TestRun.ResultSummary.Counters._total
+  } | Passed: ${
+    testData.TrxData.TestRun.ResultSummary.Counters._passed
   } | Failed: ${
     testData.TrxData.TestRun.ResultSummary.Counters._failed
   } </summary>
