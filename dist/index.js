@@ -134,7 +134,6 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = void 0;
 const core = __importStar(__webpack_require__(2186));
 const github_1 = __webpack_require__(5928);
-// import {generateMarkupReports} from './pwsh-markup-generator'
 const utils_1 = __webpack_require__(918);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
@@ -150,7 +149,6 @@ function run() {
             const trxToJson = yield utils_1.transformAllTrxToJson(trxFiles);
             core.info(`Checking for failing tests`);
             const failingTestsFound = utils_1.areThereAnyFailingTests(trxToJson);
-            // await generateMarkupReports(trxToJson)
             for (const data of trxToJson) {
                 yield github_1.createCheckRun(token, ignoreTestFailures, data);
             }

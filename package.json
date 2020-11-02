@@ -11,9 +11,8 @@
     "lint": "eslint src/**/*.ts",
     "lint-fix": "eslint --fix src/**/*.ts",
     "package": "ncc build --source-map --license licenses.txt",
-    "test": "jest",
-    "assets": "cp -r trx-reports dist/",
-    "all": "npm run build && npm run format && npm run lint && npm run package && npm test && npm run assets"
+    "test": "jest",    
+    "all": "npm run build && npm run format && npm run lint && npm run package && npm test"
   },
   "repository": {
     "type": "git",
