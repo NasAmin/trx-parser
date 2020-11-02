@@ -43,7 +43,7 @@ const markup_1 = __webpack_require__(2727);
 function createCheckRun(repoToken, ignoreTestFailures, reportData) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            core.info('Trying to create check');
+            core.info(`Creating PR check for ${reportData.ReportMetaData.ReportTitle}`);
             const octokit = github.getOctokit(repoToken);
             if (github.context.eventName === 'pull_request') {
                 const prPayload = github.context
@@ -52,9 +52,6 @@ function createCheckRun(repoToken, ignoreTestFailures, reportData) {
                 const git_sha = prPayload.pull_request.head.sha;
                 core.info(`PR Ref: ${github.context.ref}`);
                 core.info(`Creating status check for GitSha: ${git_sha}`);
-                // const markupData = await getMarkupForTrxFromGist(
-                //   reportData.ReportMetaData.MarkupFilePath
-                // )
                 const markupData = markup_1.getMarkupForTrx(reportData);
                 const checkTime = new Date().toUTCString();
                 core.info(`Check time is: ${checkTime}`);
@@ -141,8 +138,6 @@ function run() {
             const token = core.getInput('REPO_TOKEN');
             const trxPath = core.getInput('TRX_PATH');
             const ignoreTestFailures = core.getInput('IGNORE_FAILURE', { required: false }) === 'true';
-            core.setOutput('test-outcome', 'Passed');
-            core.setOutput('trx-path', trxPath);
             core.info(`Finding Trx files in: ${trxPath}`);
             const trxFiles = yield utils_1.getTrxFiles(trxPath);
             core.info(`Processing ${trxFiles.length} trx files`);
@@ -161,6 +156,7 @@ function run() {
                     core.setFailed('Failing tests found');
                 }
             }
+            core.setOutput('test-outcome', failingTestsFound ? 'Failed' : 'Passed');
             core.setOutput('trx-files', trxFiles);
         }
         catch (error) {
@@ -175,74 +171,63 @@ run();
 /***/ }),
 
 /***/ 2727:
-/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
-var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
-    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
-    return new (P || (P = Promise))(function (resolve, reject) {
-        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
-        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
-        step((generator = generator.apply(thisArg, _arguments || [])).next());
-    });
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.getMarkupForTrxFromGist = exports.getTestRunDuration = exports.getMarkupForTrx = void 0;
-const fs = __importStar(__webpack_require__(5747));
-const fs_1 = __webpack_require__(5747);
+exports.getTestRunDuration = exports.getMarkupForTrx = void 0;
 function getMarkupForTrx(testData) {
-    const duration = getTestRunDuration(testData.TrxData.TestRun.Times._start, testData.TrxData.TestRun.Times._finish);
     return `
 # Test Results - ${testData.ReportMetaData.ReportTitle}
+${getTestTimes(testData)}
+${getTestCounters(testData)}
+${getTestResultsMarkup(testData)}
+`;
+}
+exports.getMarkupForTrx = getMarkupForTrx;
+function getTestRunDuration(startTime, endTime) {
+    const startTimeSeconds = new Date(startTime).valueOf();
+    const endTimeSeconds = new Date(endTime).valueOf();
+    const duration = endTimeSeconds - startTimeSeconds;
+    return duration / 1000;
+}
+exports.getTestRunDuration = getTestRunDuration;
+function getTestTimes(testData) {
+    const duration = getTestRunDuration(testData.TrxData.TestRun.Times._start, testData.TrxData.TestRun.Times._finish);
+    return `
 <p>Expand the following summaries for more details:</p>
 <details>  
   <summary> Duration: ${duration} seconds </summary>
   <table>
     <tr>
-       <th>Started:</th>
-       <td><code>${testData.TrxData.TestRun.Times._start}</code></td>
+        <th>Started:</th>
+        <td><code>${testData.TrxData.TestRun.Times._start}</code></td>
     </tr>
     <tr>
-       <th>Creation:</th>
-       <td><code>${testData.TrxData.TestRun.Times._finish}</code></td>
+        <th>Creation:</th>
+        <td><code>${testData.TrxData.TestRun.Times._finish}</code></td>
     </tr>
     <tr>
-       <th>Queuing:</th>
-       <td><code>${testData.TrxData.TestRun.Times._queuing}</code></td>
+        <th>Queuing:</th>
+        <td><code>${testData.TrxData.TestRun.Times._queuing}</code></td>
     </tr>
     <tr>
-       <th>Finished:</th>
-       <td><code>${testData.TrxData.TestRun.Times._finish}</code></td>    
+        <th>Finished:</th>
+        <td><code>${testData.TrxData.TestRun.Times._finish}</code></td>    
     </tr>
     <tr>
-       <th>Duration:</th>
-       <td><code>${duration} seconds</code></td>
+        <th>Duration:</th>
+        <td><code>${duration} seconds</code></td>
     </tr>
 
   </table>
 </details>
-<details>  
+`;
+}
+function getTestCounters(testData) {
+    return `
+<details>
   <summary> Outcome: ${testData.TrxData.TestRun.ResultSummary._outcome} | Total Tests: ${testData.TrxData.TestRun.ResultSummary.Counters._total} | Passed: ${testData.TrxData.TestRun.ResultSummary.Counters._passed} | Failed: ${testData.TrxData.TestRun.ResultSummary.Counters._failed} </summary>
   <table>
     <tr>
@@ -311,17 +296,8 @@ function getMarkupForTrx(testData) {
     </tr>
   </table>
 </details>
-${getTestResultsMarkup(testData)}
 `;
 }
-exports.getMarkupForTrx = getMarkupForTrx;
-function getTestRunDuration(startTime, endTime) {
-    const startTimeSeconds = new Date(startTime).valueOf();
-    const endTimeSeconds = new Date(endTime).valueOf();
-    const duration = endTimeSeconds - startTimeSeconds;
-    return duration / 1000;
-}
-exports.getTestRunDuration = getTestRunDuration;
 function getTestResultsMarkup(testData) {
     var _a, _b;
     let resultsMarkup = '';
@@ -415,16 +391,6 @@ function getTestOutcomeIcon(testOutcome) {
         return ':radio_button:';
     return ':grey_question:';
 }
-function getMarkupForTrxFromGist(markupPath) {
-    return __awaiter(this, void 0, void 0, function* () {
-        let markup = '';
-        if (fs.existsSync(markupPath)) {
-            markup = yield fs_1.promises.readFile(markupPath, 'utf8');
-        }
-        return markup;
-    });
-}
-exports.getMarkupForTrxFromGist = getMarkupForTrxFromGist;
 
 
 /***/ }),

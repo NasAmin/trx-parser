@@ -18,8 +18,6 @@ inputs:
 outputs:
   test-outcome:
     description: 'Test outcome Failed/Passed'
-  trx-path:
-    description: 'Used for debugging'
   trx-files:
     description: 'list of trx files'
 runs:

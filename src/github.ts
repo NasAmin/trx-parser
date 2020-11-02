@@ -10,7 +10,7 @@ export async function createCheckRun(
   reportData: TrxDataWrapper
 ): Promise<void> {
   try {
-    core.info('Trying to create check')
+    core.info(`Creating PR check for ${reportData.ReportMetaData.ReportTitle}`)
     const octokit = github.getOctokit(repoToken)
     if (github.context.eventName === 'pull_request') {
       const prPayload = github.context
@@ -21,9 +21,7 @@ export async function createCheckRun(
 
       core.info(`PR Ref: ${github.context.ref}`)
       core.info(`Creating status check for GitSha: ${git_sha}`)
-      // const markupData = await getMarkupForTrxFromGist(
-      //   reportData.ReportMetaData.MarkupFilePath
-      // )
+
       const markupData = getMarkupForTrx(reportData)
       const checkTime = new Date().toUTCString()
       core.info(`Check time is: ${checkTime}`)
