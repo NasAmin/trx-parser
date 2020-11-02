@@ -17,7 +17,7 @@ describe('Test GetAbsolutePath returns correct values', () => {
 describe('when loading xml from a trx file', () => {
   test('LoadXml Should have an outcome of Completed()', async () => {
     const data = await transformTrxToJson(
-      './test-data/passing-tests/auditlog.trx'
+      './test-data/passing-tests/logger.trx'
     )
     expect(data.TrxData.TestRun.ResultSummary._outcome).toEqual('Completed')
     expect(data.TrxData.TestRun.ResultSummary.Counters._total).toEqual(21)
