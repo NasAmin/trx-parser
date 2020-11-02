@@ -69,7 +69,6 @@ export async function transformTrxToJson(
         TrxData: jsonString as TrxData,
         ReportMetaData: {
           TrxFilePath: filePath,
-          MarkupFilePath: filePath.replace('.trx', '.md'),
           ReportName: `${reportHeaders.reportName}-check`,
           ReportTitle: reportHeaders.reportTitle,
           TrxJSonString: JSON.stringify(jsonString),

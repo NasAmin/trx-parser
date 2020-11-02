@@ -130,7 +130,6 @@ export interface TrxDataWrapper {
   TrxData: TrxData
   ReportMetaData: {
     TrxFilePath: string
-    MarkupFilePath: string
     ReportName: string
     ReportTitle: string
     TrxXmlString: string

@@ -153,7 +153,6 @@ function run() {
                 }
                 else {
                     core.error(`At least one failing test was found`);
-                    core.setFailed('Failing tests found');
                 }
             }
             core.setOutput('test-outcome', failingTestsFound ? 'Failed' : 'Passed');
@@ -493,7 +492,6 @@ function transformTrxToJson(filePath) {
                     TrxData: jsonString,
                     ReportMetaData: {
                         TrxFilePath: filePath,
-                        MarkupFilePath: filePath.replace('.trx', '.md'),
                         ReportName: `${reportHeaders.reportName}-check`,
                         ReportTitle: reportHeaders.reportTitle,
                         TrxJSonString: JSON.stringify(jsonString),
