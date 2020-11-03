@@ -12,10 +12,6 @@ export async function run(): Promise<void> {
     const trxPath = core.getInput('TRX_PATH')
     const ignoreTestFailures: boolean =
       core.getInput('IGNORE_FAILURE', {required: false}) === 'true'
-
-    core.setOutput('test-outcome', 'Passed')
-    core.setOutput('trx-path', trxPath)
-
     core.info(`Finding Trx files in: ${trxPath}`)
     const trxFiles = await getTrxFiles(trxPath)
 
@@ -34,10 +30,9 @@ export async function run(): Promise<void> {
         core.warning(`Workflow configured to ignore test failures`)
       } else {
         core.error(`At least one failing test was found`)
-        core.setFailed('Failing tests found')
       }
     }
-
+    core.setOutput('test-outcome', failingTestsFound ? 'Failed' : 'Passed')
     core.setOutput('trx-files', trxFiles)
   } catch (error) {
     core.setFailed(error.message)

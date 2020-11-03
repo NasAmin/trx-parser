@@ -1,13 +1,13 @@
 import {getMarkupForTrx, getTestRunDuration} from '../src//markup'
 import {transformTrxToJson} from '../src/utils'
 
-describe('when loading xml from a trx file', () => {
-  test('LoadXml Should have an outcome of Completed()', async () => {
+describe('When generating markup for trx', () => {
+  test('LoadXml Should have an outcome of Failed()', async () => {
     const data = await transformTrxToJson(
       './test-data/failing-tests/dummy-tests.trx'
     )
     const testData = getMarkupForTrx(data)
-    // expect(data.TrxData.TestRun.ResultSummary._outcome).toEqual('Completed')
+    expect(data.TrxData.TestRun.ResultSummary._outcome).toEqual('Failed')
     expect(testData).toContain(
       `Test Results - ${data.ReportMetaData.ReportTitle}`
     )
@@ -18,10 +18,15 @@ describe('when loading xml from a trx file', () => {
       `Failed: ${data.TrxData.TestRun.ResultSummary.Counters._failed}`
     )
 
-    console.log(testData)
+    expect(testData).toContain(data.ReportMetaData.ReportTitle)
+
+    expect(testData).toContain(data.TrxData.TestRun.Times._start)
+    expect(testData).toContain(data.TrxData.TestRun.Times._finish)
+
+    // console.log(testData)
   })
 
-  test('getTestRunDuration', async () => {
+  test('getTestRunDuration()', () => {
     const duration = getTestRunDuration(
       new Date('2020-01-09T14:05:40.5069954+00:00'),
       new Date('2020-01-09T14:07:31.9132227+00:00')

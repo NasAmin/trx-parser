@@ -1,103 +1,48 @@
-<p align="center">
-  <a href="https://github.com/actions/typescript-action/actions"><img alt="typescript-action status" src="https://github.com/actions/typescript-action/workflows/build-test/badge.svg"></a>
-</p>
+# trx-parser 🧹
 
-# Create a JavaScript Action using TypeScript
+> This Action was inspired by https://github.com/zyborg/dotnet-tests-report
 
-Use this template to bootstrap the creation of a TypeScript action.:rocket:
+![Build](https://github.com/NasAmin/trx-parser/workflows/Build/badge.svg?branch=cleanup-check-logic)
+![Test](https://github.com/NasAmin/trx-parser/workflows/Test/badge.svg)
 
-This template includes compilation support, tests, a validation workflow, publishing, and versioning guidance.  
+---
 
-If you are new, there's also a simpler introduction.  See the [Hello World JavaScript Action](https://github.com/actions/hello-world-javascript-action)
+This GitHub Action provides a way of parsing dotnet test results from trx files in a given directory. The action will find trx files specified in the `TRX-PATH` input variable. This path must be accessible to the action.
 
-## Create an action from this template
+It will read each individual .trx file. Loads up its data and converts it to a typed json object to make it easier to traverse through the data.
+For each TRX, it will create a Github Status check and generate a markup report for each trx. The report name and title are derived from the trx file using the `data.TestRun.TestDefinitions.UnitTest[0]._storage`
 
-Click the `Use this Template` and provide the new repo details for your action
+## Usage
 
-## Code in Main
+To make `trx-parser` a part of your workflow, just add the following to your existing workflow file in your `.github/workflows/` directory in your GitHub repository.
 
-Install the dependencies  
-```bash
-$ npm install
+```yml
+name: Test
+on: [pull_request]
+
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    steps:
+      # Replace this whichever way you build your code
+      - name: Build & Test dotnet code
+        run: |
+          dotnet restore
+          dotnet build -c Release no-restore
+          dotnet test -c Release --no-restore --no-build --loger trx --results-directory ./TestResults
+      # Using the trx-parser action
+      - name: Parse Trx files
+        uses: NasAmin/trx-parser@v0.0.1
+        id: trx-parser
+        with:
+          TRX_PATH: ${{ github.workspace }}/TestResults #This should be the path to your TRX files
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}          
 ```
 
-Build the typescript and package it for distribution
-```bash
-$ npm run build && npm run package
-```
+## Contributing
+Anyone is welcome to contribute and make this action better. Please fork the repository and create a pull request with proposed changes.
 
-Run the tests :heavy_check_mark:  
-```bash
-$ npm test
-
- PASS  ./index.test.js
-  ✓ throws invalid number (3ms)
-  ✓ wait 500 ms (504ms)
-  ✓ test runs (95ms)
-
-...
-```
-
-## Change action.yml
-
-The action.yml contains defines the inputs and output for your action.
-
-Update the action.yml with your name, description, inputs and outputs for your action.
-
-See the [documentation](https://help.github.com/en/articles/metadata-syntax-for-github-actions)
-
-## Change the Code
-
-Most toolkit and CI/CD operations involve async operations so the action is run in an async function.
-
-```javascript
-import * as core from '@actions/core';
-...
-
-async function run() {
-  try { 
-      ...
-  } 
-  catch (error) {
-    core.setFailed(error.message);
-  }
-}
-
-run()
-```
-
-See the [toolkit documentation](https://github.com/actions/toolkit/blob/master/README.md#packages) for the various packages.
-
-## Publish to a distribution branch
-
-Actions are run from GitHub repos so we will checkin the packed dist folder. 
-
-Then run [ncc](https://github.com/zeit/ncc) and push the results:
-```bash
-$ npm run package
-$ git add dist
-$ git commit -a -m "prod dependencies"
-$ git push origin releases/v1
-```
-
-Note: We recommend using the `--license` option for ncc, which will create a license file for all of the production node modules used in your project.
-
-Your action is now published! :rocket: 
-
-See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
-
-## Validate
-
-You can now validate the action by referencing `./` in a workflow in your repo (see [test.yml](.github/workflows/test.yml))
-
-```yaml
-uses: ./
-with:
-  milliseconds: 1000
-```
-
-See the [actions tab](https://github.com/actions/typescript-action/actions) for runs of this action! :rocket:
-
-## Usage:
-
-After testing you can [create a v1 tag](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md) to reference the stable and latest V1 action
+### Development
+* Clone this repository
+* Run `npm run build` and `npm run test`
+* Run `npm run all` to regenerate the dist directory.

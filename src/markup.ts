@@ -1,51 +1,61 @@
-import * as fs from 'fs'
-import {promises} from 'fs'
 import {Results, TrxDataWrapper, UnitTestResult} from './types/types'
 
 export function getMarkupForTrx(testData: TrxDataWrapper): string {
+  return `
+# Test Results - ${testData.ReportMetaData.ReportTitle}
+${getTestTimes(testData)}
+${getTestCounters(testData)}
+${getTestResultsMarkup(testData)}
+`
+}
+
+export function getTestRunDuration(startTime: Date, endTime: Date): number {
+  const startTimeSeconds = new Date(startTime).valueOf()
+  const endTimeSeconds = new Date(endTime).valueOf()
+  const duration = endTimeSeconds - startTimeSeconds
+  return duration / 1000
+}
+
+function getTestTimes(testData: TrxDataWrapper): string {
   const duration = getTestRunDuration(
     testData.TrxData.TestRun.Times._start,
     testData.TrxData.TestRun.Times._finish
   )
   return `
-# Test Results - ${testData.ReportMetaData.ReportTitle}
 <p>Expand the following summaries for more details:</p>
 <details>  
   <summary> Duration: ${duration} seconds </summary>
   <table>
     <tr>
-       <th>Started:</th>
-       <td><code>${testData.TrxData.TestRun.Times._start}</code></td>
+        <th>Started:</th>
+        <td><code>${testData.TrxData.TestRun.Times._start}</code></td>
     </tr>
     <tr>
-       <th>Creation:</th>
-       <td><code>${testData.TrxData.TestRun.Times._finish}</code></td>
+        <th>Creation:</th>
+        <td><code>${testData.TrxData.TestRun.Times._finish}</code></td>
     </tr>
     <tr>
-       <th>Queuing:</th>
-       <td><code>${testData.TrxData.TestRun.Times._queuing}</code></td>
+        <th>Queuing:</th>
+        <td><code>${testData.TrxData.TestRun.Times._queuing}</code></td>
     </tr>
     <tr>
-       <th>Finished:</th>
-       <td><code>${testData.TrxData.TestRun.Times._finish}</code></td>    
+        <th>Finished:</th>
+        <td><code>${testData.TrxData.TestRun.Times._finish}</code></td>    
     </tr>
     <tr>
-       <th>Duration:</th>
-       <td><code>${duration} seconds</code></td>
+        <th>Duration:</th>
+        <td><code>${duration} seconds</code></td>
     </tr>
 
   </table>
 </details>
-<details>  
-  <summary> Outcome: ${
-    testData.TrxData.TestRun.ResultSummary._outcome
-  } | Total Tests: ${
-    testData.TrxData.TestRun.ResultSummary.Counters._total
-  } | Passed: ${
-    testData.TrxData.TestRun.ResultSummary.Counters._passed
-  } | Failed: ${
-    testData.TrxData.TestRun.ResultSummary.Counters._failed
-  } </summary>
+`
+}
+
+function getTestCounters(testData: TrxDataWrapper): string {
+  return `
+<details>
+  <summary> Outcome: ${testData.TrxData.TestRun.ResultSummary._outcome} | Total Tests: ${testData.TrxData.TestRun.ResultSummary.Counters._total} | Passed: ${testData.TrxData.TestRun.ResultSummary.Counters._passed} | Failed: ${testData.TrxData.TestRun.ResultSummary.Counters._failed} </summary>
   <table>
     <tr>
        <th>Total:</th>
@@ -81,9 +91,7 @@ export function getMarkupForTrx(testData: TrxDataWrapper): string {
     </tr>
     <tr>
        <th>PassedButRunAborted:</th>
-       <td>${
-         testData.TrxData.TestRun.ResultSummary.Counters._passedButRunAborted
-       }</td>
+       <td>${testData.TrxData.TestRun.ResultSummary.Counters._passedButRunAborted}</td>
     </tr>
     <tr>
        <th>NotRunnable:</th>
@@ -115,15 +123,7 @@ export function getMarkupForTrx(testData: TrxDataWrapper): string {
     </tr>
   </table>
 </details>
-${getTestResultsMarkup(testData)}
 `
-}
-
-export function getTestRunDuration(startTime: Date, endTime: Date): number {
-  const startTimeSeconds = new Date(startTime).valueOf()
-  const endTimeSeconds = new Date(endTime).valueOf()
-  const duration = endTimeSeconds - startTimeSeconds
-  return duration / 1000
 }
 
 function getTestResultsMarkup(testData: TrxDataWrapper): string {
@@ -225,14 +225,4 @@ function getTestOutcomeIcon(testOutcome: string): string {
   if (testOutcome === 'NotExecuted') return ':radio_button:'
 
   return ':grey_question:'
-}
-
-export async function getMarkupForTrxFromGist(
-  markupPath: string
-): Promise<string> {
-  let markup = ''
-  if (fs.existsSync(markupPath)) {
-    markup = await promises.readFile(markupPath, 'utf8')
-  }
-  return markup
 }
