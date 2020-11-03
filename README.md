@@ -2,8 +2,6 @@
 
 > This Action was inspired by https://github.com/zyborg/dotnet-tests-report
 
-![GitHub package.json version](https://img.shields.io/github/package-json/v/NasAmin/trx-parser?style=flat-square)
-[![GitHub](https://img.shields.io/github/license/NasAmin/trx-parser?style=flat-square)](https://github.com/NasAmin/trx-parser/blob/master/LICENSE.md)
 ![Build](https://github.com/NasAmin/trx-parser/workflows/Build/badge.svg?branch=cleanup-check-logic)
 ![Test](https://github.com/NasAmin/trx-parser/workflows/Test/badge.svg)
 
@@ -40,3 +38,11 @@ jobs:
           TRX_PATH: ${{ github.workspace }}/TestResults #This should be the path to your TRX files
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}          
 ```
+
+## Contributing
+Anyone is welcome to contribute and make this action better. Please fork the repository and create a pull request with proposed changes.
+
+### Development
+* Clone this repository
+* Run `npm run build` and `npm run test`
+* Run `npm run all` to regenerate the dist directory.
