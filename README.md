@@ -2,8 +2,8 @@
 
 > This Action was inspired by https://github.com/zyborg/dotnet-tests-report
 
-![Build](https://github.com/NasAmin/trx-parser/workflows/Build/badge.svg?branch=cleanup-check-logic)
-![Test](https://github.com/NasAmin/trx-parser/workflows/Test/badge.svg)
+[![Build](https://github.com/NasAmin/trx-parser/workflows/Build/badge.svg?branch=main)](https://github.com/NasAmin/trx-parser/actions?workflow=Build)
+[![Test](https://github.com/NasAmin/trx-parser/workflows/Test/badge.svg?branch=main)](https://github.com/NasAmin/trx-parser/actions?workflow=Test)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/NasAmin/trx-parser)](https://github.com/NasAmin/trx-parser/releases/latest)
 ---
 
