@@ -46,17 +46,13 @@ function createCheckRun(repoToken, ignoreTestFailures, reportData) {
             core.info(`Creating PR check for ${reportData.ReportMetaData.ReportTitle}`);
             const octokit = github.getOctokit(repoToken);
             let git_sha = github.context.sha;
-            core.info(`Head sha from branch ${git_sha}`);
             if (github.context.eventName === 'push') {
-                core.info(`Head sha from branch ${git_sha}`);
                 core.info(`Creating status check for GitSha: ${git_sha} on a push event`);
             }
             if (github.context.eventName === 'pull_request') {
                 const prPayload = github.context
                     .payload;
-                core.info(`Head sha from the pull request payload ${prPayload.pull_request.head.sha}`);
                 git_sha = prPayload.pull_request.head.sha;
-                core.info(`PR Ref: ${github.context.ref}`);
                 core.info(`Creating status check for GitSha: ${git_sha} on a pull request event`);
             }
             const markupData = markup_1.getMarkupForTrx(reportData);
@@ -8206,7 +8202,7 @@ module.exports = eval("require")("encoding");
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("assert");
+module.exports = require("assert");;
 
 /***/ }),
 
@@ -8214,7 +8210,7 @@ module.exports = require("assert");
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("events");
+module.exports = require("events");;
 
 /***/ }),
 
@@ -8222,7 +8218,7 @@ module.exports = require("events");
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("fs");
+module.exports = require("fs");;
 
 /***/ }),
 
@@ -8230,7 +8226,7 @@ module.exports = require("fs");
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("http");
+module.exports = require("http");;
 
 /***/ }),
 
@@ -8238,7 +8234,7 @@ module.exports = require("http");
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("https");
+module.exports = require("https");;
 
 /***/ }),
 
@@ -8246,7 +8242,7 @@ module.exports = require("https");
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("net");
+module.exports = require("net");;
 
 /***/ }),
 
@@ -8254,7 +8250,7 @@ module.exports = require("net");
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("os");
+module.exports = require("os");;
 
 /***/ }),
 
@@ -8262,7 +8258,7 @@ module.exports = require("os");
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("path");
+module.exports = require("path");;
 
 /***/ }),
 
@@ -8270,7 +8266,7 @@ module.exports = require("path");
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("stream");
+module.exports = require("stream");;
 
 /***/ }),
 
@@ -8278,7 +8274,7 @@ module.exports = require("stream");
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("tls");
+module.exports = require("tls");;
 
 /***/ }),
 
@@ -8286,7 +8282,7 @@ module.exports = require("tls");
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("url");
+module.exports = require("url");;
 
 /***/ }),
 
@@ -8294,7 +8290,7 @@ module.exports = require("url");
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("util");
+module.exports = require("util");;
 
 /***/ }),
 
@@ -8302,7 +8298,7 @@ module.exports = require("util");
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("zlib");
+module.exports = require("zlib");;
 
 /***/ })
 
