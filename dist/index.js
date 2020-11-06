@@ -45,43 +45,46 @@ function createCheckRun(repoToken, ignoreTestFailures, reportData) {
         try {
             core.info(`Creating PR check for ${reportData.ReportMetaData.ReportTitle}`);
             const octokit = github.getOctokit(repoToken);
+            let git_sha = github.context.sha;
+            core.info(`Head sha from branch ${git_sha}`);
+            if (github.context.eventName === 'push') {
+                core.info(`Head sha from branch ${git_sha}`);
+                core.info(`Creating status check for GitSha: ${git_sha} on a push event`);
+            }
             if (github.context.eventName === 'pull_request') {
                 const prPayload = github.context
                     .payload;
-                core.info(`Head sha from the payload ${prPayload.pull_request.head.sha}`);
-                const git_sha = prPayload.pull_request.head.sha;
+                core.info(`Head sha from the pull request payload ${prPayload.pull_request.head.sha}`);
+                git_sha = prPayload.pull_request.head.sha;
                 core.info(`PR Ref: ${github.context.ref}`);
-                core.info(`Creating status check for GitSha: ${git_sha}`);
-                const markupData = markup_1.getMarkupForTrx(reportData);
-                const checkTime = new Date().toUTCString();
-                core.info(`Check time is: ${checkTime}`);
-                const response = yield octokit.checks.create({
-                    owner: github.context.repo.owner,
-                    repo: github.context.repo.repo,
-                    name: reportData.ReportMetaData.ReportName.toLowerCase(),
-                    head_sha: git_sha,
-                    status: 'completed',
-                    conclusion: reportData.TrxData.TestRun.ResultSummary._outcome === 'Failed'
-                        ? ignoreTestFailures
-                            ? 'neutral'
-                            : 'failure'
-                        : 'success',
-                    output: {
-                        title: reportData.ReportMetaData.ReportTitle,
-                        summary: `This test run completed at \`${checkTime}\``,
-                        // text: reportData.ReportMetaData.TrxJSonString
-                        text: markupData
-                    }
-                });
-                if (response.status !== 201) {
-                    throw new Error(`Failed to create status check. Error code: ${response.status}`);
+                core.info(`Creating status check for GitSha: ${git_sha} on a pull request event`);
+            }
+            const markupData = markup_1.getMarkupForTrx(reportData);
+            const checkTime = new Date().toUTCString();
+            core.info(`Check time is: ${checkTime}`);
+            const response = yield octokit.checks.create({
+                owner: github.context.repo.owner,
+                repo: github.context.repo.repo,
+                name: reportData.ReportMetaData.ReportName.toLowerCase(),
+                head_sha: git_sha,
+                status: 'completed',
+                conclusion: reportData.TrxData.TestRun.ResultSummary._outcome === 'Failed'
+                    ? ignoreTestFailures
+                        ? 'neutral'
+                        : 'failure'
+                    : 'success',
+                output: {
+                    title: reportData.ReportMetaData.ReportTitle,
+                    summary: `This test run completed at \`${checkTime}\``,
+                    // text: reportData.ReportMetaData.TrxJSonString
+                    text: markupData
                 }
-                else {
-                    core.info(`Created check: ${response.data.name} with response status ${response.status}`);
-                }
+            });
+            if (response.status !== 201) {
+                throw new Error(`Failed to create status check. Error code: ${response.status}`);
             }
             else {
-                core.info('Skipping status check as the trigger was not on a pull request');
+                core.info(`Created check: ${response.data.name} with response status ${response.status}`);
             }
         }
         catch (error) {
