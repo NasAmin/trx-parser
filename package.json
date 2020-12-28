@@ -48,7 +48,7 @@
     "@actions/github": "^4.0.0",
     "@octokit/webhooks": "^7.15.1",
     "@types/he": "^1.1.1",
-    "fast-xml-parser": "^3.17.4",
+    "fast-xml-parser": "^3.17.6",
     "he": "^1.2.0"
   },
   "devDependencies": {
