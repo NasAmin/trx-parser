@@ -6,7 +6,7 @@ import * as core from '@actions/core'
 import * as xmlParser from 'fast-xml-parser'
 import * as he from 'he'
 import {promises} from 'fs'
-import {TrxData, TrxDataWrapper} from './types/types'
+import {TrxData, TrxDataWrapper, UnitTest} from './types/types'
 
 export async function getTrxFiles(trxPath: string): Promise<string[]> {
   if (!fs.existsSync(trxPath)) return []
@@ -113,9 +113,11 @@ function getReportHeaders(
 ): {reportName: string; reportTitle: string} {
   let reportTitle = ''
   let reportName = ''
-  const dllName = data.TestRun.TestDefinitions.UnitTest[0]._storage
-    .split('/')
-    .pop()
+  const unittests = data.TestRun.TestDefinitions.UnitTest
+
+  const storage = getAssemblyName(unittests)
+
+  const dllName = storage.split('/').pop()
 
   if (dllName) {
     reportTitle = dllName.replace('.dll', '').toUpperCase().replace('.', ' ')
@@ -123,4 +125,15 @@ function getReportHeaders(
   }
 
   return {reportName, reportTitle}
+}
+
+function getAssemblyName(unittests: UnitTest[]): string {
+  if (Array.isArray(unittests)) {
+    core.info('Its an array')
+    return unittests[0]._storage
+  } else {
+    const ut = unittests as UnitTest
+    core.info(`Its not an array: ${ut._storage}`)
+    return ut._storage
+  }
 }

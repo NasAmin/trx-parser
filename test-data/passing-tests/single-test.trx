@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="2e7e24eb-5c24-4668-88ff-0f919fd93ad2" name="@staging-tests-vr4mc 2020-10-09 12:16:32" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2020-10-09T12:16:32.9539305+00:00" queuing="2020-10-09T12:16:32.9539306+00:00" start="2020-10-09T12:16:32.2264855+00:00" finish="2020-10-09T12:16:32.9675358+00:00" />
+  <TestSettings name="default" id="3a3b0c56-0f27-46ab-bc0e-aebca223aed0">
+    <Deployment runDeploymentRoot="_staging-tests-vr4mc_2020-10-09_12_16_32" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="b12e5ed8-c0b7-47e7-b76b-4b3c9d262807" testId="53a8c29f-d792-c64e-2275-b7d8e947a475" testName="TestMethod1" computerName="staging-tests-vr4mc" duration="00:00:00.0030063" startTime="2020-10-09T12:16:32.7704613+00:00" endTime="2020-10-09T12:16:32.7986250+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b12e5ed8-c0b7-47e7-b76b-4b3c9d262807" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="TestMethod1" storage="/root/bin/release/netcoreapp3.1/single-test.dll" id="53a8c29f-d792-c64e-2275-b7d8e947a475">
+      <Execution id="b12e5ed8-c0b7-47e7-b76b-4b3c9d262807" />
+      <TestMethod codeBase="/root/bin/Release/netcoreapp3.1/single-test.dll" adapterTypeName="executor://mstestadapter/v2" className="dummy_tests.DummyTest1" name="TestMethod1" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="53a8c29f-d792-c64e-2275-b7d8e947a475" executionId="b12e5ed8-c0b7-47e7-b76b-4b3c9d262807" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="1" executed="1" passed="1" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+</TestRun>

@@ -1,4 +1,4 @@
-import {Results, TrxDataWrapper, UnitTestResult} from './types/types'
+import {Results, TrxDataWrapper, UnitTest, UnitTestResult} from './types/types'
 
 export function getMarkupForTrx(testData: TrxDataWrapper): string {
   return `
@@ -128,14 +128,27 @@ function getTestCounters(testData: TrxDataWrapper): string {
 
 function getTestResultsMarkup(testData: TrxDataWrapper): string {
   let resultsMarkup = ''
-  for (const data of testData.TrxData.TestRun.TestDefinitions.UnitTest) {
-    const testResult = getUnitTestResult(
-      data._id,
-      testData.TrxData.TestRun.Results
-    )
-    if (testResult) {
-      const testResultIcon = getTestOutcomeIcon(testResult?._outcome)
-      let testMarkup = `
+  const unittests = testData.TrxData.TestRun.TestDefinitions.UnitTest
+
+  if (Array.isArray(unittests)) {
+    for (const data of unittests) {
+      resultsMarkup += getSingletestMarkup(data, testData)
+    }
+    return resultsMarkup.trim()
+  } else {
+    return getSingletestMarkup(unittests as UnitTest, testData)
+  }
+}
+
+function getSingletestMarkup(data: UnitTest, testData: TrxDataWrapper): string {
+  let resultsMarkup = ''
+  const testResult = getUnitTestResult(
+    data._id,
+    testData.TrxData.TestRun.Results
+  )
+  if (testResult) {
+    const testResultIcon = getTestOutcomeIcon(testResult?._outcome)
+    let testMarkup = `
 <details>
   <summary>${testResultIcon} ${data._name}</summary>    
   <table>
@@ -188,8 +201,8 @@ function getTestResultsMarkup(testData: TrxDataWrapper): string {
   </details>
 `
 
-      if (testResult._outcome === 'Failed') {
-        const failedTestDetails = `
+    if (testResult._outcome === 'Failed') {
+      const failedTestDetails = `
   <details>
         <summary>Error Message:</summary>
         <pre>${testResult.Output?.ErrorInfo.Message}</pre>
@@ -199,14 +212,13 @@ function getTestResultsMarkup(testData: TrxDataWrapper): string {
         <pre>${testResult.Output?.ErrorInfo.StackTrace}</pre>
   </details>
   `
-        testMarkup += failedTestDetails
-      }
+      testMarkup += failedTestDetails
+    }
 
-      resultsMarkup += testMarkup
-      resultsMarkup += `
+    resultsMarkup += testMarkup
+    resultsMarkup += `
 </details>
 `
-    }
   }
   return resultsMarkup.trim()
 }
@@ -215,7 +227,13 @@ function getUnitTestResult(
   unitTestId: string,
   testResults: Results
 ): UnitTestResult | undefined {
-  const result = testResults.UnitTestResult.find(x => x._testId === unitTestId)
+  const unitTestResults = testResults.UnitTestResult
+
+  if (Array.isArray(unitTestResults)) {
+    return testResults.UnitTestResult.find(x => x._testId === unitTestId)
+  }
+
+  const result = unitTestResults as UnitTestResult
   return result
 }
 

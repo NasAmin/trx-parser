@@ -297,13 +297,25 @@ function getTestCounters(testData) {
 `;
 }
 function getTestResultsMarkup(testData) {
+    let resultsMarkup = '';
+    const unittests = testData.TrxData.TestRun.TestDefinitions.UnitTest;
+    if (Array.isArray(unittests)) {
+        for (const data of unittests) {
+            resultsMarkup += getSingletestMarkup(data, testData);
+        }
+        return resultsMarkup.trim();
+    }
+    else {
+        return getSingletestMarkup(unittests, testData);
+    }
+}
+function getSingletestMarkup(data, testData) {
     var _a, _b;
     let resultsMarkup = '';
-    for (const data of testData.TrxData.TestRun.TestDefinitions.UnitTest) {
-        const testResult = getUnitTestResult(data._id, testData.TrxData.TestRun.Results);
-        if (testResult) {
-            const testResultIcon = getTestOutcomeIcon(testResult === null || testResult === void 0 ? void 0 : testResult._outcome);
-            let testMarkup = `
+    const testResult = getUnitTestResult(data._id, testData.TrxData.TestRun.Results);
+    if (testResult) {
+        const testResultIcon = getTestOutcomeIcon(testResult === null || testResult === void 0 ? void 0 : testResult._outcome);
+        let testMarkup = `
 <details>
   <summary>${testResultIcon} ${data._name}</summary>    
   <table>
@@ -355,8 +367,8 @@ function getTestResultsMarkup(testData) {
       </table>      
   </details>
 `;
-            if (testResult._outcome === 'Failed') {
-                const failedTestDetails = `
+        if (testResult._outcome === 'Failed') {
+            const failedTestDetails = `
   <details>
         <summary>Error Message:</summary>
         <pre>${(_a = testResult.Output) === null || _a === void 0 ? void 0 : _a.ErrorInfo.Message}</pre>
@@ -366,18 +378,21 @@ function getTestResultsMarkup(testData) {
         <pre>${(_b = testResult.Output) === null || _b === void 0 ? void 0 : _b.ErrorInfo.StackTrace}</pre>
   </details>
   `;
-                testMarkup += failedTestDetails;
-            }
-            resultsMarkup += testMarkup;
-            resultsMarkup += `
+            testMarkup += failedTestDetails;
+        }
+        resultsMarkup += testMarkup;
+        resultsMarkup += `
 </details>
 `;
-        }
     }
     return resultsMarkup.trim();
 }
 function getUnitTestResult(unitTestId, testResults) {
-    const result = testResults.UnitTestResult.find(x => x._testId === unitTestId);
+    const unitTestResults = testResults.UnitTestResult;
+    if (Array.isArray(unitTestResults)) {
+        return testResults.UnitTestResult.find(x => x._testId === unitTestId);
+    }
+    const result = unitTestResults;
     return result;
 }
 function getTestOutcomeIcon(testOutcome) {
@@ -534,14 +549,25 @@ exports.areThereAnyFailingTests = areThereAnyFailingTests;
 function getReportHeaders(data) {
     let reportTitle = '';
     let reportName = '';
-    const dllName = data.TestRun.TestDefinitions.UnitTest[0]._storage
-        .split('/')
-        .pop();
+    const unittests = data.TestRun.TestDefinitions.UnitTest;
+    const storage = getAssemblyName(unittests);
+    const dllName = storage.split('/').pop();
     if (dllName) {
         reportTitle = dllName.replace('.dll', '').toUpperCase().replace('.', ' ');
         reportName = dllName.replace('.dll', '').toUpperCase();
     }
     return { reportName, reportTitle };
+}
+function getAssemblyName(unittests) {
+    if (Array.isArray(unittests)) {
+        core.info('Its an array');
+        return unittests[0]._storage;
+    }
+    else {
+        const ut = unittests;
+        core.info(`Its not an array: ${ut._storage}`);
+        return ut._storage;
+    }
 }
 
 
@@ -4741,8 +4767,9 @@ const convertToJson = function(node, options) {
     if (node.child[tagname] && node.child[tagname].length > 1) {
       jObj[tagname] = [];
       for (var tag in node.child[tagname]) {
-        jObj[tagname].push(convertToJson(node.child[tagname][tag], options));
-      }
+        if (node.child[tagname].hasOwnProperty(tag)){
+          jObj[tagname].push(convertToJson(node.child[tagname][tag], options));}
+        }
     } else {
       if(options.arrayMode === true){
         const result = convertToJson(node.child[tagname][0], options)
@@ -5610,7 +5637,7 @@ function buildAttributesMap(attrStr, options) {
 }
 
 const getTraversalObj = function(xmlData, options) {
-  xmlData = xmlData.replace(/(\r\n)|\n/, " ");
+  xmlData = xmlData.replace(/\r\n?/g, "\n");
   options = buildOptions(options, defaultOptions, props);
   const xmlObj = new xmlNode('!xml');
   let currentNode = xmlObj;
@@ -5696,7 +5723,7 @@ const getTraversalObj = function(xmlData, options) {
         const separatorIndex = tagExp.indexOf(" ");
         let tagName = tagExp;
         if(separatorIndex !== -1){
-          tagName = tagExp.substr(0, separatorIndex).trimRight();
+          tagName = tagExp.substr(0, separatorIndex).replace(/\s\s*$/, '');
           tagExp = tagExp.substr(separatorIndex + 1);
         }
 
