@@ -297,13 +297,25 @@ function getTestCounters(testData) {
 `;
 }
 function getTestResultsMarkup(testData) {
+    let resultsMarkup = '';
+    const unittests = testData.TrxData.TestRun.TestDefinitions.UnitTest;
+    if (Array.isArray(unittests)) {
+        for (const data of unittests) {
+            resultsMarkup += getSingletestMarkup(data, testData);
+        }
+        return resultsMarkup.trim();
+    }
+    else {
+        return getSingletestMarkup(unittests, testData);
+    }
+}
+function getSingletestMarkup(data, testData) {
     var _a, _b;
     let resultsMarkup = '';
-    for (const data of testData.TrxData.TestRun.TestDefinitions.UnitTest) {
-        const testResult = getUnitTestResult(data._id, testData.TrxData.TestRun.Results);
-        if (testResult) {
-            const testResultIcon = getTestOutcomeIcon(testResult === null || testResult === void 0 ? void 0 : testResult._outcome);
-            let testMarkup = `
+    const testResult = getUnitTestResult(data._id, testData.TrxData.TestRun.Results);
+    if (testResult) {
+        const testResultIcon = getTestOutcomeIcon(testResult === null || testResult === void 0 ? void 0 : testResult._outcome);
+        let testMarkup = `
 <details>
   <summary>${testResultIcon} ${data._name}</summary>    
   <table>
@@ -355,8 +367,8 @@ function getTestResultsMarkup(testData) {
       </table>      
   </details>
 `;
-            if (testResult._outcome === 'Failed') {
-                const failedTestDetails = `
+        if (testResult._outcome === 'Failed') {
+            const failedTestDetails = `
   <details>
         <summary>Error Message:</summary>
         <pre>${(_a = testResult.Output) === null || _a === void 0 ? void 0 : _a.ErrorInfo.Message}</pre>
@@ -366,18 +378,21 @@ function getTestResultsMarkup(testData) {
         <pre>${(_b = testResult.Output) === null || _b === void 0 ? void 0 : _b.ErrorInfo.StackTrace}</pre>
   </details>
   `;
-                testMarkup += failedTestDetails;
-            }
-            resultsMarkup += testMarkup;
-            resultsMarkup += `
+            testMarkup += failedTestDetails;
+        }
+        resultsMarkup += testMarkup;
+        resultsMarkup += `
 </details>
 `;
-        }
     }
     return resultsMarkup.trim();
 }
 function getUnitTestResult(unitTestId, testResults) {
-    const result = testResults.UnitTestResult.find(x => x._testId === unitTestId);
+    const unitTestResults = testResults.UnitTestResult;
+    if (Array.isArray(unitTestResults)) {
+        return testResults.UnitTestResult.find(x => x._testId === unitTestId);
+    }
+    const result = unitTestResults;
     return result;
 }
 function getTestOutcomeIcon(testOutcome) {
