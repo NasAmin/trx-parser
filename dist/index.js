@@ -534,14 +534,25 @@ exports.areThereAnyFailingTests = areThereAnyFailingTests;
 function getReportHeaders(data) {
     let reportTitle = '';
     let reportName = '';
-    const dllName = data.TestRun.TestDefinitions.UnitTest[0]._storage
-        .split('/')
-        .pop();
+    const unittests = data.TestRun.TestDefinitions.UnitTest;
+    const storage = getAssemblyName(unittests);
+    const dllName = storage.split('/').pop();
     if (dllName) {
         reportTitle = dllName.replace('.dll', '').toUpperCase().replace('.', ' ');
         reportName = dllName.replace('.dll', '').toUpperCase();
     }
     return { reportName, reportTitle };
+}
+function getAssemblyName(unittests) {
+    if (Array.isArray(unittests)) {
+        core.info('Its an array');
+        return unittests[0]._storage;
+    }
+    else {
+        const ut = unittests;
+        core.info(`Its not an array: ${ut._storage}`);
+        return ut._storage;
+    }
 }
 
 
@@ -4741,8 +4752,9 @@ const convertToJson = function(node, options) {
     if (node.child[tagname] && node.child[tagname].length > 1) {
       jObj[tagname] = [];
       for (var tag in node.child[tagname]) {
-        jObj[tagname].push(convertToJson(node.child[tagname][tag], options));
-      }
+        if (node.child[tagname].hasOwnProperty(tag)){
+          jObj[tagname].push(convertToJson(node.child[tagname][tag], options));}
+        }
     } else {
       if(options.arrayMode === true){
         const result = convertToJson(node.child[tagname][0], options)
@@ -5610,7 +5622,7 @@ function buildAttributesMap(attrStr, options) {
 }
 
 const getTraversalObj = function(xmlData, options) {
-  xmlData = xmlData.replace(/(\r\n)|\n/, " ");
+  xmlData = xmlData.replace(/\r\n?/g, "\n");
   options = buildOptions(options, defaultOptions, props);
   const xmlObj = new xmlNode('!xml');
   let currentNode = xmlObj;
@@ -5696,7 +5708,7 @@ const getTraversalObj = function(xmlData, options) {
         const separatorIndex = tagExp.indexOf(" ");
         let tagName = tagExp;
         if(separatorIndex !== -1){
-          tagName = tagExp.substr(0, separatorIndex).trimRight();
+          tagName = tagExp.substr(0, separatorIndex).replace(/\s\s*$/, '');
           tagExp = tagExp.substr(separatorIndex + 1);
         }
 
