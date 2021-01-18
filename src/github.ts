@@ -7,7 +7,8 @@ import {getMarkupForTrx} from './markup'
 export async function createCheckRun(
   repoToken: string,
   ignoreTestFailures: boolean,
-  reportData: TrxDataWrapper
+  reportData: TrxDataWrapper,
+  check_suite_id: number
 ): Promise<void> {
   try {
     core.info(`Creating PR check for ${reportData.ReportMetaData.ReportTitle}`)
@@ -37,6 +38,9 @@ export async function createCheckRun(
       name: reportData.ReportMetaData.ReportName.toLowerCase(),
       head_sha: git_sha,
       status: 'completed',
+      check_suite: {
+        id: check_suite_id
+      },
       conclusion:
         reportData.TrxData.TestRun.ResultSummary._outcome === 'Failed'
           ? ignoreTestFailures

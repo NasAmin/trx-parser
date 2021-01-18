@@ -25,7 +25,7 @@ export async function run(): Promise<void> {
     core.info(`check suite id is: ${checkSuite.id}`)
 
     for (const data of trxToJson) {
-      await createCheckRun(token, ignoreTestFailures, data)
+      await createCheckRun(token, ignoreTestFailures, data, checkSuite.id)
     }
 
     if (failingTestsFound) {
