@@ -100,13 +100,13 @@ function createCheckSuite(repoToken
             const octokit = github.getOctokit(repoToken);
             let git_sha = github.context.sha;
             if (github.context.eventName === 'push') {
-                core.info(`Creating status check for GitSha: ${git_sha} on a push event`);
+                core.info(`Creating check suite for GitSha: ${git_sha} on a push event`);
             }
             if (github.context.eventName === 'pull_request') {
                 const prPayload = github.context
                     .payload;
                 git_sha = prPayload.pull_request.head.sha;
-                core.info(`Creating status check for GitSha: ${git_sha} on a pull request event`);
+                core.info(`Creating check suite for GitSha: ${git_sha} on a pull request event`);
             }
             const response = yield octokit.checks.createSuite({
                 owner: github.context.repo.owner,
@@ -114,10 +114,10 @@ function createCheckSuite(repoToken
                 head_sha: git_sha
             });
             if (response.status !== 201) {
-                throw new Error(`Failed to create status check. Error code: ${response.status}`);
+                throw new Error(`Failed to create check suite. Error code: ${response.status}`);
             }
             else {
-                core.info(`Created check: ${response.data.id} with response status ${response.status}`);
+                core.info(`Created check suite: ${response.data.id} with response status ${response.status}`);
             }
             return response.data;
         }

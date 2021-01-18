@@ -78,7 +78,7 @@ export async function createCheckSuite(
     let git_sha = github.context.sha
 
     if (github.context.eventName === 'push') {
-      core.info(`Creating status check for GitSha: ${git_sha} on a push event`)
+      core.info(`Creating check suite for GitSha: ${git_sha} on a push event`)
     }
 
     if (github.context.eventName === 'pull_request') {
@@ -87,7 +87,7 @@ export async function createCheckSuite(
 
       git_sha = prPayload.pull_request.head.sha
       core.info(
-        `Creating status check for GitSha: ${git_sha} on a pull request event`
+        `Creating check suite for GitSha: ${git_sha} on a pull request event`
       )
     }
 
@@ -99,11 +99,11 @@ export async function createCheckSuite(
 
     if (response.status !== 201) {
       throw new Error(
-        `Failed to create status check. Error code: ${response.status}`
+        `Failed to create check suite. Error code: ${response.status}`
       )
     } else {
       core.info(
-        `Created check: ${response.data.id} with response status ${response.status}`
+        `Created check suite: ${response.data.id} with response status ${response.status}`
       )
     }
     return response.data
