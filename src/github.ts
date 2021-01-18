@@ -64,3 +64,46 @@ export async function createCheckRun(
     core.setFailed(error.message)
   }
 }
+
+export async function createCheckSuite(
+  repoToken: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+): Promise<any> {
+  try {
+    const octokit = github.getOctokit(repoToken)
+    let git_sha = github.context.sha
+
+    if (github.context.eventName === 'push') {
+      core.info(`Creating status check for GitSha: ${git_sha} on a push event`)
+    }
+
+    if (github.context.eventName === 'pull_request') {
+      const prPayload = github.context
+        .payload as Webhooks.EventPayloads.WebhookPayloadPullRequest
+
+      git_sha = prPayload.pull_request.head.sha
+      core.info(
+        `Creating status check for GitSha: ${git_sha} on a pull request event`
+      )
+    }
+
+    const response = await octokit.checks.createSuite({
+      owner: github.context.repo.owner,
+      repo: github.context.repo.repo,
+      head_sha: git_sha
+    })
+
+    if (response.status !== 201) {
+      throw new Error(
+        `Failed to create status check. Error code: ${response.status}`
+      )
+    } else {
+      core.info(
+        `Created check: ${response.data.id} with response status ${response.status}`
+      )
+    }
+    return response.data
+  } catch (error) {
+    core.setFailed(error.message)
+  }
+}

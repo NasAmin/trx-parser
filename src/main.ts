@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import {createCheckRun} from './github'
+import {createCheckRun, createCheckSuite} from './github'
 import {
   areThereAnyFailingTests,
   getTrxFiles,
@@ -20,6 +20,9 @@ export async function run(): Promise<void> {
 
     core.info(`Checking for failing tests`)
     const failingTestsFound = areThereAnyFailingTests(trxToJson)
+
+    const checkSuite = await createCheckSuite(token)
+    core.info(`check suite id is: ${checkSuite.id}`)
 
     for (const data of trxToJson) {
       await createCheckRun(token, ignoreTestFailures, data)

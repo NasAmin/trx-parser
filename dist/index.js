@@ -36,7 +36,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createCheckRun = void 0;
+exports.createCheckSuite = exports.createCheckRun = void 0;
 const github = __importStar(__webpack_require__(5438));
 const core = __importStar(__webpack_require__(2186));
 const markup_1 = __webpack_require__(2727);
@@ -89,6 +89,41 @@ function createCheckRun(repoToken, ignoreTestFailures, reportData) {
     });
 }
 exports.createCheckRun = createCheckRun;
+function createCheckSuite(repoToken
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+) {
+    return __awaiter(this, void 0, void 0, function* () {
+        try {
+            const octokit = github.getOctokit(repoToken);
+            let git_sha = github.context.sha;
+            if (github.context.eventName === 'push') {
+                core.info(`Creating status check for GitSha: ${git_sha} on a push event`);
+            }
+            if (github.context.eventName === 'pull_request') {
+                const prPayload = github.context
+                    .payload;
+                git_sha = prPayload.pull_request.head.sha;
+                core.info(`Creating status check for GitSha: ${git_sha} on a pull request event`);
+            }
+            const response = yield octokit.checks.createSuite({
+                owner: github.context.repo.owner,
+                repo: github.context.repo.repo,
+                head_sha: git_sha
+            });
+            if (response.status !== 201) {
+                throw new Error(`Failed to create status check. Error code: ${response.status}`);
+            }
+            else {
+                core.info(`Created check: ${response.data.id} with response status ${response.status}`);
+            }
+            return response.data;
+        }
+        catch (error) {
+            core.setFailed(error.message);
+        }
+    });
+}
+exports.createCheckSuite = createCheckSuite;
 
 
 /***/ }),
@@ -143,6 +178,8 @@ function run() {
             const trxToJson = yield utils_1.transformAllTrxToJson(trxFiles);
             core.info(`Checking for failing tests`);
             const failingTestsFound = utils_1.areThereAnyFailingTests(trxToJson);
+            const checkSuite = yield github_1.createCheckSuite(token);
+            core.info(`check suite id is: ${checkSuite.id}`);
             for (const data of trxToJson) {
                 yield github_1.createCheckRun(token, ignoreTestFailures, data);
             }
