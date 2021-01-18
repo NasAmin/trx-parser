@@ -41,6 +41,7 @@ export async function createCheckRun(
       check_suite: {
         id: check_suite_id
       },
+      check_suite_id,
       conclusion:
         reportData.TrxData.TestRun.ResultSummary._outcome === 'Failed'
           ? ignoreTestFailures

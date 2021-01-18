@@ -67,6 +67,7 @@ function createCheckRun(repoToken, ignoreTestFailures, reportData, check_suite_i
                 check_suite: {
                     id: check_suite_id
                 },
+                check_suite_id,
                 conclusion: reportData.TrxData.TestRun.ResultSummary._outcome === 'Failed'
                     ? ignoreTestFailures
                         ? 'neutral'
