@@ -1,4 +1,4 @@
-name: 'trx-parser'
+name: 'trx-parser-test'
 description: 'An action to parse trx reports from a given path and use GitHub status check api to fail PRs'
 author: 'Nasir Amin'
 branding:
