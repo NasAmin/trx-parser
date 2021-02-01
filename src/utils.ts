@@ -91,7 +91,11 @@ export async function transformAllTrxToJson(
 ): Promise<TrxDataWrapper[]> {
   const transformedTrxReports: TrxDataWrapper[] = []
   for (const trx of trxFiles) {
-    transformedTrxReports.push(await transformTrxToJson(trx))
+    try {
+      transformedTrxReports.push(await transformTrxToJson(trx))
+    } catch (ex) {
+      throw new Error(`Processing of TRX: ${trx} failed with error: ${ex.message}`)
+    }
   }
 
   return transformedTrxReports
