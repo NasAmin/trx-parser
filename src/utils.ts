@@ -65,6 +65,9 @@ export async function transformTrxToJson(
     if (xmlParser.validate(xmlData.toString()) === true) {
       const jsonString = xmlParser.parse(xmlData, options, true)
       const reportHeaders = getReportHeaders(jsonString)
+      if (!reportHeaders)
+        return trxDataWrapper;
+
       trxDataWrapper = {
         TrxData: jsonString as TrxData,
         ReportMetaData: {
@@ -91,7 +94,13 @@ export async function transformAllTrxToJson(
 ): Promise<TrxDataWrapper[]> {
   const transformedTrxReports: TrxDataWrapper[] = []
   for (const trx of trxFiles) {
-    transformedTrxReports.push(await transformTrxToJson(trx))
+    try {
+      const trxToJson = await transformTrxToJson(trx);
+      if (trxToJson)
+        transformedTrxReports.push(trxToJson)
+    } catch (ex) {
+      throw new Error(`Processing of TRX: ${trx} failed with error: ${ex.message}`)
+    }
   }
 
   return transformedTrxReports
@@ -111,6 +120,9 @@ export function areThereAnyFailingTests(
 function getReportHeaders(
   data: TrxData
 ): {reportName: string; reportTitle: string} {
+  if (!data.TestRun.TestDefinitions)
+    return null as any;
+
   let reportTitle = ''
   let reportName = ''
   const unittests = data.TestRun.TestDefinitions.UnitTest
