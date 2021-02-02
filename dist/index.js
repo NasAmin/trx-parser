@@ -319,7 +319,7 @@ function getSingletestMarkup(data, testData, onlyFailed) {
     let resultsMarkup = '';
     const testResult = getUnitTestResult(data._id, testData.TrxData.TestRun.Results);
     if (testResult) {
-        if (onlyFailed && (testResult === null || testResult === void 0 ? void 0 : testResult._outcome) == "Failed") {
+        if (onlyFailed && (testResult === null || testResult === void 0 ? void 0 : testResult._outcome) != 'Failed') {
             return resultsMarkup;
         }
         const testResultIcon = getTestOutcomeIcon(testResult === null || testResult === void 0 ? void 0 : testResult._outcome);

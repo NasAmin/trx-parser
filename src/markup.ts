@@ -148,7 +148,7 @@ function getSingletestMarkup(data: UnitTest, testData: TrxDataWrapper, onlyFaile
   )
 
   if (testResult) {
-    if (onlyFailed && testResult?._outcome == "Failed"){
+    if (onlyFailed && testResult?._outcome != 'Failed'){
       return resultsMarkup;
     }
 
