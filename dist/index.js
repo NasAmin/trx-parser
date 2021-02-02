@@ -40,10 +40,14 @@ exports.createCheckRun = void 0;
 const github = __importStar(__nccwpck_require__(5438));
 const core = __importStar(__nccwpck_require__(2186));
 const markup_1 = __nccwpck_require__(2727);
-function createCheckRun(repoToken, ignoreTestFailures, reportData) {
+function createCheckRun(repoToken, ignoreTestFailures, reportData, onlyFailed) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             core.info(`Creating PR check for ${reportData.ReportMetaData.ReportTitle}`);
+            if (onlyFailed && reportData.TrxData.TestRun.ResultSummary._outcome !== 'Failed') {
+                core.info(`Skipping for ${reportData.ReportMetaData.ReportTitle} as only failed is set this is ${reportData.TrxData.TestRun.ResultSummary._outcome}`);
+                return;
+            }
             const octokit = github.getOctokit(repoToken);
             let git_sha = github.context.sha;
             if (github.context.eventName === 'push') {
@@ -55,7 +59,7 @@ function createCheckRun(repoToken, ignoreTestFailures, reportData) {
                 git_sha = prPayload.pull_request.head.sha;
                 core.info(`Creating status check for GitSha: ${git_sha} on a pull request event`);
             }
-            const markupData = markup_1.getMarkupForTrx(reportData);
+            const markupData = markup_1.getMarkupForTrx(reportData, onlyFailed);
             const checkTime = new Date().toUTCString();
             core.info(`Check time is: ${checkTime}`);
             const response = yield octokit.checks.create({
@@ -89,7 +93,7 @@ function createCheckRun(repoToken, ignoreTestFailures, reportData) {
     });
 }
 exports.createCheckRun = createCheckRun;
-
+//# sourceMappingURL=github.js.map
 
 /***/ }),
 
@@ -137,6 +141,7 @@ function run() {
             const token = core.getInput('REPO_TOKEN');
             const trxPath = core.getInput('TRX_PATH');
             const ignoreTestFailures = core.getInput('IGNORE_FAILURE', { required: false }) === 'true';
+            const reportOnlyFailed = core.getInput('REPORT_ONLY_FAILED', { required: false }) === 'true';
             core.info(`Finding Trx files in: ${trxPath}`);
             const trxFiles = yield utils_1.getTrxFiles(trxPath);
             core.info(`Processing ${trxFiles.length} trx files`);
@@ -144,7 +149,7 @@ function run() {
             core.info(`Checking for failing tests`);
             const failingTestsFound = utils_1.areThereAnyFailingTests(trxToJson);
             for (const data of trxToJson) {
-                yield github_1.createCheckRun(token, ignoreTestFailures, data);
+                yield github_1.createCheckRun(token, ignoreTestFailures, data, reportOnlyFailed);
             }
             if (failingTestsFound) {
                 if (ignoreTestFailures) {
@@ -164,7 +169,7 @@ function run() {
 }
 exports.run = run;
 run();
-
+//# sourceMappingURL=main.js.map
 
 /***/ }),
 
@@ -175,12 +180,12 @@ run();
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getTestRunDuration = exports.getMarkupForTrx = void 0;
-function getMarkupForTrx(testData) {
+function getMarkupForTrx(testData, onlyFailed) {
     return `
 # Test Results - ${testData.ReportMetaData.ReportTitle}
 ${getTestTimes(testData)}
 ${getTestCounters(testData)}
-${getTestResultsMarkup(testData)}
+${getTestResultsMarkup(testData, onlyFailed)}
 `;
 }
 exports.getMarkupForTrx = getMarkupForTrx;
@@ -296,24 +301,27 @@ function getTestCounters(testData) {
 </details>
 `;
 }
-function getTestResultsMarkup(testData) {
+function getTestResultsMarkup(testData, onlyFailed) {
     let resultsMarkup = '';
     const unittests = testData.TrxData.TestRun.TestDefinitions.UnitTest;
     if (Array.isArray(unittests)) {
         for (const data of unittests) {
-            resultsMarkup += getSingletestMarkup(data, testData);
+            resultsMarkup += getSingletestMarkup(data, testData, onlyFailed);
         }
         return resultsMarkup.trim();
     }
     else {
-        return getSingletestMarkup(unittests, testData);
+        return getSingletestMarkup(unittests, testData, onlyFailed);
     }
 }
-function getSingletestMarkup(data, testData) {
+function getSingletestMarkup(data, testData, onlyFailed) {
     var _a, _b;
     let resultsMarkup = '';
     const testResult = getUnitTestResult(data._id, testData.TrxData.TestRun.Results);
     if (testResult) {
+        if (onlyFailed && (testResult === null || testResult === void 0 ? void 0 : testResult._outcome) == "Failed") {
+            return resultsMarkup;
+        }
         const testResultIcon = getTestOutcomeIcon(testResult === null || testResult === void 0 ? void 0 : testResult._outcome);
         let testMarkup = `
 <details>
@@ -404,7 +412,7 @@ function getTestOutcomeIcon(testOutcome) {
         return ':radio_button:';
     return ':grey_question:';
 }
-
+//# sourceMappingURL=markup.js.map
 
 /***/ }),
 
@@ -580,7 +588,7 @@ function getAssemblyName(unittests) {
         return ut._storage;
     }
 }
-
+//# sourceMappingURL=utils.js.map
 
 /***/ }),
 

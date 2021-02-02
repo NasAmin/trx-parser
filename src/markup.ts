@@ -1,11 +1,11 @@
 import {Results, TrxDataWrapper, UnitTest, UnitTestResult} from './types/types'
 
-export function getMarkupForTrx(testData: TrxDataWrapper): string {
+export function getMarkupForTrx(testData: TrxDataWrapper, onlyFailed: boolean): string {
   return `
 # Test Results - ${testData.ReportMetaData.ReportTitle}
 ${getTestTimes(testData)}
 ${getTestCounters(testData)}
-${getTestResultsMarkup(testData)}
+${getTestResultsMarkup(testData, onlyFailed)}
 `
 }
 
@@ -126,27 +126,32 @@ function getTestCounters(testData: TrxDataWrapper): string {
 `
 }
 
-function getTestResultsMarkup(testData: TrxDataWrapper): string {
+function getTestResultsMarkup(testData: TrxDataWrapper, onlyFailed:boolean): string {
   let resultsMarkup = ''
   const unittests = testData.TrxData.TestRun.TestDefinitions.UnitTest
 
   if (Array.isArray(unittests)) {
     for (const data of unittests) {
-      resultsMarkup += getSingletestMarkup(data, testData)
+      resultsMarkup += getSingletestMarkup(data, testData, onlyFailed)
     }
     return resultsMarkup.trim()
   } else {
-    return getSingletestMarkup(unittests as UnitTest, testData)
+    return getSingletestMarkup(unittests as UnitTest, testData, onlyFailed)
   }
 }
 
-function getSingletestMarkup(data: UnitTest, testData: TrxDataWrapper): string {
+function getSingletestMarkup(data: UnitTest, testData: TrxDataWrapper, onlyFailed: boolean): string {
   let resultsMarkup = ''
   const testResult = getUnitTestResult(
     data._id,
     testData.TrxData.TestRun.Results
   )
+
   if (testResult) {
+    if (onlyFailed && testResult?._outcome == "Failed"){
+      return resultsMarkup;
+    }
+
     const testResultIcon = getTestOutcomeIcon(testResult?._outcome)
     let testMarkup = `
 <details>

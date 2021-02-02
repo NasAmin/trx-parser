@@ -7,10 +7,15 @@ import {getMarkupForTrx} from './markup'
 export async function createCheckRun(
   repoToken: string,
   ignoreTestFailures: boolean,
-  reportData: TrxDataWrapper
+  reportData: TrxDataWrapper,
+  onlyFailed: boolean  
 ): Promise<void> {
   try {
     core.info(`Creating PR check for ${reportData.ReportMetaData.ReportTitle}`)
+    if (onlyFailed && reportData.TrxData.TestRun.ResultSummary._outcome !== 'Failed'){
+      core.info(`Skipping for ${reportData.ReportMetaData.ReportTitle} as only failed is set this is ${reportData.TrxData.TestRun.ResultSummary._outcome}`)
+      return;
+    }
     const octokit = github.getOctokit(repoToken)
     let git_sha = github.context.sha
 
@@ -28,7 +33,7 @@ export async function createCheckRun(
       )
     }
 
-    const markupData = getMarkupForTrx(reportData)
+    const markupData = getMarkupForTrx(reportData, onlyFailed)
     const checkTime = new Date().toUTCString()
     core.info(`Check time is: ${checkTime}`)
     const response = await octokit.checks.create({
