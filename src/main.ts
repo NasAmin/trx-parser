@@ -10,8 +10,10 @@ export async function run(): Promise<void> {
   try {
     const token = core.getInput('REPO_TOKEN')
     const trxPath = core.getInput('TRX_PATH')
+    
     const ignoreTestFailures: boolean =
       core.getInput('IGNORE_FAILURE', {required: false}) === 'true'
+    const reportOnlyFailed : boolean = core.getInput('REPORT_ONLY_FAILED', {required: false}) === 'true'
     core.info(`Finding Trx files in: ${trxPath}`)
     const trxFiles = await getTrxFiles(trxPath)
 
@@ -22,7 +24,7 @@ export async function run(): Promise<void> {
     const failingTestsFound = areThereAnyFailingTests(trxToJson)
 
     for (const data of trxToJson) {
-      await createCheckRun(token, ignoreTestFailures, data)
+      await createCheckRun(token, ignoreTestFailures, data, reportOnlyFailed)
     }
 
     if (failingTestsFound) {
