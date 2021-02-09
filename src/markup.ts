@@ -2,6 +2,7 @@ import {Results, TrxDataWrapper, UnitTest, UnitTestResult} from './types/types'
 
 export function getMarkupForTrx(testData: TrxDataWrapper): string {
   return `
+[![Generic badge](https://img.shields.io/badge/<SUBJECT>-<STATUS>-<COLOR>.svg)](https://shields.io/)
 # Test Results - ${testData.ReportMetaData.ReportTitle}
 ${getTestTimes(testData)}
 ${getTestCounters(testData)}
@@ -129,7 +130,6 @@ function getTestCounters(testData: TrxDataWrapper): string {
 function getTestResultsMarkup(testData: TrxDataWrapper): string {
   let resultsMarkup = ''
   const unittests = testData.TrxData.TestRun.TestDefinitions.UnitTest
-
   if (Array.isArray(unittests)) {
     for (const data of unittests) {
       resultsMarkup += getSingletestMarkup(data, testData)
@@ -146,7 +146,7 @@ function getSingletestMarkup(data: UnitTest, testData: TrxDataWrapper): string {
     data._id,
     testData.TrxData.TestRun.Results
   )
-  if (testResult) {
+  if (testResult && testResult?._outcome === 'Failed') {
     const testResultIcon = getTestOutcomeIcon(testResult?._outcome)
     let testMarkup = `
 <details>
