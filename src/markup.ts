@@ -1,8 +1,20 @@
 import {Results, TrxDataWrapper, UnitTest, UnitTestResult} from './types/types'
 
 export function getMarkupForTrx(testData: TrxDataWrapper): string {
+  const failedCount = testData.TrxData.TestRun.ResultSummary.Counters._failed
+  const passedCount = testData.TrxData.TestRun.ResultSummary.Counters._passed
+  const totalCount = testData.TrxData.TestRun.ResultSummary.Counters._total
+
+  const badgeCountText =
+    failedCount > 0
+      ? `${`${failedCount}/${totalCount}`}`
+      : `${`${passedCount}/${totalCount}`}`
+
+  const badgeStatusText = failedCount > 0 ? 'FAILED' : 'PASSED'
+  const badgeColor = failedCount > 0 ? 'red' : 'brightgreen'
+
   return `
-[![Generic badge](https://img.shields.io/badge/<SUBJECT>-<STATUS>-<COLOR>.svg)](https://shields.io/)
+![Generic badge](https://img.shields.io/badge/${badgeCountText}-${badgeStatusText}-${badgeColor}.svg)
 # Test Results - ${testData.ReportMetaData.ReportTitle}
 ${getTestTimes(testData)}
 ${getTestCounters(testData)}
