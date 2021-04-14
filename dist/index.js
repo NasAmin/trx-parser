@@ -151,7 +151,7 @@ function run() {
                     core.warning(`Workflow configured to ignore test failures`);
                 }
                 else {
-                    core.error(`At least one failing test was found`);
+                    core.setFailed('At least one failing test was found');
                 }
             }
             core.setOutput('test-outcome', failingTestsFound ? 'Failed' : 'Passed');
@@ -179,11 +179,12 @@ function getMarkupForTrx(testData) {
     const failedCount = testData.TrxData.TestRun.ResultSummary.Counters._failed;
     const passedCount = testData.TrxData.TestRun.ResultSummary.Counters._passed;
     const totalCount = testData.TrxData.TestRun.ResultSummary.Counters._total;
+    const testOutcome = testData.TrxData.TestRun.ResultSummary._outcome;
     const badgeCountText = failedCount > 0
         ? `${`${failedCount}/${totalCount}`}`
         : `${`${passedCount}/${totalCount}`}`;
-    const badgeStatusText = failedCount > 0 ? 'FAILED' : 'PASSED';
-    const badgeColor = failedCount > 0 ? 'red' : 'brightgreen';
+    const badgeStatusText = failedCount > 0 || testOutcome === 'Failed' ? 'FAILED' : 'PASSED';
+    const badgeColor = failedCount > 0 || testOutcome === 'Failed' ? 'red' : 'brightgreen';
     return `
 ![Generic badge](https://img.shields.io/badge/${badgeCountText}-${badgeStatusText}-${badgeColor}.svg)
 # Test Results - ${testData.ReportMetaData.ReportTitle}
@@ -307,16 +308,38 @@ function getTestCounters(testData) {
 }
 function getTestResultsMarkup(testData) {
     let resultsMarkup = '';
-    const unittests = testData.TrxData.TestRun.TestDefinitions.UnitTest;
-    if (Array.isArray(unittests)) {
-        for (const data of unittests) {
-            resultsMarkup += getSingletestMarkup(data, testData);
-        }
-        return resultsMarkup.trim();
+    if (testData.IsEmpty) {
+        return getNoResultsMarkup(testData);
     }
     else {
-        return getSingletestMarkup(unittests, testData);
+        const unittests = testData.TrxData.TestRun.TestDefinitions.UnitTest;
+        if (Array.isArray(unittests)) {
+            for (const data of unittests) {
+                resultsMarkup += getSingletestMarkup(data, testData);
+            }
+            return resultsMarkup.trim();
+        }
+        else {
+            return getSingletestMarkup(unittests, testData);
+        }
     }
+}
+function getNoResultsMarkup(testData) {
+    const runInfo = testData.TrxData.TestRun.ResultSummary.RunInfos.RunInfo;
+    const testResultIcon = getTestOutcomeIcon(runInfo._outcome);
+    const resultsMarkup = `
+<details>
+  <summary>${testResultIcon} ${runInfo._computerName}</summary> 
+
+  <table>
+    <tr>
+      <th>Run Info</th>
+      <td><code>${runInfo.Text}</code></td>
+    </tr>
+  </table>      
+  </details>
+`;
+    return resultsMarkup;
 }
 function getSingletestMarkup(data, testData) {
     var _a, _b;
@@ -407,7 +430,7 @@ function getUnitTestResult(unitTestId, testResults) {
 function getTestOutcomeIcon(testOutcome) {
     if (testOutcome === 'Passed')
         return ':heavy_check_mark:';
-    if (testOutcome === 'Failed')
+    if (testOutcome === 'Failed' || testOutcome === 'Error')
         return ':x:';
     if (testOutcome === 'NotExecuted')
         return ':radio_button:';
@@ -510,9 +533,15 @@ function transformTrxToJson(filePath) {
             };
             if (xmlParser.validate(xmlData.toString()) === true) {
                 const jsonString = xmlParser.parse(xmlData, options, true);
-                const reportHeaders = getReportHeaders(jsonString);
+                const testData = jsonString;
+                const runInfos = testData.TestRun.ResultSummary.RunInfos;
+                if (runInfos && runInfos.RunInfo._outcome === 'Failed') {
+                    core.warning('There is trouble');
+                }
+                const reportHeaders = getReportHeaders(testData);
                 trxDataWrapper = {
                     TrxData: jsonString,
+                    IsEmpty: IsEmpty(testData),
                     ReportMetaData: {
                         TrxFilePath: filePath,
                         ReportName: `${reportHeaders.reportName}-check`,
@@ -530,6 +559,9 @@ function transformTrxToJson(filePath) {
     });
 }
 exports.transformTrxToJson = transformTrxToJson;
+function IsEmpty(testData) {
+    return testData.TestRun.TestDefinitions ? false : true;
+}
 function readTrxFile(filePath) {
     return __awaiter(this, void 0, void 0, function* () {
         return yield fs_1.promises.readFile(filePath, 'utf8');
@@ -556,26 +588,39 @@ function areThereAnyFailingTests(trxJsonReports) {
 }
 exports.areThereAnyFailingTests = areThereAnyFailingTests;
 function getReportHeaders(data) {
+    var _a, _b;
     let reportTitle = '';
     let reportName = '';
-    const unittests = data.TestRun.TestDefinitions.UnitTest;
-    const storage = getAssemblyName(unittests);
-    const dllName = storage.split('/').pop();
-    if (dllName) {
-        reportTitle = dllName.replace('.dll', '').toUpperCase().replace('.', ' ');
-        reportName = dllName.replace('.dll', '').toUpperCase();
+    const isEmpty = IsEmpty(data);
+    if (isEmpty) {
+        reportTitle = data.TestRun.ResultSummary.RunInfos.RunInfo._computerName;
+        reportName = data.TestRun.ResultSummary.RunInfos.RunInfo._computerName.toUpperCase();
+    }
+    else {
+        const unittests = (_b = (_a = data.TestRun) === null || _a === void 0 ? void 0 : _a.TestDefinitions) === null || _b === void 0 ? void 0 : _b.UnitTest;
+        const storage = getAssemblyName(unittests);
+        const dllName = storage.split('/').pop();
+        if (dllName) {
+            reportTitle = dllName.replace('.dll', '').toUpperCase().replace('.', ' ');
+            reportName = dllName.replace('.dll', '').toUpperCase();
+        }
     }
     return { reportName, reportTitle };
 }
 function getAssemblyName(unittests) {
     if (Array.isArray(unittests)) {
-        core.info('Its an array');
+        core.debug('Its an array');
         return unittests[0]._storage;
     }
     else {
         const ut = unittests;
-        core.info(`Its not an array: ${ut._storage}`);
-        return ut._storage;
+        if (ut) {
+            core.debug(`Its not an array: ${ut._storage}`);
+            return ut._storage;
+        }
+        else {
+            return 'NOT FOUND';
+        }
     }
 }
 
@@ -4749,48 +4794,36 @@ exports.convert2nimn = convert2nimn;
 
 const util = __nccwpck_require__(8280);
 
-const convertToJson = function(node, options) {
+const convertToJson = function(node, options, parentTagName) {
   const jObj = {};
 
-  //when no child node or attr is present
+  // when no child node or attr is present
   if ((!node.child || util.isEmptyObject(node.child)) && (!node.attrsMap || util.isEmptyObject(node.attrsMap))) {
     return util.isExist(node.val) ? node.val : '';
-  } else {
-    //otherwise create a textnode if node has some text
-    if (util.isExist(node.val)) {
-      if (!(typeof node.val === 'string' && (node.val === '' || node.val === options.cdataPositionChar))) {
-        if(options.arrayMode === "strict"){
-          jObj[options.textNodeName] = [ node.val ];
-        }else{
-          jObj[options.textNodeName] = node.val;
-        }
-      }
-    }
+  }
+
+  // otherwise create a textnode if node has some text
+  if (util.isExist(node.val) && !(typeof node.val === 'string' && (node.val === '' || node.val === options.cdataPositionChar))) {
+    const asArray = util.isTagNameInArrayMode(node.tagname, options.arrayMode, parentTagName)
+    jObj[options.textNodeName] = asArray ? [node.val] : node.val;
   }
 
   util.merge(jObj, node.attrsMap, options.arrayMode);
 
   const keys = Object.keys(node.child);
   for (let index = 0; index < keys.length; index++) {
-    var tagname = keys[index];
-    if (node.child[tagname] && node.child[tagname].length > 1) {
-      jObj[tagname] = [];
-      for (var tag in node.child[tagname]) {
-        if (node.child[tagname].hasOwnProperty(tag)){
-          jObj[tagname].push(convertToJson(node.child[tagname][tag], options));}
+    const tagName = keys[index];
+    if (node.child[tagName] && node.child[tagName].length > 1) {
+      jObj[tagName] = [];
+      for (let tag in node.child[tagName]) {
+        if (node.child[tagName].hasOwnProperty(tag)) {
+          jObj[tagName].push(convertToJson(node.child[tagName][tag], options, tagName));
         }
-    } else {
-      if(options.arrayMode === true){
-        const result = convertToJson(node.child[tagname][0], options)
-        if(typeof result === 'object')
-          jObj[tagname] = [ result ];
-        else
-          jObj[tagname] = result;
-      }else if(options.arrayMode === "strict"){
-        jObj[tagname] = [convertToJson(node.child[tagname][0], options) ];
-      }else{
-        jObj[tagname] = convertToJson(node.child[tagname][0], options);
       }
+    } else {
+      const result = convertToJson(node.child[tagName][0], options, tagName);
+      const asArray = (options.arrayMode === true && typeof result === 'object') || util.isTagNameInArrayMode(tagName, options.arrayMode, parentTagName);
+      jObj[tagName] = asArray ? [result] : result;
     }
   }
 
@@ -4997,9 +5030,9 @@ exports.merge = function(target, a, arrayMode) {
     const keys = Object.keys(a); // will return an array of own properties
     const len = keys.length; //don't make it inline
     for (let i = 0; i < len; i++) {
-      if(arrayMode === 'strict'){
+      if (arrayMode === 'strict') {
         target[keys[i]] = [ a[keys[i]] ];
-      }else{
+      } else {
         target[keys[i]] = a[keys[i]];
       }
     }
@@ -5035,6 +5068,26 @@ exports.buildOptions = function(options, defaultOptions, props) {
   }
   return newOptions;
 };
+
+/**
+ * Check if a tag name should be treated as array
+ *
+ * @param tagName the node tagname
+ * @param arrayMode the array mode option
+ * @param parentTagName the parent tag name
+ * @returns {boolean} true if node should be parsed as array
+ */
+exports.isTagNameInArrayMode = function (tagName, arrayMode, parentTagName) {
+  if (arrayMode === false) {
+    return false;
+  } else if (arrayMode instanceof RegExp) {
+    return arrayMode.test(tagName);
+  } else if (typeof arrayMode === 'function') {
+    return !!arrayMode(tagName, parentTagName);
+  }
+
+  return arrayMode === "strict";
+}
 
 exports.isName = isName;
 exports.getAllMatches = getAllMatches;
@@ -5076,17 +5129,18 @@ exports.validate = function (xmlData, options) {
   }
 
   for (let i = 0; i < xmlData.length; i++) {
-    if (xmlData[i] === '<') {
+
+    if (xmlData[i] === '<' && xmlData[i+1] === '?') {
+      i+=2;
+      i = readPI(xmlData,i);
+      if (i.err) return i;
+    }else if (xmlData[i] === '<') {
       //starting of tag
       //read until you reach to '>' avoiding any '>' in attribute value
 
       i++;
-      if (xmlData[i] === '?') {
-        i = readPI(xmlData, ++i);
-        if (i.err) {
-          return i;
-        }
-      } else if (xmlData[i] === '!') {
+      
+      if (xmlData[i] === '!') {
         i = readCommentAndCDATA(xmlData, i);
         continue;
       } else {
@@ -5189,7 +5243,10 @@ exports.validate = function (xmlData, options) {
               i++;
               i = readCommentAndCDATA(xmlData, i);
               continue;
-            } else {
+            } else if (xmlData[i+1] === '?') {
+              i = readPI(xmlData, ++i);
+              if (i.err) return i;
+            } else{
               break;
             }
           } else if (xmlData[i] === '&') {

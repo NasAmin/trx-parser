@@ -4,14 +4,18 @@ export function getMarkupForTrx(testData: TrxDataWrapper): string {
   const failedCount = testData.TrxData.TestRun.ResultSummary.Counters._failed
   const passedCount = testData.TrxData.TestRun.ResultSummary.Counters._passed
   const totalCount = testData.TrxData.TestRun.ResultSummary.Counters._total
+  const testOutcome = testData.TrxData.TestRun.ResultSummary._outcome
 
   const badgeCountText =
     failedCount > 0
       ? `${`${failedCount}/${totalCount}`}`
       : `${`${passedCount}/${totalCount}`}`
 
-  const badgeStatusText = failedCount > 0 ? 'FAILED' : 'PASSED'
-  const badgeColor = failedCount > 0 ? 'red' : 'brightgreen'
+  const badgeStatusText =
+    failedCount > 0 || testOutcome === 'Failed' ? 'FAILED' : 'PASSED'
+
+  const badgeColor =
+    failedCount > 0 || testOutcome === 'Failed' ? 'red' : 'brightgreen'
 
   return `
 ![Generic badge](https://img.shields.io/badge/${badgeCountText}-${badgeStatusText}-${badgeColor}.svg)
@@ -141,15 +145,37 @@ function getTestCounters(testData: TrxDataWrapper): string {
 
 function getTestResultsMarkup(testData: TrxDataWrapper): string {
   let resultsMarkup = ''
-  const unittests = testData.TrxData.TestRun.TestDefinitions.UnitTest
-  if (Array.isArray(unittests)) {
-    for (const data of unittests) {
-      resultsMarkup += getSingletestMarkup(data, testData)
-    }
-    return resultsMarkup.trim()
+  if (testData.IsEmpty) {
+    return getNoResultsMarkup(testData)
   } else {
-    return getSingletestMarkup(unittests as UnitTest, testData)
+    const unittests = testData.TrxData.TestRun.TestDefinitions.UnitTest
+    if (Array.isArray(unittests)) {
+      for (const data of unittests) {
+        resultsMarkup += getSingletestMarkup(data, testData)
+      }
+      return resultsMarkup.trim()
+    } else {
+      return getSingletestMarkup(unittests as UnitTest, testData)
+    }
   }
+}
+
+function getNoResultsMarkup(testData: TrxDataWrapper): string {
+  const runInfo = testData.TrxData.TestRun.ResultSummary.RunInfos.RunInfo
+  const testResultIcon = getTestOutcomeIcon(runInfo._outcome)
+  const resultsMarkup = `
+<details>
+  <summary>${testResultIcon} ${runInfo._computerName}</summary> 
+
+  <table>
+    <tr>
+      <th>Run Info</th>
+      <td><code>${runInfo.Text}</code></td>
+    </tr>
+  </table>      
+  </details>
+`
+  return resultsMarkup
 }
 
 function getSingletestMarkup(data: UnitTest, testData: TrxDataWrapper): string {
@@ -251,7 +277,7 @@ function getUnitTestResult(
 
 function getTestOutcomeIcon(testOutcome: string): string {
   if (testOutcome === 'Passed') return ':heavy_check_mark:'
-  if (testOutcome === 'Failed') return ':x:'
+  if (testOutcome === 'Failed' || testOutcome === 'Error') return ':x:'
   if (testOutcome === 'NotExecuted') return ':radio_button:'
 
   return ':grey_question:'

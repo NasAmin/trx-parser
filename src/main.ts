@@ -29,7 +29,7 @@ export async function run(): Promise<void> {
       if (ignoreTestFailures) {
         core.warning(`Workflow configured to ignore test failures`)
       } else {
-        core.error(`At least one failing test was found`)
+        core.setFailed('At least one failing test was found')
       }
     }
     core.setOutput('test-outcome', failingTestsFound ? 'Failed' : 'Passed')

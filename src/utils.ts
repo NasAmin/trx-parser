@@ -64,9 +64,16 @@ export async function transformTrxToJson(
 
     if (xmlParser.validate(xmlData.toString()) === true) {
       const jsonString = xmlParser.parse(xmlData, options, true)
-      const reportHeaders = getReportHeaders(jsonString)
+      const testData = jsonString as TrxData
+      const runInfos = testData.TestRun.ResultSummary.RunInfos
+      if (runInfos && runInfos.RunInfo._outcome === 'Failed') {
+        core.warning('There is trouble')
+      }
+
+      const reportHeaders = getReportHeaders(testData)
       trxDataWrapper = {
         TrxData: jsonString as TrxData,
+        IsEmpty: IsEmpty(testData),
         ReportMetaData: {
           TrxFilePath: filePath,
           ReportName: `${reportHeaders.reportName}-check`,
@@ -80,6 +87,10 @@ export async function transformTrxToJson(
     core.warning(`Trx file ${filePath} does not exist`)
   }
   return trxDataWrapper
+}
+
+function IsEmpty(testData: TrxData): boolean {
+  return testData.TestRun.TestDefinitions ? false : true
 }
 
 export async function readTrxFile(filePath: string): Promise<string> {
@@ -113,15 +124,22 @@ function getReportHeaders(
 ): {reportName: string; reportTitle: string} {
   let reportTitle = ''
   let reportName = ''
-  const unittests = data.TestRun.TestDefinitions.UnitTest
+  const isEmpty = IsEmpty(data)
 
-  const storage = getAssemblyName(unittests)
+  if (isEmpty) {
+    reportTitle = data.TestRun.ResultSummary.RunInfos.RunInfo._computerName
+    reportName = data.TestRun.ResultSummary.RunInfos.RunInfo._computerName.toUpperCase()
+  } else {
+    const unittests = data.TestRun?.TestDefinitions?.UnitTest
 
-  const dllName = storage.split('/').pop()
+    const storage = getAssemblyName(unittests)
 
-  if (dllName) {
-    reportTitle = dllName.replace('.dll', '').toUpperCase().replace('.', ' ')
-    reportName = dllName.replace('.dll', '').toUpperCase()
+    const dllName = storage.split('/').pop()
+
+    if (dllName) {
+      reportTitle = dllName.replace('.dll', '').toUpperCase().replace('.', ' ')
+      reportName = dllName.replace('.dll', '').toUpperCase()
+    }
   }
 
   return {reportName, reportTitle}
@@ -129,11 +147,15 @@ function getReportHeaders(
 
 function getAssemblyName(unittests: UnitTest[]): string {
   if (Array.isArray(unittests)) {
-    core.info('Its an array')
+    core.debug('Its an array')
     return unittests[0]._storage
   } else {
     const ut = unittests as UnitTest
-    core.info(`Its not an array: ${ut._storage}`)
-    return ut._storage
+    if (ut) {
+      core.debug(`Its not an array: ${ut._storage}`)
+      return ut._storage
+    } else {
+      return 'NOT FOUND'
+    }
   }
 }
