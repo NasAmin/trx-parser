@@ -147,12 +147,12 @@ function getReportHeaders(
 
 function getAssemblyName(unittests: UnitTest[]): string {
   if (Array.isArray(unittests)) {
-    core.info('Its an array')
+    core.debug('Its an array')
     return unittests[0]._storage
   } else {
     const ut = unittests as UnitTest
     if (ut) {
-      core.info(`Its not an array: ${ut._storage}`)
+      core.debug(`Its not an array: ${ut._storage}`)
       return ut._storage
     } else {
       return 'NOT FOUND'

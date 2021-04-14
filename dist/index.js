@@ -179,11 +179,12 @@ function getMarkupForTrx(testData) {
     const failedCount = testData.TrxData.TestRun.ResultSummary.Counters._failed;
     const passedCount = testData.TrxData.TestRun.ResultSummary.Counters._passed;
     const totalCount = testData.TrxData.TestRun.ResultSummary.Counters._total;
+    const testOutcome = testData.TrxData.TestRun.ResultSummary._outcome;
     const badgeCountText = failedCount > 0
         ? `${`${failedCount}/${totalCount}`}`
         : `${`${passedCount}/${totalCount}`}`;
-    const badgeStatusText = failedCount > 0 ? 'FAILED' : 'PASSED';
-    const badgeColor = failedCount > 0 ? 'red' : 'brightgreen';
+    const badgeStatusText = failedCount > 0 || testOutcome === 'Failed' ? 'FAILED' : 'PASSED';
+    const badgeColor = failedCount > 0 || testOutcome === 'Failed' ? 'red' : 'brightgreen';
     return `
 ![Generic badge](https://img.shields.io/badge/${badgeCountText}-${badgeStatusText}-${badgeColor}.svg)
 # Test Results - ${testData.ReportMetaData.ReportTitle}
@@ -608,13 +609,13 @@ function getReportHeaders(data) {
 }
 function getAssemblyName(unittests) {
     if (Array.isArray(unittests)) {
-        core.info('Its an array');
+        core.debug('Its an array');
         return unittests[0]._storage;
     }
     else {
         const ut = unittests;
         if (ut) {
-            core.info(`Its not an array: ${ut._storage}`);
+            core.debug(`Its not an array: ${ut._storage}`);
             return ut._storage;
         }
         else {
