@@ -58,3 +58,39 @@ describe('When generating markup for trx', () => {
     expect(duration).toEqual(111.407)
   })
 })
+
+describe('When reading invalid trx file', () => {
+  test('Load trx with test host error', async () => {
+    const data = await transformTrxToJson(
+      './test-data/failing-tests/test-host-error.trx'
+    )
+    const testData = getMarkupForTrx(data)
+    expect(data.TrxData.TestRun.ResultSummary._outcome).toEqual('Failed')
+    expect(testData).toContain(
+      `Test Results - ${data.ReportMetaData.ReportTitle}`
+    )
+    expect(testData).toContain(
+      `Total Tests: ${data.TrxData.TestRun.ResultSummary.Counters._total}`
+    )
+    expect(testData).toContain(
+      `Failed: ${data.TrxData.TestRun.ResultSummary.Counters._failed}`
+    )
+  })
+
+  test('Parse trx with zero unit tests', async () => {
+    const data = await transformTrxToJson(
+      './test-data/failing-tests/no-tests.trx'
+    )
+    const testData = getMarkupForTrx(data)
+    expect(data.TrxData.TestRun.ResultSummary._outcome).toEqual('Completed')
+    expect(testData).toContain(
+      `Test Results - ${data.ReportMetaData.ReportTitle}`
+    )
+    expect(testData).toContain(
+      `Total Tests: ${data.TrxData.TestRun.ResultSummary.Counters._total}`
+    )
+    expect(testData).toContain(
+      `Failed: ${data.TrxData.TestRun.ResultSummary.Counters._failed}`
+    )
+  })
+})

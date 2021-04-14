@@ -107,6 +107,7 @@ export interface Counters {
 export interface ResultSummary {
   _outcome: string
   Counters: Counters
+  RunInfos: RunInfos
 }
 
 export interface TestRun {
@@ -122,12 +123,24 @@ export interface TestRun {
   ResultSummary: ResultSummary
 }
 
+export interface RunInfos {
+  RunInfo: RunInfo
+}
+
+export interface RunInfo {
+  Text: string
+  _computerName: string
+  _outcome: string
+  _timestamp: Date
+}
+
 export interface TrxData {
   TestRun: TestRun
 }
 
 export interface TrxDataWrapper {
   TrxData: TrxData
+  IsEmpty: boolean
   ReportMetaData: {
     TrxFilePath: string
     ReportName: string
