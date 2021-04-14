@@ -41,12 +41,18 @@ jobs:
           dotnet test -c Release --no-restore --no-build --loger trx --results-directory ./TestResults
       # Using the trx-parser action
       - name: Parse Trx files
-        uses: NasAmin/trx-parser@v0.0.3
+        uses: NasAmin/trx-parser@v0.1
         id: trx-parser
         with:
           TRX_PATH: ${{ github.workspace }}/TestResults #This should be the path to your TRX files
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}          
 ```
+
+### ⚠️ GitHub Actions Limitations ⚠️
+- The GitHub Checks API has a [limit](https://github.com/github/docs/issues/3765) of `65535` characters. So if the test report exceeds this limit, GitHub will fail to create a check and fail your workflow.
+This was mitigated on #103 and #138 to only report details about failing tests. 
+- If you have multiple workflows triggered by the same event, currently GitHub Actions will randomly associate a check run to one of the workflows. This is because currently there is no Check Suite API. [Only GitHub apps](https://docs.github.com/en/rest/reference/checks#check-suites) are allowed to create a Check Suite. There is also no way to associate a custom check run with an existing check suite.
+GitHub actions automatically creates a check suite for each workflow run. However, since check runs are associated with a commit and event, any custom check runs are randomly linked under one of the triggered workflows for the same commit.
 
 ## Contributing
 Anyone is welcome to contribute and make this action better. Please fork the repository and create a pull request with proposed changes.
