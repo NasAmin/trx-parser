@@ -47,7 +47,7 @@
     "@actions/exec": "^1.0.4",
     "@actions/github": "^4.0.0",
     "@octokit/webhooks": "^7.21.0",
-    "@types/he": "^1.1.1",
+    "@types/he": "^1.1.2",
     "fast-xml-parser": "^3.18.0",
     "he": "^1.2.0"
   },
