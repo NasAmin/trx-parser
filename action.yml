@@ -6,7 +6,7 @@ branding:
   color: 'green'
 inputs:
     TRX_PATH:
-      description: 'Path to the directory cntaining trx files'
+      description: 'Path to the directory containing trx files'
       required: true
     REPO_TOKEN:
       description: 'Pass in the repository token. This should be generally be secrets.GITHUB_TOKEN. This is used for GitHub checks api'
@@ -15,6 +15,9 @@ inputs:
       description: 'Set to true if you want test failures not to block the pull requests. The check status will be set to neutral'
       required: false
       default: 'false'
+    SHA:
+      description: 'SHA value to use. If not set then will be calculated based on context'
+      required: false
 outputs:
   test-outcome:
     description: 'Test outcome Failed/Passed'
