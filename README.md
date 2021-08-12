@@ -61,3 +61,4 @@ Anyone is welcome to contribute and make this action better. Please fork the rep
 * Clone this repository
 * Run `npm run build` and `npm run test`
 * Run `npm run all` to regenerate the dist directory.
+* Make sure to check in files changed inside the disk directory
