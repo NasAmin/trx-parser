@@ -7,7 +7,8 @@ import {getMarkupForTrx} from './markup'
 export async function createCheckRun(
   repoToken: string,
   ignoreTestFailures: boolean,
-  reportData: TrxDataWrapper
+  reportData: TrxDataWrapper,
+  sha?: string
 ): Promise<void> {
   try {
     core.info(`Creating PR check for ${reportData.ReportMetaData.ReportTitle}`)
@@ -26,6 +27,11 @@ export async function createCheckRun(
       core.info(
         `Creating status check for GitSha: ${git_sha} on a pull request event`
       )
+    }
+
+    if (sha) {
+      git_sha = sha
+      core.info(`Creating status check for user-provided GitSha: ${git_sha}`)
     }
 
     const markupData = getMarkupForTrx(reportData)

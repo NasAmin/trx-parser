@@ -40,7 +40,7 @@ exports.createCheckRun = void 0;
 const github = __importStar(__nccwpck_require__(5438));
 const core = __importStar(__nccwpck_require__(2186));
 const markup_1 = __nccwpck_require__(2727);
-function createCheckRun(repoToken, ignoreTestFailures, reportData) {
+function createCheckRun(repoToken, ignoreTestFailures, reportData, sha) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             core.info(`Creating PR check for ${reportData.ReportMetaData.ReportTitle}`);
@@ -54,6 +54,10 @@ function createCheckRun(repoToken, ignoreTestFailures, reportData) {
                     .payload;
                 git_sha = prPayload.pull_request.head.sha;
                 core.info(`Creating status check for GitSha: ${git_sha} on a pull request event`);
+            }
+            if (sha) {
+                git_sha = sha;
+                core.info(`Creating status check for user-provided GitSha: ${git_sha}`);
             }
             const markupData = markup_1.getMarkupForTrx(reportData);
             const checkTime = new Date().toUTCString();
@@ -137,6 +141,7 @@ function run() {
             const token = core.getInput('REPO_TOKEN');
             const trxPath = core.getInput('TRX_PATH');
             const ignoreTestFailures = core.getInput('IGNORE_FAILURE', { required: false }) === 'true';
+            const sha = core.getInput('SHA');
             core.info(`Finding Trx files in: ${trxPath}`);
             const trxFiles = yield utils_1.getTrxFiles(trxPath);
             core.info(`Processing ${trxFiles.length} trx files`);
@@ -144,7 +149,7 @@ function run() {
             core.info(`Checking for failing tests`);
             const failingTestsFound = utils_1.areThereAnyFailingTests(trxToJson);
             for (const data of trxToJson) {
-                yield github_1.createCheckRun(token, ignoreTestFailures, data);
+                yield github_1.createCheckRun(token, ignoreTestFailures, data, sha);
             }
             if (failingTestsFound) {
                 if (ignoreTestFailures) {
