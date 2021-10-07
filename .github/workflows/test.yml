@@ -13,6 +13,7 @@ jobs:
           os: [windows-latest, ubuntu-latest]
     permissions:
       checks: write
+      actions: write
     steps:
         - name: Get Source Code
           uses: actions/checkout@v2
