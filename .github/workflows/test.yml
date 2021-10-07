@@ -11,6 +11,8 @@ jobs:
     strategy:        
         matrix:
           os: [windows-latest, ubuntu-latest]
+    permissions:
+      checks: write
     steps:
         - name: Get Source Code
           uses: actions/checkout@v2
