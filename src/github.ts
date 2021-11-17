@@ -60,11 +60,11 @@ export async function createCheckRun(
     
     fs.writeFileSync("parsed.md", markupData, function(err){
       if(err){
-         console.log("error");
+         core.info("error");
     }
     })
     
-    console.log(__dirname);
+    core.info(__dirname);
 
     if (response.status !== 201) {
       throw new Error(
