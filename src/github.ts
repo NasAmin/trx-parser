@@ -52,8 +52,7 @@ export async function createCheckRun(
           : 'success',
       output: {
         title: reportData.ReportMetaData.ReportTitle,
-        summary: `My own; This test run completed at \`${checkTime}\``,
-        // text: reportData.ReportMetaData.TrxJSonString
+        summary: `This test run completed at \`${checkTime}\``,
         text: markupData
       }
     })
