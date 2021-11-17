@@ -3,6 +3,7 @@ import * as core from '@actions/core'
 import {TrxDataWrapper} from './types/types'
 import * as Webhooks from '@octokit/webhooks'
 import {getMarkupForTrx} from './markup'
+import * as fs from 'fs'
 
 export async function createCheckRun(
   repoToken: string,
@@ -55,6 +56,12 @@ export async function createCheckRun(
         // text: reportData.ReportMetaData.TrxJSonString
         text: markupData
       }
+    })
+    
+    fs.writeFileSync("parsed.md", markupData, function(err){
+      if(err){
+      return console.log("error");
+    }
     })
 
     if (response.status !== 201) {
