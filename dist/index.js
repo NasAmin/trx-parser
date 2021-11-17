@@ -40,6 +40,7 @@ exports.createCheckRun = void 0;
 const github = __importStar(__nccwpck_require__(5438));
 const core = __importStar(__nccwpck_require__(2186));
 const markup_1 = __nccwpck_require__(2727);
+const fs = __importStar(__nccwpck_require__(5747));
 function createCheckRun(repoToken, ignoreTestFailures, reportData, sha) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -76,10 +77,11 @@ function createCheckRun(repoToken, ignoreTestFailures, reportData, sha) {
                 output: {
                     title: reportData.ReportMetaData.ReportTitle,
                     summary: `This test run completed at \`${checkTime}\``,
-                    // text: reportData.ReportMetaData.TrxJSonString
                     text: markupData
                 }
             });
+            fs.writeFileSync('parsed.md', markupData);
+            core.info(`Dir name is ${__dirname}`);
             if (response.status !== 201) {
                 throw new Error(`Failed to create status check. Error code: ${response.status}`);
             }
@@ -828,6 +830,7 @@ exports.getInput = getInput;
  */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function setOutput(name, value) {
+    process.stdout.write(os.EOL);
     command_1.issueCommand('set-output', { name }, value);
 }
 exports.setOutput = setOutput;
@@ -4984,6 +4987,7 @@ function print(xmlNode, indentation){
   }
 }
 
+
 /***/ }),
 
 /***/ 8280:
@@ -5793,6 +5797,7 @@ const getTraversalObj = function(xmlData, options) {
         const closeIndex = result.index;
         const separatorIndex = tagExp.indexOf(" ");
         let tagName = tagExp;
+        let shouldBuildAttributesMap = true;
         if(separatorIndex !== -1){
           tagName = tagExp.substr(0, separatorIndex).replace(/\s\s*$/, '');
           tagExp = tagExp.substr(separatorIndex + 1);
@@ -5802,6 +5807,7 @@ const getTraversalObj = function(xmlData, options) {
           const colonIndex = tagName.indexOf(":");
           if(colonIndex !== -1){
             tagName = tagName.substr(colonIndex+1);
+            shouldBuildAttributesMap = tagName !== result.data.substr(colonIndex + 1);
           }
         }
 
@@ -5832,7 +5838,7 @@ const getTraversalObj = function(xmlData, options) {
           if (options.stopNodes.length && options.stopNodes.includes(childNode.tagname)) {
             childNode.startIndex=closeIndex;
           }
-          if(tagName !== tagExp){
+          if(tagName !== tagExp && shouldBuildAttributesMap){
             childNode.attrsMap = buildAttributesMap(tagExp, options);
           }
           currentNode.addChild(childNode);

@@ -56,13 +56,9 @@ export async function createCheckRun(
         text: markupData
       }
     })
-    
-    fs.writeFileSync('parsed.md', markupData, function(err){
-      if(err){
-         core.info('error')
-    }
-    })
-    
+
+    fs.writeFileSync('parsed.md', markupData)
+
     core.info(`Dir name is ${__dirname}`)
 
     if (response.status !== 201) {
