@@ -40,7 +40,7 @@ exports.createCheckRun = void 0;
 const github = __importStar(__nccwpck_require__(5438));
 const core = __importStar(__nccwpck_require__(2186));
 const markup_1 = __nccwpck_require__(2727);
-const fs = __importStar(__nccwpck_require__(5747));
+const utils_1 = __nccwpck_require__(918);
 function createCheckRun(repoToken, ignoreTestFailures, reportData, sha) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -80,8 +80,9 @@ function createCheckRun(repoToken, ignoreTestFailures, reportData, sha) {
                     text: markupData
                 }
             });
-            fs.writeFileSync('parsed.md', markupData);
-            core.info(`Dir name is ${__dirname}`);
+            var fileName = core.getInput('FILE_NAME');
+            if (typeof fileName != 'undefined' && fileName)
+                utils_1.writeMarkupToFile(markupData, fileName);
             if (response.status !== 201) {
                 throw new Error(`Failed to create status check. Error code: ${response.status}`);
             }
@@ -481,7 +482,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.areThereAnyFailingTests = exports.transformAllTrxToJson = exports.readTrxFile = exports.transformTrxToJson = exports.getAbsoluteFilePaths = exports.getTrxFiles = void 0;
+exports.writeMarkupToFile = exports.areThereAnyFailingTests = exports.transformAllTrxToJson = exports.readTrxFile = exports.transformTrxToJson = exports.getAbsoluteFilePaths = exports.getTrxFiles = void 0;
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const fs = __importStar(__nccwpck_require__(5747));
 const path = __importStar(__nccwpck_require__(5622));
@@ -594,6 +595,11 @@ function areThereAnyFailingTests(trxJsonReports) {
     return false;
 }
 exports.areThereAnyFailingTests = areThereAnyFailingTests;
+function writeMarkupToFile(markup, filePath) {
+    fs.writeFileSync(filePath, markup);
+    core.info(`Markup has successfully written to ${filePath} file`);
+}
+exports.writeMarkupToFile = writeMarkupToFile;
 function getReportHeaders(data) {
     var _a, _b;
     let reportTitle = '';

@@ -3,7 +3,7 @@ import * as core from '@actions/core'
 import {TrxDataWrapper} from './types/types'
 import * as Webhooks from '@octokit/webhooks'
 import {getMarkupForTrx} from './markup'
-import * as fs from 'fs'
+import {writeMarkupToFile} from './utils'
 
 export async function createCheckRun(
   repoToken: string,
@@ -57,9 +57,10 @@ export async function createCheckRun(
       }
     })
 
-    fs.writeFileSync('parsed.md', markupData)
+    var fileName = core.getInput('FILE_NAME')
 
-    core.info(`Dir name is ${__dirname}`)
+    if (typeof fileName != 'undefined' && fileName)
+      writeMarkupToFile(markupData, fileName)
 
     if (response.status !== 201) {
       throw new Error(

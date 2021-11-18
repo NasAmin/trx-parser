@@ -119,6 +119,12 @@ export function areThereAnyFailingTests(
   return false
 }
 
+export function writeMarkupToFile(markup: string, filePath: string): void {
+  fs.writeFileSync(filePath, markup)
+
+  core.info(`Markup has successfully written to ${filePath} file`)
+}
+
 function getReportHeaders(
   data: TrxData
 ): {reportName: string; reportTitle: string} {
