@@ -35,7 +35,7 @@ export async function run(): Promise<void> {
     }
     core.setOutput('test-outcome', failingTestsFound ? 'Failed' : 'Passed')
     core.setOutput('trx-files', trxFiles)
-  } catch (error) {
+  } catch (error: any) {
     core.setFailed(error.message)
   }
 }

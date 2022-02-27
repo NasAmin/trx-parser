@@ -1,7 +1,7 @@
 import * as github from '@actions/github'
 import * as core from '@actions/core'
 import {TrxDataWrapper} from './types/types'
-import * as Webhooks from '@octokit/webhooks'
+import * as types from '@octokit/webhooks-types'
 import {getMarkupForTrx} from './markup'
 
 export async function createCheckRun(
@@ -21,7 +21,7 @@ export async function createCheckRun(
 
     if (github.context.eventName === 'pull_request') {
       const prPayload = github.context
-        .payload as Webhooks.EventPayloads.WebhookPayloadPullRequest
+        .payload as types.EventPayloadMap['pull_request']
 
       git_sha = prPayload.pull_request.head.sha
       core.info(
@@ -66,7 +66,7 @@ export async function createCheckRun(
         `Created check: ${response.data.name} with response status ${response.status}`
       )
     }
-  } catch (error) {
+  } catch (error: any) {
     core.setFailed(error.message)
   }
 }
