@@ -1,4 +1,5 @@
 import * as path from 'path'
+
 import {getAbsoluteFilePaths, transformTrxToJson} from '../src/utils'
 
 describe('Test GetAbsolutePath returns correct values', () => {

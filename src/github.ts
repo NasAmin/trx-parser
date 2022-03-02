@@ -1,7 +1,10 @@
-import * as github from '@actions/github'
+/* eslint-disable import/no-unresolved */
+/* eslint-disable i18n-text/no-en */
 import * as core from '@actions/core'
-import {TrxDataWrapper} from './types/types'
+import * as github from '@actions/github'
 import * as types from '@octokit/webhooks-types'
+
+import {TrxDataWrapper} from './types/types'
 import {getMarkupForTrx} from './markup'
 
 export async function createCheckRun(
@@ -66,7 +69,7 @@ export async function createCheckRun(
         `Created check: ${response.data.name} with response status ${response.status}`
       )
     }
-  } catch (error: any) {
-    core.setFailed(error.message)
+  } catch (error: unknown) {
+    core.setFailed((error as Error).message)
   }
 }

@@ -1,10 +1,13 @@
+/* eslint-disable i18n-text/no-en */
 import * as core from '@actions/core'
-import {createCheckRun} from './github'
+
 import {
   areThereAnyFailingTests,
   getTrxFiles,
   transformAllTrxToJson
 } from './utils'
+
+import {createCheckRun} from './github'
 
 export async function run(): Promise<void> {
   try {
@@ -35,8 +38,8 @@ export async function run(): Promise<void> {
     }
     core.setOutput('test-outcome', failingTestsFound ? 'Failed' : 'Passed')
     core.setOutput('trx-files', trxFiles)
-  } catch (error: any) {
-    core.setFailed(error.message)
+  } catch (error: unknown) {
+    core.setFailed((error as Error).message)
   }
 }
 
