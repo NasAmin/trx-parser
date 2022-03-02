@@ -1,12 +1,15 @@
+/* eslint-disable i18n-text/no-en */
+import * as core from '@actions/core'
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as fs from 'fs'
+import * as he from 'he'
 import * as path from 'path'
 import * as uitl from 'util'
-import * as core from '@actions/core'
 import * as xmlParser from 'fast-xml-parser'
-import * as he from 'he'
-import {promises} from 'fs'
+
 import {TrxData, TrxDataWrapper, UnitTest} from './types/types'
+
+import {promises} from 'fs'
 
 export async function getTrxFiles(trxPath: string): Promise<string[]> {
   if (!fs.existsSync(trxPath)) return []

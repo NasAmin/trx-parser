@@ -1,4 +1,5 @@
 import {getMarkupForTrx, getTestRunDuration} from '../src//markup'
+
 import {transformTrxToJson} from '../src/utils'
 
 describe('When generating markup for trx', () => {
