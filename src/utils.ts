@@ -122,16 +122,18 @@ export function areThereAnyFailingTests(
   return false
 }
 
-function getReportHeaders(
-  data: TrxData
-): {reportName: string; reportTitle: string} {
+function getReportHeaders(data: TrxData): {
+  reportName: string
+  reportTitle: string
+} {
   let reportTitle = ''
   let reportName = ''
   const isEmpty = IsEmpty(data)
 
   if (isEmpty) {
     reportTitle = data.TestRun.ResultSummary.RunInfos.RunInfo._computerName
-    reportName = data.TestRun.ResultSummary.RunInfos.RunInfo._computerName.toUpperCase()
+    reportName =
+      data.TestRun.ResultSummary.RunInfos.RunInfo._computerName.toUpperCase()
   } else {
     const unittests = data.TestRun?.TestDefinitions?.UnitTest
 
