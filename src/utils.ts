@@ -137,7 +137,10 @@ function getReportHeaders(
 
     const storage = getAssemblyName(unittests)
 
-    const dllName = storage.split('/').pop()
+    const isWindows = /^[a-z]:\\/i.test(storage)
+    const dllName = isWindows
+      ? storage.split('\\').pop()
+      : storage.split('/').pop()
 
     if (dllName) {
       reportTitle = dllName.replace('.dll', '').toUpperCase().replace('.', ' ')
