@@ -14,6 +14,8 @@ jobs:
         - name: Get Source Code
           uses: actions/checkout@v2
         - name: Restore Dependencies
-          run: npm ci
+          run: |
+            # todo: resolve npm dependency conflicts and than remove the --legacy-peer-deps option
+            npm ci --legacy-peer-deps
         - name: Build
           run: npm run all
