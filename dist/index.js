@@ -175,6 +175,7 @@ function run() {
             }
             core.setOutput('test-outcome', failingTestsFound ? 'Failed' : 'Passed');
             core.setOutput('trx-files', trxFiles);
+            core.setOutput('report-prefix', reportPrefix);
         }
         catch (error) {
             core.setFailed(error.message);
