@@ -16,6 +16,7 @@ export async function run(): Promise<void> {
     const ignoreTestFailures: boolean =
       core.getInput('IGNORE_FAILURE', {required: false}) === 'true'
     const sha = core.getInput('SHA')
+    const reportPrefix = core.getInput('REPORT_PREFIX')
     core.info(`Finding Trx files in: ${trxPath}`)
     const trxFiles = await getTrxFiles(trxPath)
 
@@ -26,7 +27,7 @@ export async function run(): Promise<void> {
     const failingTestsFound = areThereAnyFailingTests(trxToJson)
 
     for (const data of trxToJson) {
-      await createCheckRun(token, ignoreTestFailures, data, sha)
+      await createCheckRun(token, ignoreTestFailures, data, sha, reportPrefix)
     }
 
     if (failingTestsFound) {
@@ -38,6 +39,7 @@ export async function run(): Promise<void> {
     }
     core.setOutput('test-outcome', failingTestsFound ? 'Failed' : 'Passed')
     core.setOutput('trx-files', trxFiles)
+    core.setOutput('report-prefix', reportPrefix)
   } catch (error: unknown) {
     core.setFailed((error as Error).message)
   }

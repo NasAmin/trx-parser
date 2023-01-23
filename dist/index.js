@@ -45,7 +45,7 @@ exports.createCheckRun = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 const markup_1 = __nccwpck_require__(2727);
-function createCheckRun(repoToken, ignoreTestFailures, reportData, sha) {
+function createCheckRun(repoToken, ignoreTestFailures, reportData, sha, reportPrefix) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             core.info(`Creating PR check for ${reportData.ReportMetaData.ReportTitle}`);
@@ -66,11 +66,14 @@ function createCheckRun(repoToken, ignoreTestFailures, reportData, sha) {
             }
             const markupData = (0, markup_1.getMarkupForTrx)(reportData);
             const checkTime = new Date().toUTCString();
+            const reportName = reportPrefix
+                ? reportPrefix.concat('-', reportData.ReportMetaData.ReportName)
+                : reportData.ReportMetaData.ReportName;
             core.info(`Check time is: ${checkTime}`);
             const response = yield octokit.checks.create({
                 owner: github.context.repo.owner,
                 repo: github.context.repo.repo,
-                name: reportData.ReportMetaData.ReportName.toLowerCase(),
+                name: reportName.toLowerCase(),
                 head_sha: git_sha,
                 status: 'completed',
                 conclusion: reportData.TrxData.TestRun.ResultSummary._outcome === 'Failed'
@@ -152,6 +155,7 @@ function run() {
             const trxPath = core.getInput('TRX_PATH');
             const ignoreTestFailures = core.getInput('IGNORE_FAILURE', { required: false }) === 'true';
             const sha = core.getInput('SHA');
+            const reportPrefix = core.getInput('REPORT_PREFIX');
             core.info(`Finding Trx files in: ${trxPath}`);
             const trxFiles = yield (0, utils_1.getTrxFiles)(trxPath);
             core.info(`Processing ${trxFiles.length} trx files`);
@@ -159,7 +163,7 @@ function run() {
             core.info(`Checking for failing tests`);
             const failingTestsFound = (0, utils_1.areThereAnyFailingTests)(trxToJson);
             for (const data of trxToJson) {
-                yield (0, github_1.createCheckRun)(token, ignoreTestFailures, data, sha);
+                yield (0, github_1.createCheckRun)(token, ignoreTestFailures, data, sha, reportPrefix);
             }
             if (failingTestsFound) {
                 if (ignoreTestFailures) {

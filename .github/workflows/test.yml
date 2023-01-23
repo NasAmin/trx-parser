@@ -25,6 +25,7 @@ jobs:
           with:
             TRX_PATH: ${{ github.workspace }}/test-data/passing-tests
             REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            REPORT_PREFIX: ${{ matrix.os }}
 
         - name: Failing tests
           id: failing-tests
@@ -35,6 +36,7 @@ jobs:
             TRX_PATH: ${{ github.workspace }}/test-data/failing-tests
             REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             IGNORE_FAILURE: true
+            REPORT_PREFIX: ${{ matrix.os }}
 
         - name: Print Test Outcome
           run: |
@@ -42,6 +44,7 @@ jobs:
             echo Path is: ${{ steps.passing-tests.outputs.trx-path }}
             echo trx files: ${{ steps.passing-tests.outputs.trx-files }}
             echo head_sha: ${{ github.event.pull_request.head.sha }}
+            echo report prefix: ${{ steps.passing-tests.outputs.report-prefix}}
             echo git_sha: ${{ github.sha}}
             echo git_ref: ${{ github.ref}}
 

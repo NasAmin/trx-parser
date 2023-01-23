@@ -18,6 +18,9 @@ inputs:
     SHA:
       description: 'SHA value to use. If not set then will be calculated based on context'
       required: false
+    REPORT_PREFIX:
+      description: 'A string value to use as a prefix on the generated report name. This is useful when you are using this action in multiple workflows and desire unique names'
+      required: false
 outputs:
   test-outcome:
     description: 'Test outcome Failed/Passed'
