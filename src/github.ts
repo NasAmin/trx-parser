@@ -11,7 +11,8 @@ export async function createCheckRun(
   repoToken: string,
   ignoreTestFailures: boolean,
   reportData: TrxDataWrapper,
-  sha?: string
+  sha?: string,
+  reportPrefix?: string
 ): Promise<void> {
   try {
     core.info(`Creating PR check for ${reportData.ReportMetaData.ReportTitle}`)
@@ -39,11 +40,14 @@ export async function createCheckRun(
 
     const markupData = getMarkupForTrx(reportData)
     const checkTime = new Date().toUTCString()
+    const reportName = reportPrefix
+      ? reportPrefix.concat('-', reportData.ReportMetaData.ReportName)
+      : reportData.ReportMetaData.ReportName
     core.info(`Check time is: ${checkTime}`)
     const response = await octokit.checks.create({
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
-      name: reportData.ReportMetaData.ReportName.toLowerCase(),
+      name: reportName.toLowerCase(),
       head_sha: git_sha,
       status: 'completed',
       conclusion:
