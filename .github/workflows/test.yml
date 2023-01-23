@@ -25,6 +25,7 @@ jobs:
           with:
             TRX_PATH: ${{ github.workspace }}/test-data/passing-tests
             REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            REPORT_PREFIX: ${{ matrix.os }}
 
         - name: Failing tests
           id: failing-tests
