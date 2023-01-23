@@ -35,6 +35,7 @@ jobs:
             TRX_PATH: ${{ github.workspace }}/test-data/failing-tests
             REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
             IGNORE_FAILURE: true
+            REPORT_PREFIX: ${{ matrix.os }}
 
         - name: Print Test Outcome
           run: |
