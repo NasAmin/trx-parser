@@ -15,6 +15,7 @@ jobs:
       checks: write
       actions: write
       statuses: write
+      pull-requests: write
     steps:
         - name: Get Source Code
           uses: actions/checkout@v2
