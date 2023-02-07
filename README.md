@@ -53,9 +53,9 @@ jobs:
 | ---- | ----------- | ------- | -------- |
 | `TRX_PATH` | Path to the directory container your test files | `./TestResults` | `yes` |
 | `REPO_TOKEN` | GitHub token to create status checks  | `nil` | `yes` |
-| `SHA` | The commit SHA associated with the checks. This is optional | `${{ github.sha }}` | `no` |
+| `SHA` | The commit SHA associated with the checks. This is optional | `nil` | `no` |
 | `IGNORE_FAILURE` | If true, will not set status check as failure. | `false` | `no` |
-| `REPORT_PREFIX` | The prefix for the report name. Useful for matrix builds | `Test Report` | `no` |
+| `REPORT_PREFIX` | The prefix for the report name. Useful for matrix builds | `nil` | `no` |
 
 
 
