@@ -48,6 +48,17 @@ jobs:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}          
 ```
 
+## Inputs
+| Name | Description | Default | Required |
+| ---- | ----------- | ------- | -------- |
+| `TRX_PATH` | Path to the directory container your test files | `./TestResults` | `yes` |
+| `REPO_TOKEN` | GitHub token to create status checks  | `nil` | `yes` |
+| `SHA` | The commit SHA associated with the checks. This is optional | `${{ github.sha }}` | `no` |
+| `IGNORE_FAILURE` | If true, will not set status check as failure. | `false` | `no` |
+| `REPORT_PREFIX` | The prefix for the report name. Useful for matrix builds | `Test Report` | `no` |
+
+
+
 ### ⚠️ GitHub Actions Limitations ⚠️
 - The GitHub Checks API has a [limit](https://github.com/github/docs/issues/3765) of `65535` characters. So if the test report exceeds this limit, GitHub will fail to create a check and fail your workflow.
 This was mitigated on #103 and #138 to only report details about failing tests. 
