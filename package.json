@@ -54,7 +54,7 @@
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.11",
     "@typescript-eslint/eslint-plugin": "^5.48.2",
-    "@typescript-eslint/parser": "^5.48.2",
+    "@typescript-eslint/parser": "^5.54.0",
     "@vercel/ncc": "^0.33.4",
     "eslint": "^8.32.0",
     "eslint-plugin-github": "^4.6.0",
