@@ -5,7 +5,7 @@ import * as fs from 'fs'
 import * as he from 'he'
 import * as path from 'path'
 import * as uitl from 'util'
-import * as xmlParser from 'fast-xml-parser'
+import {XMLParser, XMLValidator} from 'fast-xml-parser'
 
 import {TrxData, TrxDataWrapper, UnitTest} from './types/types'
 
@@ -65,8 +65,12 @@ export async function transformTrxToJson(
       stopNodes: ['parse-me-as-string']
     }
 
-    if (xmlParser.validate(xmlData.toString()) === true) {
-      const jsonString = xmlParser.parse(xmlData, options, true)
+    const xmlParser = new XMLParser(options)
+    const isValid = XMLValidator.validate(xmlData, {
+      allowBooleanAttributes: true
+    })
+    if (isValid === true) {
+      const jsonString = xmlParser.parse(xmlData, true)
       const testData = jsonString as TrxData
       const runInfos = testData.TestRun.ResultSummary.RunInfos
       if (runInfos && runInfos.RunInfo._outcome === 'Failed') {
