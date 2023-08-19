@@ -30,7 +30,9 @@ describe('When generating markup for trx', () => {
 
     expect(
       data.TrxData.TestRun.Results.UnitTestResult[1].Output?.ErrorInfo?.Message
-    ).toEqual('Assert.IsTrue failed.')
+    ).toEqual(`Assert.False() Failure
+Expected: False
+Actual:   True`)
 
     expect(
       data.TrxData.TestRun.Results.UnitTestResult[1].Output?.ErrorInfo
