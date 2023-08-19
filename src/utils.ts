@@ -2,7 +2,6 @@
 import * as core from '@actions/core'
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import * as fs from 'fs'
-import * as he from 'he'
 import * as path from 'path'
 import * as uitl from 'util'
 import {XMLParser, XMLValidator} from 'fast-xml-parser'
@@ -45,7 +44,7 @@ export async function transformTrxToJson(
     const xmlData = await readTrxFile(filePath)
     const options = {
       attributeNamePrefix: '_',
-      // attrNodeName: 'attr', //default is 'false'
+      // attrNodeName: '@', //default is 'false'
       textNodeName: '#text',
       ignoreAttributes: false,
       ignoreNameSpace: false,
@@ -53,15 +52,14 @@ export async function transformTrxToJson(
       parseNodeValue: true,
       parseAttributeValue: true,
       trimValues: true,
+      format: true,
+      indentBy: '  ',
+      supressEmptyNode: false,
+      rootNodeName: 'element',
       cdataTagName: '__cdata', //default is 'false'
       cdataPositionChar: '\\c',
       parseTrueNumberOnly: false,
       arrayMode: false, //"strict"
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      attrValueProcessor: (val: string, _attrName: string) =>
-        he.decode(val, {isAttributeValue: true}), //default is a=>a
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      tagValueProcessor: (val: string, _tagName: string) => he.decode(val), //default is a=>a
       stopNodes: ['parse-me-as-string']
     }
 
