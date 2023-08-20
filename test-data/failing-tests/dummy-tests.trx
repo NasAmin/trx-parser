@@ -9,7 +9,9 @@
     <UnitTestResult executionId="311ef751-a4cd-4b8f-b035-a80a60a0d356" testId="4bf72103-4551-c34e-0c54-c20c09328bff" testName="TestMethod4" computerName="staging-tests-vr4mc" duration="00:00:00.0136651" startTime="2020-10-09T12:16:32.8054653+00:00" endTime="2020-10-09T12:16:32.8194691+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="311ef751-a4cd-4b8f-b035-a80a60a0d356">
       <Output>
         <ErrorInfo>
-          <Message>Assert.IsTrue failed. </Message>
+          <Message>Assert.False() Failure
+Expected: False
+Actual:   True</Message>
           <StackTrace>   at dummy_tests.DummyTest1.TestMethod4() in /root/UnitTest1.cs:line 30
 </StackTrace>
         </ErrorInfo>
