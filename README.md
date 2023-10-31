@@ -38,7 +38,7 @@ jobs:
         run: |
           dotnet restore
           dotnet build -c Release no-restore
-          dotnet test -c Release --no-restore --no-build --loger trx --results-directory ./TestResults
+          dotnet test -c Release --no-restore --no-build --logger trx --results-directory ./TestResults
       # Using the trx-parser action
       - name: Parse Trx files
         uses: NasAmin/trx-parser@v0.1
