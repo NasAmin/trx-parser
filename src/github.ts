@@ -44,7 +44,7 @@ export async function createCheckRun(
       ? reportPrefix.concat('-', reportData.ReportMetaData.ReportName)
       : reportData.ReportMetaData.ReportName
     core.info(`Check time is: ${checkTime}`)
-    const response = await octokit.checks.create({
+    const response = await octokit.rest.checks.create({
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
       name: reportName.toLowerCase(),

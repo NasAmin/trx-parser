@@ -126,7 +126,10 @@ export function areThereAnyFailingTests(
 
 function getReportHeaders(
   data: TrxData
-): {reportName: string; reportTitle: string} {
+): {
+  reportName: string
+  reportTitle: string
+} {
   let reportTitle = ''
   let reportName = ''
   const isEmpty = IsEmpty(data)
