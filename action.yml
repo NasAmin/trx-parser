@@ -27,5 +27,5 @@ outputs:
   trx-files:
     description: 'list of trx files'
 runs:
-  using: 'node16'
+  using: 'node20'
   main: 'dist/index.js'
