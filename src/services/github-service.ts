@@ -1,4 +1,5 @@
 /* eslint-disable i18n-text/no-en */
+/* eslint-disable import/no-unresolved */
 import * as core from '@actions/core'
 import * as github from '@actions/github'
 import * as types from '@octokit/webhooks-types'

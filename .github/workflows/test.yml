@@ -1,52 +1,72 @@
 name: Test
-on: # rebuild any PRs and main branch changes
+
+on:
   pull_request:
   push:
     branches:
-      - main 
+      - main
 
 jobs:
-  test:
+  integration-test:
+    name: Integration Tests
     runs-on: ${{ matrix.os }}
-    strategy:        
-        matrix:
-          os: [windows-latest, ubuntu-latest]
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        node-version: [20]
+
     permissions:
       checks: write
       actions: write
       statuses: write
       pull-requests: write
+
     steps:
-        - name: Get Source Code
-          uses: actions/checkout@v4
-        - name: Passing Tests
-          id: passing-tests
-          uses: ./
-          with:
-            TRX_PATH: ${{ github.workspace }}/test-data/passing-tests
-            REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            REPORT_PREFIX: ${{ matrix.os }}
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-        - name: Failing tests
-          id: failing-tests
-          # This one is expected to fail
-          continue-on-error: true          
-          uses: ./
-          with:
-            TRX_PATH: ${{ github.workspace }}/test-data/failing-tests
-            REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            IGNORE_FAILURE: true
-            REPORT_PREFIX: ${{ matrix.os }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
-        - name: Print Test Outcome
-          run: |
-            echo Outcome is: ${{ steps.passing-tests.outputs.test-outcome }}
-            echo Path is: ${{ steps.passing-tests.outputs.trx-path }}
-            echo trx files: ${{ steps.passing-tests.outputs.trx-files }}
-            echo head_sha: ${{ github.event.pull_request.head.sha }}
-            echo report prefix: ${{ steps.passing-tests.outputs.report-prefix}}
-            echo git_sha: ${{ github.sha}}
-            echo git_ref: ${{ github.ref}}
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build and package
+        run: npm run all
+
+      - name: Test with passing results
+        id: passing-tests
+        uses: ./
+        with:
+          TRX_PATH: ${{ github.workspace }}/test-data/passing-tests
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPORT_PREFIX: ${{ matrix.os }}-passing
+
+      - name: Test with failing results (expect failure)
+        id: failing-tests
+        continue-on-error: true
+        uses: ./
+        with:
+          TRX_PATH: ${{ github.workspace }}/test-data/failing-tests
+          REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          IGNORE_FAILURE: true
+          REPORT_PREFIX: ${{ matrix.os }}-failing
+
+      - name: Verify test outputs
+        run: |
+          echo "Passing tests outcome: ${{ steps.passing-tests.outputs.test-outcome }}"
+          echo "Passing tests files: ${{ steps.passing-tests.outputs.trx-files }}"
+          echo "Failing tests outcome: ${{ steps.failing-tests.outputs.test-outcome }}"
+          echo "Failing tests files: ${{ steps.failing-tests.outputs.trx-files }}"
+          echo "Git SHA: ${{ github.sha }}"
+          echo "Git ref: ${{ github.ref }}"
+          
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            echo "PR head SHA: ${{ github.event.pull_request.head.sha }}"
+          fi
 
 
 
