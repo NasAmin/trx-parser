@@ -1,6 +1,6 @@
 import * as path from 'path'
 
-import {getAbsoluteFilePaths, transformTrxToJson} from '../src/utils'
+import {getAbsoluteFilePaths, transformTrxToJson, areThereAnyFailingTests} from '../src/utils'
 
 describe('Test GetAbsolutePath returns correct values', () => {
   it('getAbsoluteFilePaths()', async () => {
@@ -47,5 +47,41 @@ describe('when loading xml from a trx file', () => {
     expect(data.TrxData.TestRun.ResultSummary.Counters._total).toEqual(1)
     expect(data.TrxData.TestRun.ResultSummary.Counters._passed).toEqual(1)
     expect(data.TrxData.TestRun.ResultSummary.Counters._failed).toEqual(0)
+  })
+
+  test('Test Data with all passed tests but outcome Failed should not report failures', async () => {
+    const data = await transformTrxToJson(
+      './test-data/passing-tests/all-passed-but-outcome-failed.trx'
+    )
+    expect(data.TrxData.TestRun.ResultSummary._outcome).toEqual('Failed')
+    expect(data.TrxData.TestRun.ResultSummary.Counters._total).toEqual(2)
+    expect(data.TrxData.TestRun.ResultSummary.Counters._passed).toEqual(2)
+    expect(data.TrxData.TestRun.ResultSummary.Counters._failed).toEqual(0)
+  })
+})
+
+describe('areThereAnyFailingTests function', () => {
+  test('should return false when outcome is Failed but failed count is 0', async () => {
+    const data = await transformTrxToJson(
+      './test-data/passing-tests/all-passed-but-outcome-failed.trx'
+    )
+    const result = areThereAnyFailingTests([data])
+    expect(result).toBe(false)
+  })
+
+  test('should return true when there are actual failed tests', async () => {
+    const data = await transformTrxToJson(
+      './test-data/failing-tests/dummy-tests.trx'
+    )
+    const result = areThereAnyFailingTests([data])
+    expect(result).toBe(true)
+  })
+
+  test('should return false when all tests pass', async () => {
+    const data = await transformTrxToJson(
+      './test-data/passing-tests/single-test.trx'
+    )
+    const result = areThereAnyFailingTests([data])
+    expect(result).toBe(false)
   })
 })
