@@ -332,6 +332,7 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.createCheckRun = createCheckRun;
 /* eslint-disable i18n-text/no-en */
+/* eslint-disable import/no-unresolved */
 const core = __importStar(__nccwpck_require__(7484));
 const github = __importStar(__nccwpck_require__(3228));
 const report_service_1 = __nccwpck_require__(3301);
