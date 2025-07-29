@@ -1,6 +1,7 @@
 import * as path from 'path'
 
-import {getAbsoluteFilePaths, transformTrxToJson} from '../src/utils'
+import {getAbsoluteFilePaths} from '../src/utils/file-utils'
+import {transformTrxToJson} from '../src/parsers/trx-parser'
 
 describe('Test GetAbsolutePath returns correct values', () => {
   it('getAbsoluteFilePaths()', async () => {

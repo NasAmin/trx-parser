@@ -1,6 +1,8 @@
-import {getMarkupForTrx, getTestRunDuration} from '../src//markup'
-
-import {transformTrxToJson} from '../src/utils'
+import {
+  getMarkupForTrx,
+  getTestRunDuration
+} from '../src/services/report-service'
+import {transformTrxToJson} from '../src/parsers/trx-parser'
 
 describe('When generating markup for trx', () => {
   test('LoadXml Should have an outcome of Failed()', async () => {

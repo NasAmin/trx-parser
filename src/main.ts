@@ -1,24 +1,18 @@
 /* eslint-disable i18n-text/no-en */
 import * as core from '@actions/core'
 
-import {
-  areThereAnyFailingTests,
-  getTrxFiles,
-  transformAllTrxToJson
-} from './utils'
-
-import {createCheckRun} from './github'
+import {getTrxFiles} from './utils/file-utils'
+import {transformAllTrxToJson} from './parsers/trx-parser'
+import {areThereAnyFailingTests} from './utils/test-analyzer'
+import {createCheckRun} from './services/github-service'
+import {parseActionInputs} from './validators/input-validator'
 
 export async function run(): Promise<void> {
   try {
-    const token = core.getInput('REPO_TOKEN')
-    const trxPath = core.getInput('TRX_PATH')
-    const ignoreTestFailures: boolean =
-      core.getInput('IGNORE_FAILURE', {required: false}) === 'true'
-    const sha = core.getInput('SHA')
-    const reportPrefix = core.getInput('REPORT_PREFIX')
-    core.info(`Finding Trx files in: ${trxPath}`)
-    const trxFiles = await getTrxFiles(trxPath)
+    const inputs = parseActionInputs()
+
+    core.info(`Finding Trx files in: ${inputs.trxPath}`)
+    const trxFiles = await getTrxFiles(inputs.trxPath)
 
     core.info(`Processing ${trxFiles.length} trx files`)
     const trxToJson = await transformAllTrxToJson(trxFiles)
@@ -26,20 +20,30 @@ export async function run(): Promise<void> {
     core.info(`Checking for failing tests`)
     const failingTestsFound = areThereAnyFailingTests(trxToJson)
 
-    for (const data of trxToJson) {
-      await createCheckRun(token, ignoreTestFailures, data, sha, reportPrefix)
-    }
+    // Process check runs in parallel for better performance
+    await Promise.all(
+      trxToJson.map(async data =>
+        createCheckRun(
+          inputs.token,
+          inputs.ignoreTestFailures,
+          data,
+          inputs.sha,
+          inputs.reportPrefix
+        )
+      )
+    )
 
     if (failingTestsFound) {
-      if (ignoreTestFailures) {
+      if (inputs.ignoreTestFailures) {
         core.warning(`Workflow configured to ignore test failures`)
       } else {
         core.setFailed('At least one failing test was found')
       }
     }
+
     core.setOutput('test-outcome', failingTestsFound ? 'Failed' : 'Passed')
     core.setOutput('trx-files', trxFiles)
-    core.setOutput('report-prefix', reportPrefix)
+    core.setOutput('report-prefix', inputs.reportPrefix)
   } catch (error: unknown) {
     core.setFailed((error as Error).message)
   }

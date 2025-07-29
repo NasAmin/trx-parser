@@ -1,104 +1,55 @@
 require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 6681:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+/***/ 1810:
+/***/ ((__unused_webpack_module, exports) => {
 
 "use strict";
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || (function () {
-    var ownKeys = function(o) {
-        ownKeys = Object.getOwnPropertyNames || function (o) {
-            var ar = [];
-            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
-            return ar;
-        };
-        return ownKeys(o);
-    };
-    return function (mod) {
-        if (mod && mod.__esModule) return mod;
-        var result = {};
-        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
-        __setModuleDefault(result, mod);
-        return result;
-    };
-})();
+/**
+ * Configuration constants for the TRX parser
+ */
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createCheckRun = createCheckRun;
-/* eslint-disable import/no-unresolved */
-/* eslint-disable i18n-text/no-en */
-const core = __importStar(__nccwpck_require__(7484));
-const github = __importStar(__nccwpck_require__(3228));
-const markup_1 = __nccwpck_require__(8034);
-async function createCheckRun(repoToken, ignoreTestFailures, reportData, sha, reportPrefix) {
-    try {
-        core.info(`Creating PR check for ${reportData.ReportMetaData.ReportTitle}`);
-        const octokit = github.getOctokit(repoToken);
-        let git_sha = github.context.sha;
-        if (github.context.eventName === 'push') {
-            core.info(`Creating status check for GitSha: ${git_sha} on a push event`);
-        }
-        if (github.context.eventName === 'pull_request') {
-            const prPayload = github.context
-                .payload;
-            git_sha = prPayload.pull_request.head.sha;
-            core.info(`Creating status check for GitSha: ${git_sha} on a pull request event`);
-        }
-        if (sha) {
-            git_sha = sha;
-            core.info(`Creating status check for user-provided GitSha: ${git_sha}`);
-        }
-        const markupData = (0, markup_1.getMarkupForTrx)(reportData);
-        const checkTime = new Date().toUTCString();
-        const reportName = reportPrefix
-            ? reportPrefix.concat('-', reportData.ReportMetaData.ReportName)
-            : reportData.ReportMetaData.ReportName;
-        core.info(`Check time is: ${checkTime}`);
-        const response = await octokit.rest.checks.create({
-            owner: github.context.repo.owner,
-            repo: github.context.repo.repo,
-            name: reportName.toLowerCase(),
-            head_sha: git_sha,
-            status: 'completed',
-            conclusion: reportData.TrxData.TestRun.ResultSummary._outcome === 'Failed'
-                ? ignoreTestFailures
-                    ? 'neutral'
-                    : 'failure'
-                : 'success',
-            output: {
-                title: reportData.ReportMetaData.ReportTitle,
-                summary: `This test run completed at \`${checkTime}\``,
-                // text: reportData.ReportMetaData.TrxJSonString
-                text: markupData
-            }
-        });
-        if (response.status !== 201) {
-            throw new Error(`Failed to create status check. Error code: ${response.status}`);
-        }
-        else {
-            core.info(`Created check: ${response.data.name} with response status ${response.status}`);
-        }
-    }
-    catch (error) {
-        core.setFailed(error.message);
-    }
-}
+exports.TEST_OUTCOME_ICONS = exports.BADGE_COLORS = exports.TEST_OUTCOMES = exports.XML_VALIDATOR_OPTIONS = exports.XML_PARSER_OPTIONS = void 0;
+exports.XML_PARSER_OPTIONS = {
+    attributeNamePrefix: '_',
+    textNodeName: '#text',
+    ignoreAttributes: false,
+    ignoreNameSpace: false,
+    allowBooleanAttributes: true,
+    parseNodeValue: true,
+    parseAttributeValue: true,
+    trimValues: true,
+    format: true,
+    indentBy: '  ',
+    supressEmptyNode: false,
+    rootNodeName: 'element',
+    cdataTagName: '__cdata',
+    cdataPositionChar: '\\c',
+    parseTrueNumberOnly: false,
+    arrayMode: false,
+    stopNodes: ['parse-me-as-string']
+};
+exports.XML_VALIDATOR_OPTIONS = {
+    allowBooleanAttributes: true
+};
+exports.TEST_OUTCOMES = {
+    PASSED: 'Passed',
+    FAILED: 'Failed',
+    NOT_EXECUTED: 'NotExecuted',
+    ERROR: 'Error'
+};
+exports.BADGE_COLORS = {
+    SUCCESS: 'brightgreen',
+    FAILURE: 'red'
+};
+exports.TEST_OUTCOME_ICONS = {
+    [exports.TEST_OUTCOMES.PASSED]: ':heavy_check_mark:',
+    [exports.TEST_OUTCOMES.FAILED]: ':x:',
+    [exports.TEST_OUTCOMES.ERROR]: ':x:',
+    [exports.TEST_OUTCOMES.NOT_EXECUTED]: ':radio_button:',
+    DEFAULT: ':grey_question:'
+};
 
 
 /***/ }),
@@ -145,26 +96,24 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.run = run;
 /* eslint-disable i18n-text/no-en */
 const core = __importStar(__nccwpck_require__(7484));
-const utils_1 = __nccwpck_require__(9277);
-const github_1 = __nccwpck_require__(6681);
+const file_utils_1 = __nccwpck_require__(1714);
+const trx_parser_1 = __nccwpck_require__(7449);
+const test_analyzer_1 = __nccwpck_require__(4271);
+const github_service_1 = __nccwpck_require__(540);
+const input_validator_1 = __nccwpck_require__(5489);
 async function run() {
     try {
-        const token = core.getInput('REPO_TOKEN');
-        const trxPath = core.getInput('TRX_PATH');
-        const ignoreTestFailures = core.getInput('IGNORE_FAILURE', { required: false }) === 'true';
-        const sha = core.getInput('SHA');
-        const reportPrefix = core.getInput('REPORT_PREFIX');
-        core.info(`Finding Trx files in: ${trxPath}`);
-        const trxFiles = await (0, utils_1.getTrxFiles)(trxPath);
+        const inputs = (0, input_validator_1.parseActionInputs)();
+        core.info(`Finding Trx files in: ${inputs.trxPath}`);
+        const trxFiles = await (0, file_utils_1.getTrxFiles)(inputs.trxPath);
         core.info(`Processing ${trxFiles.length} trx files`);
-        const trxToJson = await (0, utils_1.transformAllTrxToJson)(trxFiles);
+        const trxToJson = await (0, trx_parser_1.transformAllTrxToJson)(trxFiles);
         core.info(`Checking for failing tests`);
-        const failingTestsFound = (0, utils_1.areThereAnyFailingTests)(trxToJson);
-        for (const data of trxToJson) {
-            await (0, github_1.createCheckRun)(token, ignoreTestFailures, data, sha, reportPrefix);
-        }
+        const failingTestsFound = (0, test_analyzer_1.areThereAnyFailingTests)(trxToJson);
+        // Process check runs in parallel for better performance
+        await Promise.all(trxToJson.map(async (data) => (0, github_service_1.createCheckRun)(inputs.token, inputs.ignoreTestFailures, data, inputs.sha, inputs.reportPrefix)));
         if (failingTestsFound) {
-            if (ignoreTestFailures) {
+            if (inputs.ignoreTestFailures) {
                 core.warning(`Workflow configured to ignore test failures`);
             }
             else {
@@ -173,7 +122,7 @@ async function run() {
         }
         core.setOutput('test-outcome', failingTestsFound ? 'Failed' : 'Passed');
         core.setOutput('trx-files', trxFiles);
-        core.setOutput('report-prefix', reportPrefix);
+        core.setOutput('report-prefix', inputs.reportPrefix);
     }
     catch (error) {
         core.setFailed(error.message);
@@ -184,14 +133,296 @@ run();
 
 /***/ }),
 
-/***/ 8034:
-/***/ ((__unused_webpack_module, exports) => {
+/***/ 7449:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.transformTrxToJson = transformTrxToJson;
+exports.transformAllTrxToJson = transformAllTrxToJson;
+/* eslint-disable i18n-text/no-en */
+const core = __importStar(__nccwpck_require__(7484));
+const fs = __importStar(__nccwpck_require__(9896));
+const fast_xml_parser_1 = __nccwpck_require__(9741);
+const constants_1 = __nccwpck_require__(1810);
+const file_utils_1 = __nccwpck_require__(1714);
+/**
+ * Transform a single TRX file to JSON format
+ */
+async function transformTrxToJson(filePath) {
+    if (!fs.existsSync(filePath)) {
+        core.warning(`Trx file ${filePath} does not exist`);
+        // Return empty wrapper for non-existent files
+        return createEmptyTrxDataWrapper(filePath);
+    }
+    core.info(`Transforming file ${filePath}`);
+    const xmlData = await (0, file_utils_1.readTrxFile)(filePath);
+    const xmlParser = new fast_xml_parser_1.XMLParser(constants_1.XML_PARSER_OPTIONS);
+    const isValid = fast_xml_parser_1.XMLValidator.validate(xmlData, constants_1.XML_VALIDATOR_OPTIONS);
+    if (isValid !== true) {
+        throw new Error(`Invalid XML in file ${filePath}: ${isValid}`);
+    }
+    const jsonString = xmlParser.parse(xmlData, true);
+    const testData = jsonString;
+    // Check for run failures
+    const runInfos = testData.TestRun.ResultSummary.RunInfos;
+    if (runInfos?.RunInfo._outcome === 'Failed') {
+        core.warning('There is trouble');
+    }
+    const reportHeaders = getReportHeaders(testData);
+    return {
+        TrxData: testData,
+        IsEmpty: isEmpty(testData),
+        ReportMetaData: {
+            TrxFilePath: filePath,
+            ReportName: `${reportHeaders.reportName}-check`,
+            ReportTitle: reportHeaders.reportTitle,
+            TrxJSonString: JSON.stringify(jsonString),
+            TrxXmlString: xmlData
+        }
+    };
+}
+/**
+ * Transform multiple TRX files to JSON format in parallel
+ */
+async function transformAllTrxToJson(trxFiles) {
+    // Process files in parallel for better performance
+    return await Promise.all(trxFiles.map(async (trx) => transformTrxToJson(trx)));
+}
+/**
+ * Check if test data is empty (no test definitions)
+ */
+function isEmpty(testData) {
+    return !testData.TestRun.TestDefinitions;
+}
+/**
+ * Create an empty TRX data wrapper for error cases
+ */
+function createEmptyTrxDataWrapper(filePath) {
+    return {
+        TrxData: {},
+        IsEmpty: true,
+        ReportMetaData: {
+            TrxFilePath: filePath,
+            ReportName: 'error-check',
+            ReportTitle: 'File Not Found',
+            TrxJSonString: '{}',
+            TrxXmlString: ''
+        }
+    };
+}
+/**
+ * Generate report headers from test data
+ */
+function getReportHeaders(data) {
+    let reportTitle = '';
+    let reportName = '';
+    const isEmptyData = isEmpty(data);
+    if (isEmptyData) {
+        reportTitle = data.TestRun.ResultSummary.RunInfos.RunInfo._computerName;
+        reportName =
+            data.TestRun.ResultSummary.RunInfos.RunInfo._computerName.toUpperCase();
+    }
+    else {
+        const unittests = data.TestRun?.TestDefinitions?.UnitTest;
+        const storage = getAssemblyName(unittests);
+        const dllName = storage.split('/').pop();
+        if (dllName) {
+            reportTitle = dllName.replace('.dll', '').toUpperCase().replace('.', ' ');
+            reportName = dllName.replace('.dll', '').toUpperCase();
+        }
+    }
+    return { reportName, reportTitle };
+}
+/**
+ * Extract assembly name from unit tests
+ */
+function getAssemblyName(unittests) {
+    if (Array.isArray(unittests)) {
+        core.debug('Its an array');
+        return unittests[0]?._storage ?? 'NOT FOUND';
+    }
+    else {
+        const ut = unittests;
+        if (ut) {
+            core.debug(`Its not an array: ${ut._storage}`);
+            return ut._storage;
+        }
+        else {
+            return 'NOT FOUND';
+        }
+    }
+}
+
+
+/***/ }),
+
+/***/ 540:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createCheckRun = createCheckRun;
+/* eslint-disable i18n-text/no-en */
+const core = __importStar(__nccwpck_require__(7484));
+const github = __importStar(__nccwpck_require__(3228));
+const report_service_1 = __nccwpck_require__(3301);
+/**
+ * Create a GitHub check run for test results
+ */
+async function createCheckRun(repoToken, ignoreTestFailures, reportData, sha, reportPrefix) {
+    try {
+        core.info(`Creating PR check for ${reportData.ReportMetaData.ReportTitle}`);
+        const octokit = github.getOctokit(repoToken);
+        const gitSha = determineGitSha(sha);
+        const markupData = (0, report_service_1.getMarkupForTrx)(reportData);
+        const checkTime = new Date().toUTCString();
+        const reportName = buildReportName(reportPrefix, reportData.ReportMetaData.ReportName);
+        core.info(`Check time is: ${checkTime}`);
+        const response = await octokit.rest.checks.create({
+            owner: github.context.repo.owner,
+            repo: github.context.repo.repo,
+            name: reportName.toLowerCase(),
+            head_sha: gitSha,
+            status: 'completed',
+            conclusion: determineCheckConclusion(reportData, ignoreTestFailures),
+            output: {
+                title: reportData.ReportMetaData.ReportTitle,
+                summary: `This test run completed at \`${checkTime}\``,
+                text: markupData
+            }
+        });
+        if (response.status !== 201) {
+            throw new Error(`Failed to create status check. Error code: ${response.status}`);
+        }
+        else {
+            core.info(`Created check: ${response.data.name} with response status ${response.status}`);
+        }
+    }
+    catch (error) {
+        core.setFailed(error.message);
+    }
+}
+/**
+ * Determine the git SHA to use for the check
+ */
+function determineGitSha(sha) {
+    let gitSha = github.context.sha;
+    if (github.context.eventName === 'push') {
+        core.info(`Creating status check for GitSha: ${gitSha} on a push event`);
+    }
+    if (github.context.eventName === 'pull_request') {
+        const prPayload = github.context
+            .payload;
+        gitSha = prPayload.pull_request.head.sha;
+        core.info(`Creating status check for GitSha: ${gitSha} on a pull request event`);
+    }
+    if (sha) {
+        gitSha = sha;
+        core.info(`Creating status check for user-provided GitSha: ${gitSha}`);
+    }
+    return gitSha;
+}
+/**
+ * Build the report name with optional prefix
+ */
+function buildReportName(reportPrefix, reportName) {
+    return reportPrefix ? reportPrefix.concat('-', reportName) : reportName;
+}
+/**
+ * Determine the check conclusion based on test results
+ */
+function determineCheckConclusion(reportData, ignoreTestFailures) {
+    const isTestFailed = reportData.TrxData.TestRun?.ResultSummary?._outcome === 'Failed';
+    if (isTestFailed) {
+        return ignoreTestFailures ? 'neutral' : 'failure';
+    }
+    return 'success';
+}
+
+
+/***/ }),
+
+/***/ 3301:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getMarkupForTrx = getMarkupForTrx;
 exports.getTestRunDuration = getTestRunDuration;
+const constants_1 = __nccwpck_require__(1810);
+/**
+ * Generate markup report for TRX test data
+ */
 function getMarkupForTrx(testData) {
     const failedCount = testData.TrxData.TestRun.ResultSummary.Counters._failed;
     const passedCount = testData.TrxData.TestRun.ResultSummary.Counters._passed;
@@ -201,7 +432,9 @@ function getMarkupForTrx(testData) {
         ? `${`${failedCount}/${totalCount}`}`
         : `${`${passedCount}/${totalCount}`}`;
     const badgeStatusText = failedCount > 0 || testOutcome === 'Failed' ? 'FAILED' : 'PASSED';
-    const badgeColor = failedCount > 0 || testOutcome === 'Failed' ? 'red' : 'brightgreen';
+    const badgeColor = failedCount > 0 || testOutcome === 'Failed'
+        ? constants_1.BADGE_COLORS.FAILURE
+        : constants_1.BADGE_COLORS.SUCCESS;
     return `
 ![Generic badge](https://img.shields.io/badge/${badgeCountText}-${badgeStatusText}-${badgeColor}.svg)
 # Test Results - ${testData.ReportMetaData.ReportTitle}
@@ -210,12 +443,18 @@ ${getTestCounters(testData)}
 ${getTestResultsMarkup(testData)}
 `;
 }
+/**
+ * Calculate test run duration in seconds
+ */
 function getTestRunDuration(startTime, endTime) {
     const startTimeSeconds = new Date(startTime).valueOf();
     const endTimeSeconds = new Date(endTime).valueOf();
     const duration = endTimeSeconds - startTimeSeconds;
     return duration / 1000;
 }
+/**
+ * Generate test timing information markup
+ */
 function getTestTimes(testData) {
     const duration = getTestRunDuration(testData.TrxData.TestRun.Times._start, testData.TrxData.TestRun.Times._finish);
     return `
@@ -248,101 +487,108 @@ function getTestTimes(testData) {
 </details>
 `;
 }
+/**
+ * Generate test counters markup
+ */
 function getTestCounters(testData) {
+    const counters = testData.TrxData.TestRun.ResultSummary.Counters;
     return `
 <details>
-  <summary> Outcome: ${testData.TrxData.TestRun.ResultSummary._outcome} | Total Tests: ${testData.TrxData.TestRun.ResultSummary.Counters._total} | Passed: ${testData.TrxData.TestRun.ResultSummary.Counters._passed} | Failed: ${testData.TrxData.TestRun.ResultSummary.Counters._failed} </summary>
+  <summary> Outcome: ${testData.TrxData.TestRun.ResultSummary._outcome} | Total Tests: ${counters._total} | Passed: ${counters._passed} | Failed: ${counters._failed} </summary>
   <table>
     <tr>
        <th>Total:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._total}</td>
+       <td>${counters._total}</td>
     </tr>
     <tr>
        <th>Executed:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._executed}</td>
+       <td>${counters._executed}</td>
     </tr>
     <tr>
        <th>Passed:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._passed}</td>
+       <td>${counters._passed}</td>
     </tr>
     <tr>
        <th>Failed:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._failed}</td>    
+       <td>${counters._failed}</td>    
     </tr>
     <tr>
        <th>Error:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._error}</td>
+       <td>${counters._error}</td>
     </tr>
     <tr>
        <th>Timeout:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._timeout}</td>
+       <td>${counters._timeout}</td>
     </tr>
     <tr>
        <th>Aborted:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._aborted}</td>
+       <td>${counters._aborted}</td>
     </tr>
     <tr>
        <th>Inconclusive:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._inconclusive}</td>
+       <td>${counters._inconclusive}</td>
     </tr>
     <tr>
        <th>PassedButRunAborted:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._passedButRunAborted}</td>
+       <td>${counters._passedButRunAborted}</td>
     </tr>
     <tr>
        <th>NotRunnable:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._notRunnable}</td>
+       <td>${counters._notRunnable}</td>
     </tr>
     <tr>
        <th>NotExecuted:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._notExecuted}</td>
+       <td>${counters._notExecuted}</td>
     </tr>
     <tr>
        <th>Disconnected:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._disconnected}</td>
+       <td>${counters._disconnected}</td>
     </tr>
     <tr>
        <th>Warning:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._warning}</td>
+       <td>${counters._warning}</td>
     </tr>
     <tr>
        <th>Completed:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._completed}</td>
+       <td>${counters._completed}</td>
     </tr>
     <tr>
        <th>InProgress:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._inProgress}</td>
+       <td>${counters._inProgress}</td>
     </tr>
     <tr>
        <th>Pending:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._pending}</td>
+       <td>${counters._pending}</td>
     </tr>
   </table>
 </details>
 `;
 }
+/**
+ * Generate test results markup
+ */
 function getTestResultsMarkup(testData) {
-    let resultsMarkup = '';
     if (testData.IsEmpty) {
         return getNoResultsMarkup(testData);
     }
+    const unittests = testData.TrxData.TestRun.TestDefinitions.UnitTest;
+    if (Array.isArray(unittests)) {
+        return unittests
+            .map(data => getSingleTestMarkup(data, testData))
+            .join('')
+            .trim();
+    }
     else {
-        const unittests = testData.TrxData.TestRun.TestDefinitions.UnitTest;
-        if (Array.isArray(unittests)) {
-            for (const data of unittests) {
-                resultsMarkup += getSingletestMarkup(data, testData);
-            }
-            return resultsMarkup.trim();
-        }
-        else {
-            return getSingletestMarkup(unittests, testData);
-        }
+        return getSingleTestMarkup(unittests, testData);
     }
 }
+/**
+ * Generate markup for when no test results are available
+ */
 function getNoResultsMarkup(testData) {
     const runInfo = testData.TrxData.TestRun.ResultSummary.RunInfos.RunInfo;
     const testResultIcon = getTestOutcomeIcon(runInfo._outcome);
-    const resultsMarkup = `
+    return `
 <details>
   <summary>${testResultIcon} ${runInfo._computerName}</summary> 
 
@@ -354,14 +600,18 @@ function getNoResultsMarkup(testData) {
   </table>      
   </details>
 `;
-    return resultsMarkup;
 }
-function getSingletestMarkup(data, testData) {
-    let resultsMarkup = '';
+/**
+ * Generate markup for a single test
+ */
+function getSingleTestMarkup(data, testData) {
     const testResult = getUnitTestResult(data._id, testData.TrxData.TestRun.Results);
-    if (testResult && testResult?._outcome === 'Failed') {
-        const testResultIcon = getTestOutcomeIcon(testResult?._outcome);
-        let testMarkup = `
+    // Only show failed tests to reduce noise
+    if (!testResult || testResult._outcome !== constants_1.TEST_OUTCOMES.FAILED) {
+        return '';
+    }
+    const testResultIcon = getTestOutcomeIcon(testResult._outcome);
+    let testMarkup = `
 <details>
   <summary>${testResultIcon} ${data._name}</summary>    
   <table>
@@ -413,8 +663,8 @@ function getSingletestMarkup(data, testData) {
       </table>      
   </details>
 `;
-        if (testResult._outcome === 'Failed') {
-            const failedTestDetails = `
+    if (testResult._outcome === constants_1.TEST_OUTCOMES.FAILED) {
+        const failedTestDetails = `
   <details>
         <summary>Error Message:</summary>
         <pre>${testResult.Output?.ErrorInfo.Message}</pre>
@@ -424,37 +674,36 @@ function getSingletestMarkup(data, testData) {
         <pre>${testResult.Output?.ErrorInfo.StackTrace}</pre>
   </details>
   `;
-            testMarkup += failedTestDetails;
-        }
-        resultsMarkup += testMarkup;
-        resultsMarkup += `
+        testMarkup += failedTestDetails;
+    }
+    testMarkup += `
 </details>
 `;
-    }
-    return resultsMarkup.trim();
+    return testMarkup.trim();
 }
+/**
+ * Find a unit test result by test ID
+ */
 function getUnitTestResult(unitTestId, testResults) {
     const unitTestResults = testResults.UnitTestResult;
     if (Array.isArray(unitTestResults)) {
-        return testResults.UnitTestResult.find(x => x._testId === unitTestId);
+        return unitTestResults.find(x => x._testId === unitTestId);
     }
     const result = unitTestResults;
     return result;
 }
+/**
+ * Get appropriate icon for test outcome
+ */
 function getTestOutcomeIcon(testOutcome) {
-    if (testOutcome === 'Passed')
-        return ':heavy_check_mark:';
-    if (testOutcome === 'Failed' || testOutcome === 'Error')
-        return ':x:';
-    if (testOutcome === 'NotExecuted')
-        return ':radio_button:';
-    return ':grey_question:';
+    return (constants_1.TEST_OUTCOME_ICONS[testOutcome] ??
+        constants_1.TEST_OUTCOME_ICONS.DEFAULT);
 }
 
 
 /***/ }),
 
-/***/ 9277:
+/***/ 1714:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -495,147 +744,129 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getTrxFiles = getTrxFiles;
 exports.getAbsoluteFilePaths = getAbsoluteFilePaths;
-exports.transformTrxToJson = transformTrxToJson;
 exports.readTrxFile = readTrxFile;
-exports.transformAllTrxToJson = transformAllTrxToJson;
-exports.areThereAnyFailingTests = areThereAnyFailingTests;
-/* eslint-disable i18n-text/no-en */
-const core = __importStar(__nccwpck_require__(7484));
-/* eslint-disable @typescript-eslint/no-explicit-any */
 const fs = __importStar(__nccwpck_require__(9896));
 const path = __importStar(__nccwpck_require__(6928));
-const uitl = __importStar(__nccwpck_require__(9023));
-const fast_xml_parser_1 = __nccwpck_require__(9741);
+const util = __importStar(__nccwpck_require__(9023));
 const fs_1 = __nccwpck_require__(9896);
+/**
+ * Get all TRX files from a directory
+ */
 async function getTrxFiles(trxPath) {
     if (!fs.existsSync(trxPath))
         return [];
-    const readdir = uitl.promisify(fs.readdir);
+    const readdir = util.promisify(fs.readdir);
     const fileNames = await readdir(trxPath);
     const trxFiles = fileNames.filter(f => f.endsWith('.trx'));
-    core.info(`Files count: ${fileNames.length}`);
-    const filesWithAbsolutePaths = getAbsoluteFilePaths(trxFiles, trxPath);
-    return filesWithAbsolutePaths;
+    return getAbsoluteFilePaths(trxFiles, trxPath);
 }
+/**
+ * Convert relative file paths to absolute paths
+ */
 function getAbsoluteFilePaths(fileNames, directoryName) {
-    const absolutePaths = [];
-    for (const file of fileNames) {
-        const absolutePath = path.join(directoryName, file);
-        absolutePaths.push(absolutePath);
-    }
-    return absolutePaths;
+    return fileNames.map(file => path.join(directoryName, file));
 }
-async function transformTrxToJson(filePath) {
-    let trxDataWrapper;
-    if (fs.existsSync(filePath)) {
-        core.info(`Transforming file ${filePath}`);
-        const xmlData = await readTrxFile(filePath);
-        const options = {
-            attributeNamePrefix: '_',
-            // attrNodeName: '@', //default is 'false'
-            textNodeName: '#text',
-            ignoreAttributes: false,
-            ignoreNameSpace: false,
-            allowBooleanAttributes: true,
-            parseNodeValue: true,
-            parseAttributeValue: true,
-            trimValues: true,
-            format: true,
-            indentBy: '  ',
-            supressEmptyNode: false,
-            rootNodeName: 'element',
-            cdataTagName: '__cdata', //default is 'false'
-            cdataPositionChar: '\\c',
-            parseTrueNumberOnly: false,
-            arrayMode: false, //"strict"
-            stopNodes: ['parse-me-as-string']
-        };
-        const xmlParser = new fast_xml_parser_1.XMLParser(options);
-        const isValid = fast_xml_parser_1.XMLValidator.validate(xmlData, {
-            allowBooleanAttributes: true
-        });
-        if (isValid === true) {
-            const jsonString = xmlParser.parse(xmlData, true);
-            const testData = jsonString;
-            const runInfos = testData.TestRun.ResultSummary.RunInfos;
-            if (runInfos && runInfos.RunInfo._outcome === 'Failed') {
-                core.warning('There is trouble');
-            }
-            const reportHeaders = getReportHeaders(testData);
-            trxDataWrapper = {
-                TrxData: jsonString,
-                IsEmpty: IsEmpty(testData),
-                ReportMetaData: {
-                    TrxFilePath: filePath,
-                    ReportName: `${reportHeaders.reportName}-check`,
-                    ReportTitle: reportHeaders.reportTitle,
-                    TrxJSonString: JSON.stringify(jsonString),
-                    TrxXmlString: xmlData
-                }
-            };
-        }
-    }
-    else {
-        core.warning(`Trx file ${filePath} does not exist`);
-    }
-    return trxDataWrapper;
-}
-function IsEmpty(testData) {
-    return testData.TestRun.TestDefinitions ? false : true;
-}
+/**
+ * Read a TRX file and return its contents as a string
+ */
 async function readTrxFile(filePath) {
     return await fs_1.promises.readFile(filePath, 'utf8');
 }
-async function transformAllTrxToJson(trxFiles) {
-    const transformedTrxReports = [];
-    for (const trx of trxFiles) {
-        transformedTrxReports.push(await transformTrxToJson(trx));
-    }
-    return transformedTrxReports;
-}
+
+
+/***/ }),
+
+/***/ 4271:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.areThereAnyFailingTests = areThereAnyFailingTests;
+exports.getTestRunDuration = getTestRunDuration;
+/**
+ * Check if there are any failing tests across all TRX reports
+ */
 function areThereAnyFailingTests(trxJsonReports) {
-    for (const trxData of trxJsonReports) {
-        if (trxData.TrxData.TestRun.ResultSummary._outcome === 'Failed') {
-            return true;
-        }
-    }
-    return false;
+    return trxJsonReports.some(trxData => trxData.TrxData.TestRun?.ResultSummary?._outcome === 'Failed');
 }
-function getReportHeaders(data) {
-    let reportTitle = '';
-    let reportName = '';
-    const isEmpty = IsEmpty(data);
-    if (isEmpty) {
-        reportTitle = data.TestRun.ResultSummary.RunInfos.RunInfo._computerName;
-        reportName =
-            data.TestRun.ResultSummary.RunInfos.RunInfo._computerName.toUpperCase();
-    }
-    else {
-        const unittests = data.TestRun?.TestDefinitions?.UnitTest;
-        const storage = getAssemblyName(unittests);
-        const dllName = storage.split('/').pop();
-        if (dllName) {
-            reportTitle = dllName.replace('.dll', '').toUpperCase().replace('.', ' ');
-            reportName = dllName.replace('.dll', '').toUpperCase();
-        }
-    }
-    return { reportName, reportTitle };
+/**
+ * Calculate test run duration in seconds
+ */
+function getTestRunDuration(startTime, endTime) {
+    const startTimeSeconds = new Date(startTime).valueOf();
+    const endTimeSeconds = new Date(endTime).valueOf();
+    const duration = endTimeSeconds - startTimeSeconds;
+    return duration / 1000;
 }
-function getAssemblyName(unittests) {
-    if (Array.isArray(unittests)) {
-        core.debug('Its an array');
-        return unittests[0]?._storage ?? 'NOT FOUND';
+
+
+/***/ }),
+
+/***/ 5489:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
     }
-    else {
-        const ut = unittests;
-        if (ut) {
-            core.debug(`Its not an array: ${ut._storage}`);
-            return ut._storage;
-        }
-        else {
-            return 'NOT FOUND';
-        }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || (function () {
+    var ownKeys = function(o) {
+        ownKeys = Object.getOwnPropertyNames || function (o) {
+            var ar = [];
+            for (var k in o) if (Object.prototype.hasOwnProperty.call(o, k)) ar[ar.length] = k;
+            return ar;
+        };
+        return ownKeys(o);
+    };
+    return function (mod) {
+        if (mod && mod.__esModule) return mod;
+        var result = {};
+        if (mod != null) for (var k = ownKeys(mod), i = 0; i < k.length; i++) if (k[i] !== "default") __createBinding(result, mod, k[i]);
+        __setModuleDefault(result, mod);
+        return result;
+    };
+})();
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.parseActionInputs = parseActionInputs;
+const core = __importStar(__nccwpck_require__(7484));
+/**
+ * Parse and validate action inputs
+ */
+function parseActionInputs() {
+    const token = core.getInput('REPO_TOKEN');
+    const trxPath = core.getInput('TRX_PATH');
+    const ignoreTestFailures = core.getInput('IGNORE_FAILURE', { required: false }) === 'true';
+    const sha = core.getInput('SHA');
+    const reportPrefix = core.getInput('REPORT_PREFIX');
+    // Validate required inputs
+    if (!token) {
+        throw new Error('REPO_TOKEN is required');
     }
+    if (!trxPath) {
+        throw new Error('TRX_PATH is required');
+    }
+    return {
+        token,
+        trxPath,
+        ignoreTestFailures,
+        sha: sha || undefined,
+        reportPrefix: reportPrefix || undefined
+    };
 }
 
 

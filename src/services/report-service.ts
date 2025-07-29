@@ -1,5 +1,13 @@
-import {Results, TrxDataWrapper, UnitTest, UnitTestResult} from './types/types'
+import {Results, TrxDataWrapper, UnitTest, UnitTestResult} from '../types/types'
+import {
+  BADGE_COLORS,
+  TEST_OUTCOME_ICONS,
+  TEST_OUTCOMES
+} from '../config/constants'
 
+/**
+ * Generate markup report for TRX test data
+ */
 export function getMarkupForTrx(testData: TrxDataWrapper): string {
   const failedCount = testData.TrxData.TestRun.ResultSummary.Counters._failed
   const passedCount = testData.TrxData.TestRun.ResultSummary.Counters._passed
@@ -15,7 +23,9 @@ export function getMarkupForTrx(testData: TrxDataWrapper): string {
     failedCount > 0 || testOutcome === 'Failed' ? 'FAILED' : 'PASSED'
 
   const badgeColor =
-    failedCount > 0 || testOutcome === 'Failed' ? 'red' : 'brightgreen'
+    failedCount > 0 || testOutcome === 'Failed'
+      ? BADGE_COLORS.FAILURE
+      : BADGE_COLORS.SUCCESS
 
   return `
 ![Generic badge](https://img.shields.io/badge/${badgeCountText}-${badgeStatusText}-${badgeColor}.svg)
@@ -26,6 +36,9 @@ ${getTestResultsMarkup(testData)}
 `
 }
 
+/**
+ * Calculate test run duration in seconds
+ */
 export function getTestRunDuration(startTime: Date, endTime: Date): number {
   const startTimeSeconds = new Date(startTime).valueOf()
   const endTimeSeconds = new Date(endTime).valueOf()
@@ -33,6 +46,9 @@ export function getTestRunDuration(startTime: Date, endTime: Date): number {
   return duration / 1000
 }
 
+/**
+ * Generate test timing information markup
+ */
 function getTestTimes(testData: TrxDataWrapper): string {
   const duration = getTestRunDuration(
     testData.TrxData.TestRun.Times._start,
@@ -69,101 +85,110 @@ function getTestTimes(testData: TrxDataWrapper): string {
 `
 }
 
+/**
+ * Generate test counters markup
+ */
 function getTestCounters(testData: TrxDataWrapper): string {
+  const counters = testData.TrxData.TestRun.ResultSummary.Counters
   return `
 <details>
-  <summary> Outcome: ${testData.TrxData.TestRun.ResultSummary._outcome} | Total Tests: ${testData.TrxData.TestRun.ResultSummary.Counters._total} | Passed: ${testData.TrxData.TestRun.ResultSummary.Counters._passed} | Failed: ${testData.TrxData.TestRun.ResultSummary.Counters._failed} </summary>
+  <summary> Outcome: ${testData.TrxData.TestRun.ResultSummary._outcome} | Total Tests: ${counters._total} | Passed: ${counters._passed} | Failed: ${counters._failed} </summary>
   <table>
     <tr>
        <th>Total:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._total}</td>
+       <td>${counters._total}</td>
     </tr>
     <tr>
        <th>Executed:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._executed}</td>
+       <td>${counters._executed}</td>
     </tr>
     <tr>
        <th>Passed:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._passed}</td>
+       <td>${counters._passed}</td>
     </tr>
     <tr>
        <th>Failed:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._failed}</td>    
+       <td>${counters._failed}</td>    
     </tr>
     <tr>
        <th>Error:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._error}</td>
+       <td>${counters._error}</td>
     </tr>
     <tr>
        <th>Timeout:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._timeout}</td>
+       <td>${counters._timeout}</td>
     </tr>
     <tr>
        <th>Aborted:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._aborted}</td>
+       <td>${counters._aborted}</td>
     </tr>
     <tr>
        <th>Inconclusive:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._inconclusive}</td>
+       <td>${counters._inconclusive}</td>
     </tr>
     <tr>
        <th>PassedButRunAborted:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._passedButRunAborted}</td>
+       <td>${counters._passedButRunAborted}</td>
     </tr>
     <tr>
        <th>NotRunnable:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._notRunnable}</td>
+       <td>${counters._notRunnable}</td>
     </tr>
     <tr>
        <th>NotExecuted:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._notExecuted}</td>
+       <td>${counters._notExecuted}</td>
     </tr>
     <tr>
        <th>Disconnected:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._disconnected}</td>
+       <td>${counters._disconnected}</td>
     </tr>
     <tr>
        <th>Warning:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._warning}</td>
+       <td>${counters._warning}</td>
     </tr>
     <tr>
        <th>Completed:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._completed}</td>
+       <td>${counters._completed}</td>
     </tr>
     <tr>
        <th>InProgress:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._inProgress}</td>
+       <td>${counters._inProgress}</td>
     </tr>
     <tr>
        <th>Pending:</th>
-       <td>${testData.TrxData.TestRun.ResultSummary.Counters._pending}</td>
+       <td>${counters._pending}</td>
     </tr>
   </table>
 </details>
 `
 }
 
+/**
+ * Generate test results markup
+ */
 function getTestResultsMarkup(testData: TrxDataWrapper): string {
-  let resultsMarkup = ''
   if (testData.IsEmpty) {
     return getNoResultsMarkup(testData)
+  }
+
+  const unittests = testData.TrxData.TestRun.TestDefinitions.UnitTest
+  if (Array.isArray(unittests)) {
+    return unittests
+      .map(data => getSingleTestMarkup(data, testData))
+      .join('')
+      .trim()
   } else {
-    const unittests = testData.TrxData.TestRun.TestDefinitions.UnitTest
-    if (Array.isArray(unittests)) {
-      for (const data of unittests) {
-        resultsMarkup += getSingletestMarkup(data, testData)
-      }
-      return resultsMarkup.trim()
-    } else {
-      return getSingletestMarkup(unittests as UnitTest, testData)
-    }
+    return getSingleTestMarkup(unittests as UnitTest, testData)
   }
 }
 
+/**
+ * Generate markup for when no test results are available
+ */
 function getNoResultsMarkup(testData: TrxDataWrapper): string {
   const runInfo = testData.TrxData.TestRun.ResultSummary.RunInfos.RunInfo
   const testResultIcon = getTestOutcomeIcon(runInfo._outcome)
-  const resultsMarkup = `
+  return `
 <details>
   <summary>${testResultIcon} ${runInfo._computerName}</summary> 
 
@@ -175,18 +200,24 @@ function getNoResultsMarkup(testData: TrxDataWrapper): string {
   </table>      
   </details>
 `
-  return resultsMarkup
 }
 
-function getSingletestMarkup(data: UnitTest, testData: TrxDataWrapper): string {
-  let resultsMarkup = ''
+/**
+ * Generate markup for a single test
+ */
+function getSingleTestMarkup(data: UnitTest, testData: TrxDataWrapper): string {
   const testResult = getUnitTestResult(
     data._id,
     testData.TrxData.TestRun.Results
   )
-  if (testResult && testResult?._outcome === 'Failed') {
-    const testResultIcon = getTestOutcomeIcon(testResult?._outcome)
-    let testMarkup = `
+
+  // Only show failed tests to reduce noise
+  if (!testResult || testResult._outcome !== TEST_OUTCOMES.FAILED) {
+    return ''
+  }
+
+  const testResultIcon = getTestOutcomeIcon(testResult._outcome)
+  let testMarkup = `
 <details>
   <summary>${testResultIcon} ${data._name}</summary>    
   <table>
@@ -239,8 +270,8 @@ function getSingletestMarkup(data: UnitTest, testData: TrxDataWrapper): string {
   </details>
 `
 
-    if (testResult._outcome === 'Failed') {
-      const failedTestDetails = `
+  if (testResult._outcome === TEST_OUTCOMES.FAILED) {
+    const failedTestDetails = `
   <details>
         <summary>Error Message:</summary>
         <pre>${testResult.Output?.ErrorInfo.Message}</pre>
@@ -250,17 +281,18 @@ function getSingletestMarkup(data: UnitTest, testData: TrxDataWrapper): string {
         <pre>${testResult.Output?.ErrorInfo.StackTrace}</pre>
   </details>
   `
-      testMarkup += failedTestDetails
-    }
+    testMarkup += failedTestDetails
+  }
 
-    resultsMarkup += testMarkup
-    resultsMarkup += `
+  testMarkup += `
 </details>
 `
-  }
-  return resultsMarkup.trim()
+  return testMarkup.trim()
 }
 
+/**
+ * Find a unit test result by test ID
+ */
 function getUnitTestResult(
   unitTestId: string,
   testResults: Results
@@ -268,17 +300,19 @@ function getUnitTestResult(
   const unitTestResults = testResults.UnitTestResult
 
   if (Array.isArray(unitTestResults)) {
-    return testResults.UnitTestResult.find(x => x._testId === unitTestId)
+    return unitTestResults.find(x => x._testId === unitTestId)
   }
 
   const result = unitTestResults as UnitTestResult
   return result
 }
 
+/**
+ * Get appropriate icon for test outcome
+ */
 function getTestOutcomeIcon(testOutcome: string): string {
-  if (testOutcome === 'Passed') return ':heavy_check_mark:'
-  if (testOutcome === 'Failed' || testOutcome === 'Error') return ':x:'
-  if (testOutcome === 'NotExecuted') return ':radio_button:'
-
-  return ':grey_question:'
+  return (
+    TEST_OUTCOME_ICONS[testOutcome as keyof typeof TEST_OUTCOME_ICONS] ??
+    TEST_OUTCOME_ICONS.DEFAULT
+  )
 }
