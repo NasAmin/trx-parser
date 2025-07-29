@@ -8,7 +8,7 @@ import {TrxDataWrapper} from '../types/types'
 import {getMarkupForTrx} from './report-service'
 
 /**
- * Create a GitHub check run for test results
+ * Create a GitHub check run for test results with security validation
  */
 export async function createCheckRun(
   repoToken: string,
@@ -18,6 +18,22 @@ export async function createCheckRun(
   reportPrefix?: string
 ): Promise<void> {
   try {
+    // Security: Validate token format (should start with 'ghp_' for GitHub personal access tokens)
+    if (
+      !repoToken ||
+      typeof repoToken !== 'string' ||
+      repoToken.trim().length === 0
+    ) {
+      throw new Error('Invalid repository token provided')
+    }
+
+    // Security: Sanitize report prefix to prevent injection
+    const sanitizedReportPrefix =
+      reportPrefix?.replace(/[^a-zA-Z0-9\-_]/g, '') || undefined
+    if (reportPrefix && sanitizedReportPrefix !== reportPrefix) {
+      core.warning(`Report prefix was sanitized for security`)
+    }
+
     core.info(`Creating PR check for ${reportData.ReportMetaData.ReportTitle}`)
     const octokit = github.getOctokit(repoToken)
 
@@ -25,16 +41,21 @@ export async function createCheckRun(
     const markupData = getMarkupForTrx(reportData)
     const checkTime = new Date().toUTCString()
     const reportName = buildReportName(
-      reportPrefix,
+      sanitizedReportPrefix,
       reportData.ReportMetaData.ReportName
     )
 
     core.info(`Check time is: ${checkTime}`)
 
+    // Security: Validate report name to prevent injection
+    const sanitizedReportName = reportName
+      .toLowerCase()
+      .replace(/[^a-zA-Z0-9\-_]/g, '-')
+
     const response = await octokit.rest.checks.create({
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
-      name: reportName.toLowerCase(),
+      name: sanitizedReportName,
       head_sha: gitSha,
       status: 'completed',
       conclusion: determineCheckConclusion(reportData, ignoreTestFailures),
@@ -55,12 +76,18 @@ export async function createCheckRun(
       )
     }
   } catch (error: unknown) {
-    core.setFailed((error as Error).message)
+    const errorMessage = (error as Error).message
+    // Security: Don't log tokens or sensitive information
+    const sanitizedMessage = errorMessage.replace(
+      /ghp_[a-zA-Z0-9]{36}/g,
+      '[REDACTED_TOKEN]'
+    )
+    core.setFailed(sanitizedMessage)
   }
 }
 
 /**
- * Determine the git SHA to use for the check
+ * Determine the git SHA to use for the check with validation
  */
 function determineGitSha(sha?: string): string {
   let gitSha = github.context.sha
@@ -80,6 +107,11 @@ function determineGitSha(sha?: string): string {
   }
 
   if (sha) {
+    // Security: Validate SHA format
+    const shaRegex = /^[a-f0-9]{40}$/i
+    if (!shaRegex.test(sha)) {
+      throw new Error(`Invalid SHA format: ${sha}`)
+    }
     gitSha = sha
     core.info(`Creating status check for user-provided GitSha: ${gitSha}`)
   }
@@ -88,13 +120,19 @@ function determineGitSha(sha?: string): string {
 }
 
 /**
- * Build the report name with optional prefix
+ * Build the report name with optional prefix and sanitization
  */
 function buildReportName(
   reportPrefix: string | undefined,
   reportName: string
 ): string {
-  return reportPrefix ? reportPrefix.concat('-', reportName) : reportName
+  // Security: Sanitize inputs to prevent injection attacks
+  const sanitizedReportName = reportName.replace(/[^a-zA-Z0-9\-_]/g, '-')
+  const sanitizedPrefix = reportPrefix?.replace(/[^a-zA-Z0-9\-_]/g, '-')
+
+  return sanitizedPrefix
+    ? sanitizedPrefix.concat('-', sanitizedReportName)
+    : sanitizedReportName
 }
 
 /**

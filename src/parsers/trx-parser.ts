@@ -1,6 +1,7 @@
 /* eslint-disable i18n-text/no-en */
 import * as core from '@actions/core'
 import * as fs from 'fs'
+import * as path from 'path'
 import {XMLParser, XMLValidator} from 'fast-xml-parser'
 
 import {TrxData, TrxDataWrapper, UnitTest} from '../types/types'
@@ -8,48 +9,78 @@ import {XML_PARSER_OPTIONS, XML_VALIDATOR_OPTIONS} from '../config/constants'
 import {readTrxFile} from '../utils/file-utils'
 
 /**
- * Transform a single TRX file to JSON format
+ * Transform a single TRX file to JSON format with security validation
  */
 export async function transformTrxToJson(
   filePath: string
 ): Promise<TrxDataWrapper> {
-  if (!fs.existsSync(filePath)) {
-    core.warning(`Trx file ${filePath} does not exist`)
-    // Return empty wrapper for non-existent files
-    return createEmptyTrxDataWrapper(filePath)
+  // Validate file path security
+  const resolvedPath = path.resolve(filePath)
+  if (!resolvedPath.endsWith('.trx')) {
+    throw new Error(`Security: Only .trx files are allowed: ${filePath}`)
   }
 
-  core.info(`Transforming file ${filePath}`)
-
-  const xmlData = await readTrxFile(filePath)
-  const xmlParser = new XMLParser(XML_PARSER_OPTIONS)
-
-  const isValid = XMLValidator.validate(xmlData, XML_VALIDATOR_OPTIONS)
-  if (isValid !== true) {
-    throw new Error(`Invalid XML in file ${filePath}: ${isValid}`)
+  if (!fs.existsSync(resolvedPath)) {
+    core.warning(`Trx file ${resolvedPath} does not exist`)
+    return createEmptyTrxDataWrapper(resolvedPath)
   }
 
-  const jsonString = xmlParser.parse(xmlData, true)
-  const testData = jsonString as TrxData
+  core.info(`Transforming file ${resolvedPath}`)
 
-  // Check for run failures
-  const runInfos = testData.TestRun.ResultSummary.RunInfos
-  if (runInfos?.RunInfo._outcome === 'Failed') {
-    core.warning('There is trouble')
-  }
+  try {
+    const xmlData = await readTrxFile(resolvedPath)
 
-  const reportHeaders = getReportHeaders(testData)
-
-  return {
-    TrxData: testData,
-    IsEmpty: isEmpty(testData),
-    ReportMetaData: {
-      TrxFilePath: filePath,
-      ReportName: `${reportHeaders.reportName}-check`,
-      ReportTitle: reportHeaders.reportTitle,
-      TrxJSonString: JSON.stringify(jsonString),
-      TrxXmlString: xmlData
+    // Security: Validate XML size to prevent DoS attacks
+    const maxFileSize = 50 * 1024 * 1024 // 50MB limit
+    if (xmlData.length > maxFileSize) {
+      throw new Error(
+        `File too large: ${xmlData.length} bytes exceeds ${maxFileSize} bytes limit`
+      )
     }
+
+    // Security: Check for suspicious content before parsing
+    if (xmlData.includes('<!ENTITY') || xmlData.includes('<!DOCTYPE')) {
+      core.warning(
+        'XML contains entity declarations which may pose security risks'
+      )
+    }
+
+    const xmlParser = new XMLParser(XML_PARSER_OPTIONS)
+
+    const isValid = XMLValidator.validate(xmlData, XML_VALIDATOR_OPTIONS)
+    if (isValid !== true) {
+      throw new Error(
+        `Invalid XML in file ${resolvedPath}: ${JSON.stringify(isValid)}`
+      )
+    }
+
+    const jsonString = xmlParser.parse(xmlData, true)
+    const testData = jsonString as TrxData
+
+    // Check for run failures
+    const runInfos = testData.TestRun?.ResultSummary?.RunInfos
+    if (runInfos?.RunInfo?._outcome === 'Failed') {
+      core.warning('Test run contains failures')
+    }
+
+    const reportHeaders = getReportHeaders(testData)
+
+    return {
+      TrxData: testData,
+      IsEmpty: isEmpty(testData),
+      ReportMetaData: {
+        TrxFilePath: resolvedPath,
+        ReportName: `${reportHeaders.reportName}-check`,
+        ReportTitle: reportHeaders.reportTitle,
+        TrxJSonString: JSON.stringify(jsonString),
+        TrxXmlString: xmlData
+      }
+    }
+  } catch (error) {
+    core.error(
+      `Failed to process TRX file ${resolvedPath}: ${(error as Error).message}`
+    )
+    throw error
   }
 }
 

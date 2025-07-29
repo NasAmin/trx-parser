@@ -19,11 +19,16 @@ export const XML_PARSER_OPTIONS = {
   cdataPositionChar: '\\c',
   parseTrueNumberOnly: false,
   arrayMode: false,
-  stopNodes: ['parse-me-as-string']
+  stopNodes: ['parse-me-as-string'],
+  // Security: Disable external entity processing to prevent XXE attacks
+  processEntities: false,
+  resolveExternalDTD: false
 }
 
 export const XML_VALIDATOR_OPTIONS = {
-  allowBooleanAttributes: true
+  allowBooleanAttributes: true,
+  // Security: Disable external entity processing
+  resolveExternalDTD: false
 }
 
 export const TEST_OUTCOMES = {
