@@ -117,7 +117,9 @@ export function areThereAnyFailingTests(
   trxJsonReports: TrxDataWrapper[]
 ): boolean {
   for (const trxData of trxJsonReports) {
-    if (trxData.TrxData.TestRun.ResultSummary._outcome === 'Failed') {
+    // Check the actual failed count instead of just the outcome
+    // The outcome can be "Failed" due to test host issues even when no tests actually failed
+    if (trxData.TrxData.TestRun.ResultSummary.Counters._failed > 0) {
       return true
     }
   }

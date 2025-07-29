@@ -84,4 +84,30 @@ describe('areThereAnyFailingTests function', () => {
     const result = areThereAnyFailingTests([data])
     expect(result).toBe(false)
   })
+
+  test('should handle multiple trx files correctly', async () => {
+    const passingData = await transformTrxToJson(
+      './test-data/passing-tests/single-test.trx'
+    )
+    const failedOutcomeButPassedTests = await transformTrxToJson(
+      './test-data/passing-tests/all-passed-but-outcome-failed.trx'
+    )
+    
+    // Both files have no actual failed tests, should return false
+    const result = areThereAnyFailingTests([passingData, failedOutcomeButPassedTests])
+    expect(result).toBe(false)
+  })
+
+  test('should return true if any trx file has failed tests', async () => {
+    const passingData = await transformTrxToJson(
+      './test-data/passing-tests/single-test.trx'
+    )
+    const actuallyFailingData = await transformTrxToJson(
+      './test-data/failing-tests/dummy-tests.trx'
+    )
+    
+    // One file has actual failed tests, should return true
+    const result = areThereAnyFailingTests([passingData, actuallyFailingData])
+    expect(result).toBe(true)
+  })
 })
