@@ -1,6 +1,10 @@
 import * as path from 'path'
 
-import {getAbsoluteFilePaths, transformTrxToJson, areThereAnyFailingTests} from '../src/utils'
+import {
+  getAbsoluteFilePaths,
+  transformTrxToJson,
+  areThereAnyFailingTests
+} from '../src/utils'
 
 describe('Test GetAbsolutePath returns correct values', () => {
   it('getAbsoluteFilePaths()', async () => {
@@ -92,9 +96,12 @@ describe('areThereAnyFailingTests function', () => {
     const failedOutcomeButPassedTests = await transformTrxToJson(
       './test-data/passing-tests/all-passed-but-outcome-failed.trx'
     )
-    
+
     // Both files have no actual failed tests, should return false
-    const result = areThereAnyFailingTests([passingData, failedOutcomeButPassedTests])
+    const result = areThereAnyFailingTests([
+      passingData,
+      failedOutcomeButPassedTests
+    ])
     expect(result).toBe(false)
   })
 
@@ -105,7 +112,7 @@ describe('areThereAnyFailingTests function', () => {
     const actuallyFailingData = await transformTrxToJson(
       './test-data/failing-tests/dummy-tests.trx'
     )
-    
+
     // One file has actual failed tests, should return true
     const result = areThereAnyFailingTests([passingData, actuallyFailingData])
     expect(result).toBe(true)
