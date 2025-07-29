@@ -124,9 +124,7 @@ export function areThereAnyFailingTests(
   return false
 }
 
-function getReportHeaders(
-  data: TrxData
-): {
+function getReportHeaders(data: TrxData): {
   reportName: string
   reportTitle: string
 } {
@@ -136,7 +134,8 @@ function getReportHeaders(
 
   if (isEmpty) {
     reportTitle = data.TestRun.ResultSummary.RunInfos.RunInfo._computerName
-    reportName = data.TestRun.ResultSummary.RunInfos.RunInfo._computerName.toUpperCase()
+    reportName =
+      data.TestRun.ResultSummary.RunInfos.RunInfo._computerName.toUpperCase()
   } else {
     const unittests = data.TestRun?.TestDefinitions?.UnitTest
 
@@ -156,7 +155,7 @@ function getReportHeaders(
 function getAssemblyName(unittests: UnitTest[]): string {
   if (Array.isArray(unittests)) {
     core.debug('Its an array')
-    return unittests[0]._storage
+    return unittests[0]?._storage ?? 'NOT FOUND'
   } else {
     const ut = unittests as UnitTest
     if (ut) {
