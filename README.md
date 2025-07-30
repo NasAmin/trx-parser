@@ -124,3 +124,14 @@ The modular architecture makes it easy to:
 - Extend GitHub integrations in `src/services/`
 - Add new validation rules in `src/validators/`
 - Enhance utility functions in `src/utils/`
+
+### Release Process
+
+This repository uses automated releases powered by [release-please](https://github.com/googleapis/release-please). When you contribute:
+
+1. Use [conventional commit messages](https://www.conventionalcommits.org/) (e.g., `feat:`, `fix:`, `docs:`)
+2. Release PRs are automatically created when commits are pushed to main
+3. Releases are automatically created when release PRs are merged
+4. Version numbers and changelogs are automatically generated
+
+See [docs/RELEASE.md](docs/RELEASE.md) for detailed information about the release process.
