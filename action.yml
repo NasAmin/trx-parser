@@ -1,5 +1,5 @@
 name: 'trx-parser'
-description: 'An action to parse trx reports from a given path and use GitHub status check api to fail PRs'
+description: 'Fast, parallel action to parse .NET TRX test reports and create GitHub status checks'
 author: 'Nasir Amin'
 branding:
   icon: 'info'  

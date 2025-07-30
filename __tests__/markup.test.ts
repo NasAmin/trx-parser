@@ -1,6 +1,8 @@
-import {getMarkupForTrx, getTestRunDuration} from '../src//markup'
-
-import {transformTrxToJson} from '../src/utils'
+import {
+  getMarkupForTrx,
+  getTestRunDuration
+} from '../src/services/report-service'
+import {transformTrxToJson} from '../src/parsers/trx-parser'
 
 describe('When generating markup for trx', () => {
   test('LoadXml Should have an outcome of Failed()', async () => {
@@ -25,17 +27,17 @@ describe('When generating markup for trx', () => {
     expect(testData).toContain(data.TrxData.TestRun.Times._finish)
 
     expect(testData).toContain(
-      data.TrxData.TestRun.Results.UnitTestResult[1].Output?.ErrorInfo?.Message
+      data.TrxData.TestRun.Results.UnitTestResult[1]?.Output?.ErrorInfo?.Message
     )
 
     expect(
-      data.TrxData.TestRun.Results.UnitTestResult[1].Output?.ErrorInfo?.Message
+      data.TrxData.TestRun.Results.UnitTestResult[1]?.Output?.ErrorInfo?.Message
     ).toEqual(`Assert.False() Failure
 Expected: False
 Actual:   True`)
 
     expect(
-      data.TrxData.TestRun.Results.UnitTestResult[1].Output?.ErrorInfo
+      data.TrxData.TestRun.Results.UnitTestResult[1]?.Output?.ErrorInfo
         ?.StackTrace
     ).toEqual(
       'at dummy_tests.DummyTest1.TestMethod4() in /root/UnitTest1.cs:line 30'
