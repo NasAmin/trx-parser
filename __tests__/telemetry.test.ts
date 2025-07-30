@@ -14,29 +14,37 @@ import {
 describe('Telemetry Configuration', () => {
   beforeEach(() => {
     // Clear environment variables
-    delete process.env.OTEL_ENABLED
-    delete process.env.HONEYCOMB_API_KEY
-    delete process.env.HONEYCOMB_DATASET
+    delete process.env.GITHUB_REPOSITORY
+    delete process.env.VENDOR_HONEYCOMB_API_KEY
+    delete process.env.VENDOR_HONEYCOMB_DATASET
   })
 
-  it('should return disabled config when OTEL_ENABLED is not set', () => {
+  it('should return disabled config when not in vendor environment', () => {
+    process.env.GITHUB_REPOSITORY = 'some-user/some-repo'
     const config = getTelemetryConfig()
     expect(config.enabled).toBe(false)
   })
 
-  it('should return enabled config when OTEL_ENABLED is true', () => {
-    process.env.OTEL_ENABLED = 'true'
-    process.env.HONEYCOMB_API_KEY = 'test-key'
+  it('should return disabled config when in vendor environment but no API key', () => {
+    process.env.GITHUB_REPOSITORY = 'NasAmin/trx-parser'
+    const config = getTelemetryConfig()
+    expect(config.enabled).toBe(false)
+  })
+
+  it('should return enabled config when in vendor environment with API key', () => {
+    process.env.GITHUB_REPOSITORY = 'NasAmin/trx-parser'
+    process.env.VENDOR_HONEYCOMB_API_KEY = 'vendor-test-key'
 
     const config = getTelemetryConfig()
     expect(config.enabled).toBe(true)
-    expect(config.honeycombApiKey).toBe('test-key')
+    expect(config.honeycombApiKey).toBe('vendor-test-key')
     expect(config.honeycombDataset).toBe('trx-parser')
   })
 
-  it('should use custom dataset when provided', () => {
-    process.env.OTEL_ENABLED = 'true'
-    process.env.HONEYCOMB_DATASET = 'custom-dataset'
+  it('should use custom dataset when provided in vendor environment', () => {
+    process.env.GITHUB_REPOSITORY = 'NasAmin/trx-parser'
+    process.env.VENDOR_HONEYCOMB_API_KEY = 'vendor-test-key'
+    process.env.VENDOR_HONEYCOMB_DATASET = 'custom-dataset'
 
     const config = getTelemetryConfig()
     expect(config.honeycombDataset).toBe('custom-dataset')
@@ -75,23 +83,24 @@ describe('Telemetry Configuration', () => {
 describe('Telemetry Service', () => {
   beforeEach(() => {
     // Clear environment variables
-    delete process.env.OTEL_ENABLED
-    delete process.env.HONEYCOMB_API_KEY
-    delete process.env.HONEYCOMB_DATASET
+    delete process.env.GITHUB_REPOSITORY
+    delete process.env.VENDOR_HONEYCOMB_API_KEY
+    delete process.env.VENDOR_HONEYCOMB_DATASET
   })
 
   afterEach(async () => {
     await shutdownTelemetry()
   })
 
-  it('should not initialize when telemetry is disabled', () => {
+  it('should not initialize when not in vendor environment', () => {
+    process.env.GITHUB_REPOSITORY = 'some-user/some-repo'
     const result = initializeTelemetry()
     expect(result).toBe(false)
     expect(isTelemetryEnabled()).toBe(false)
   })
 
-  it('should not initialize when enabled but no API key', () => {
-    process.env.OTEL_ENABLED = 'true'
+  it('should not initialize when in vendor environment but no API key', () => {
+    process.env.GITHUB_REPOSITORY = 'NasAmin/trx-parser'
     const result = initializeTelemetry()
     expect(result).toBe(false)
     expect(isTelemetryEnabled()).toBe(false)

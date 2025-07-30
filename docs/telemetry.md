@@ -1,40 +1,17 @@
 # Telemetry Documentation
 
-The TRX Parser action now supports optional telemetry using OpenTelemetry SDK with Honeycomb as the backend.
+The TRX Parser action includes **vendor-only telemetry** that automatically collects usage and performance metrics for the action maintainer. This telemetry is completely transparent to action users and requires no configuration.
 
-## Configuration
+## How It Works
 
-Telemetry is **disabled by default** and requires explicit configuration through environment variables.
+- **Completely automatic**: No configuration required by action users
+- **Vendor-only**: Only works in the vendor's repository environment (NasAmin/trx-parser)
+- **Zero impact on consumers**: Action users never see telemetry-related logs or errors
+- **Privacy-first**: No user data or secrets are collected
 
-### Environment Variables
+## What's Collected (Vendor Only)
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `OTEL_ENABLED` | No | `false` | Enable telemetry collection (set to `true` to enable) |
-| `HONEYCOMB_API_KEY` | Yes* | - | Honeycomb API key for exporting telemetry data |
-| `HONEYCOMB_DATASET` | No | `trx-parser` | Honeycomb dataset name for organizing telemetry data |
-
-*Required only when `OTEL_ENABLED` is `true`
-
-## Usage Example
-
-```yaml
-- name: Parse TRX files with telemetry
-  uses: NasAmin/trx-parser@v1
-  with:
-    TRX_PATH: './test-results'
-    REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  env:
-    OTEL_ENABLED: 'true'
-    HONEYCOMB_API_KEY: ${{ secrets.HONEYCOMB_API_KEY }}
-    HONEYCOMB_DATASET: 'my-project-tests'
-```
-
-## Collected Metrics
-
-The action collects the following metrics:
-
-### Counters
+### Metrics
 - `trx_parser_action_runs_total` - Total number of action runs (labeled by outcome: success/failure)
 - `trx_parser_files_processed_total` - Total number of TRX files processed
 - `trx_parser_tests_total` - Total number of tests found in TRX files
@@ -51,35 +28,33 @@ The action collects the following metrics:
 - `github_check_create` - GitHub API calls for check creation
 - `get_trx_files` - File system operations for finding TRX files
 
-## Attributes
+## Vendor Configuration
 
-Telemetry data includes relevant attributes such as:
-- GitHub repository information
-- Workflow context
-- Test results summary
-- File counts and names
-- Error messages (for failures)
+For the action maintainer, telemetry requires these repository secrets:
+
+| Variable | Description |
+|----------|-------------|
+| `VENDOR_HONEYCOMB_API_KEY` | Honeycomb API key for exporting telemetry data |
+| `VENDOR_HONEYCOMB_DATASET` | Optional: Honeycomb dataset name (defaults to 'trx-parser') |
 
 ## Security & Privacy
 
-- Telemetry is completely optional and disabled by default
-- No sensitive data (tokens, file contents) is included in telemetry
-- API keys are not logged or transmitted in telemetry data
-- Telemetry failures do not affect action functionality
-- All telemetry is sent securely to Honeycomb via HTTPS
+- **No user configuration**: Action users never need to set up telemetry
+- **No sensitive data collection**: Tokens, file contents, and personal information are never included
+- **Graceful degradation**: Telemetry failures do not affect action functionality for anyone
+- **Environment isolation**: Only activates in vendor's own repository
+- **Silent operation**: No telemetry-related messages shown to action consumers
 
-## Troubleshooting
+## For Action Users
 
-### Telemetry Not Working
-1. Ensure `OTEL_ENABLED` is set to `'true'` (as a string)
-2. Verify `HONEYCOMB_API_KEY` is correctly set in your repository secrets
-3. Check action logs for telemetry initialization messages
+**You don't need to do anything!** This telemetry is completely transparent and automatic. Your usage of the action is exactly the same whether telemetry is enabled or not.
 
-### Performance Impact
-- Telemetry has minimal performance overhead
-- If you experience issues, telemetry can be disabled by removing `OTEL_ENABLED` or setting it to `'false'`
+```yaml
+- name: Parse TRX files
+  uses: NasAmin/trx-parser@v1
+  with:
+    TRX_PATH: './test-results'
+    REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
 
-### Honeycomb Setup
-1. Create a Honeycomb account at https://honeycomb.io
-2. Generate an API key in your Honeycomb settings
-3. Add the API key to your repository secrets as `HONEYCOMB_API_KEY`
+The action will work identically with or without telemetry, and you'll never see any telemetry-related configuration, logs, or errors.

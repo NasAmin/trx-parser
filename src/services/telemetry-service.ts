@@ -19,22 +19,33 @@ let sdk: NodeSDK | null = null
 
 /**
  * Initialize OpenTelemetry with Honeycomb configuration
+ * Telemetry is automatically enabled for vendor repositories only
  */
 export function initializeTelemetry(): boolean {
   try {
     telemetryConfig = getTelemetryConfig()
 
     if (!validateTelemetryConfig(telemetryConfig)) {
-      core.info('Telemetry validation failed, telemetry will be disabled')
+      // Only log telemetry info in vendor environment to avoid confusing consumers
+      const repository = process.env.GITHUB_REPOSITORY
+      if (repository === 'NasAmin/trx-parser') {
+        core.info(
+          'Vendor telemetry validation failed, telemetry will be disabled'
+        )
+      }
       return false
     }
 
     if (!telemetryConfig.enabled) {
-      core.info('Telemetry is disabled')
+      // Only log telemetry info in vendor environment
+      const repository = process.env.GITHUB_REPOSITORY
+      if (repository === 'NasAmin/trx-parser') {
+        core.info('Vendor telemetry is disabled or not available')
+      }
       return false
     }
 
-    core.info('Initializing telemetry with Honeycomb')
+    core.info('Vendor telemetry: Initializing telemetry with Honeycomb')
 
     // Create OTLP exporters for Honeycomb
     const traceExporter = new OTLPTraceExporter({
@@ -71,10 +82,16 @@ export function initializeTelemetry(): boolean {
     sdk.start()
     telemetryInitialized = true
 
-    core.info('Telemetry initialized successfully')
+    core.info('Vendor telemetry: Telemetry initialized successfully')
     return true
   } catch (error) {
-    core.warning(`Failed to initialize telemetry: ${(error as Error).message}`)
+    // Only log vendor telemetry errors in vendor environment
+    const repository = process.env.GITHUB_REPOSITORY
+    if (repository === 'NasAmin/trx-parser') {
+      core.warning(
+        `Vendor telemetry: Failed to initialize telemetry: ${(error as Error).message}`
+      )
+    }
     return false
   }
 }
@@ -85,11 +102,21 @@ export function initializeTelemetry(): boolean {
 export async function shutdownTelemetry(): Promise<void> {
   if (sdk && telemetryInitialized) {
     try {
-      core.info('Shutting down telemetry')
+      // Only log vendor telemetry info in vendor environment
+      const repository = process.env.GITHUB_REPOSITORY
+      if (repository === 'NasAmin/trx-parser') {
+        core.info('Vendor telemetry: Shutting down telemetry')
+      }
       await sdk.shutdown()
       telemetryInitialized = false
     } catch (error) {
-      core.warning(`Failed to shutdown telemetry: ${(error as Error).message}`)
+      // Only log vendor telemetry errors in vendor environment
+      const repository = process.env.GITHUB_REPOSITORY
+      if (repository === 'NasAmin/trx-parser') {
+        core.warning(
+          `Vendor telemetry: Failed to shutdown telemetry: ${(error as Error).message}`
+        )
+      }
     }
   }
 }
