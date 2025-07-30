@@ -1,4 +1,7 @@
-import {getTelemetryConfig, validateTelemetryConfig} from '../src/config/telemetry-config'
+import {
+  getTelemetryConfig,
+  validateTelemetryConfig
+} from '../src/config/telemetry-config'
 import {
   initializeTelemetry,
   shutdownTelemetry,
@@ -24,7 +27,7 @@ describe('Telemetry Configuration', () => {
   it('should return enabled config when OTEL_ENABLED is true', () => {
     process.env.OTEL_ENABLED = 'true'
     process.env.HONEYCOMB_API_KEY = 'test-key'
-    
+
     const config = getTelemetryConfig()
     expect(config.enabled).toBe(true)
     expect(config.honeycombApiKey).toBe('test-key')
@@ -34,7 +37,7 @@ describe('Telemetry Configuration', () => {
   it('should use custom dataset when provided', () => {
     process.env.OTEL_ENABLED = 'true'
     process.env.HONEYCOMB_DATASET = 'custom-dataset'
-    
+
     const config = getTelemetryConfig()
     expect(config.honeycombDataset).toBe('custom-dataset')
   })
