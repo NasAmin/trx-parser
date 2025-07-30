@@ -6,6 +6,7 @@ import * as types from '@octokit/webhooks-types'
 
 import {TrxDataWrapper} from '../types/types'
 import {getMarkupForTrx} from './report-service'
+import {withSpan} from './telemetry-service'
 
 /**
  * Create a GitHub check run for test results with security validation
@@ -29,7 +30,7 @@ export async function createCheckRun(
 
     // Security: Sanitize report prefix to prevent injection
     const sanitizedReportPrefix =
-      reportPrefix?.replace(/[^a-zA-Z0-9\-_]/g, '') || undefined
+      reportPrefix?.replace(/[^-a-zA-Z0-9_]/g, '') || undefined
     if (reportPrefix && sanitizedReportPrefix !== reportPrefix) {
       core.warning(`Report prefix was sanitized for security`)
     }
@@ -50,21 +51,37 @@ export async function createCheckRun(
     // Security: Validate report name to prevent injection
     const sanitizedReportName = reportName
       .toLowerCase()
-      .replace(/[^a-zA-Z0-9\-_]/g, '-')
+      .replace(/[^-a-zA-Z0-9_]/g, '-')
 
-    const response = await octokit.rest.checks.create({
-      owner: github.context.repo.owner,
-      repo: github.context.repo.repo,
-      name: sanitizedReportName,
-      head_sha: gitSha,
-      status: 'completed',
-      conclusion: determineCheckConclusion(reportData, ignoreTestFailures),
-      output: {
-        title: reportData.ReportMetaData.ReportTitle,
-        summary: `This test run completed at \`${checkTime}\``,
-        text: markupData
+    const response = await withSpan(
+      'github_check_create',
+      async () => {
+        return octokit.rest.checks.create({
+          owner: github.context.repo.owner,
+          repo: github.context.repo.repo,
+          name: sanitizedReportName,
+          head_sha: gitSha,
+          status: 'completed',
+          conclusion: determineCheckConclusion(reportData, ignoreTestFailures),
+          output: {
+            title: reportData.ReportMetaData.ReportTitle,
+            summary: `This test run completed at \`${checkTime}\``,
+            text: markupData
+          }
+        })
+      },
+      {
+        check_name: sanitizedReportName,
+        sha: gitSha,
+        total_tests: reportData.IsEmpty
+          ? 0
+          : reportData.TrxData.TestRun?.ResultSummary?.Counters?._total || 0,
+        failed_tests: reportData.IsEmpty
+          ? 0
+          : reportData.TrxData.TestRun?.ResultSummary?.Counters?._failed || 0,
+        conclusion: determineCheckConclusion(reportData, ignoreTestFailures)
       }
-    })
+    )
 
     if (response.status !== 201) {
       throw new Error(
@@ -127,8 +144,8 @@ function buildReportName(
   reportName: string
 ): string {
   // Security: Sanitize inputs to prevent injection attacks
-  const sanitizedReportName = reportName.replace(/[^a-zA-Z0-9\-_]/g, '-')
-  const sanitizedPrefix = reportPrefix?.replace(/[^a-zA-Z0-9\-_]/g, '-')
+  const sanitizedReportName = reportName.replace(/[^-a-zA-Z0-9_]/g, '-')
+  const sanitizedPrefix = reportPrefix?.replace(/[^-a-zA-Z0-9_]/g, '-')
 
   return sanitizedPrefix
     ? sanitizedPrefix.concat('-', sanitizedReportName)

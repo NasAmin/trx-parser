@@ -55,6 +55,21 @@ jobs:
 | `SHA` | The commit SHA associated with the checks. This is optional | `nil` | `no` |
 | `IGNORE_FAILURE` | If true, will not set status check as failure. | `false` | `no` |
 | `REPORT_PREFIX` | The prefix for the report name. Useful for matrix builds | `nil` | `no` |
+| `OTEL_ENABLED` | Enable OpenTelemetry telemetry collection | `false` | `no` |
+| `HONEYCOMB_API_KEY` | Honeycomb API key for telemetry export | `nil` | `no` |
+| `HONEYCOMB_DATASET` | Honeycomb dataset name for telemetry | `trx-parser` | `no` |
+
+## ✨ Telemetry Support
+
+This action now includes optional telemetry using OpenTelemetry and Honeycomb to help you monitor test execution patterns and performance. Telemetry is **disabled by default** and requires explicit configuration.
+
+**Key Features:**
+- 📊 Metrics on test execution, success/failure rates, and processing times
+- 🔍 Distributed tracing for detailed performance insights
+- 🔒 Secure, privacy-focused implementation (no sensitive data collected)
+- ⚡ Zero performance impact when disabled
+
+For detailed configuration and usage, see the [Telemetry Documentation](./docs/telemetry.md).
 
 
 
@@ -72,9 +87,11 @@ This action features a modern, modular architecture designed for maintainability
 The codebase is organized into focused, single-responsibility modules:
 
 - **`src/config/constants.ts`** - Configuration and constants
+- **`src/config/telemetry-config.ts`** - Telemetry configuration
 - **`src/parsers/trx-parser.ts`** - TRX file parsing logic  
 - **`src/services/github-service.ts`** - GitHub API operations
 - **`src/services/report-service.ts`** - Report generation
+- **`src/services/telemetry-service.ts`** - OpenTelemetry integration
 - **`src/utils/file-utils.ts`** - File operations
 - **`src/utils/test-analyzer.ts`** - Test result analysis
 - **`src/validators/input-validator.ts`** - Input validation

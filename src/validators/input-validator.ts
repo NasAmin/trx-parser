@@ -62,7 +62,7 @@ function sanitizeReportPrefix(prefix: string): string {
   if (!prefix) return ''
 
   // Allow only alphanumeric characters, hyphens, and underscores
-  const sanitized = prefix.replace(/[^a-zA-Z0-9\-_]/g, '')
+  const sanitized = prefix.replace(/[^-a-zA-Z0-9_]/g, '')
 
   if (sanitized !== prefix) {
     core.warning(
