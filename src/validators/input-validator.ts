@@ -31,8 +31,11 @@ function sanitizePath(inputPath: string): string {
   const resolved = path.resolve(sanitized)
 
   // Additional validation to prevent traversal outside working directory
-  const workingDir = process.cwd()
-  if (!resolved.startsWith(workingDir)) {
+  const workingDir = path.resolve(process.cwd())
+  const relativePath = path.relative(workingDir, resolved)
+
+  // Check if the path is outside the working directory
+  if (relativePath.startsWith('..') || path.isAbsolute(relativePath)) {
     core.warning(`Path ${resolved} is outside working directory ${workingDir}`) // eslint-disable-line i18n-text/no-en
   }
 
@@ -69,7 +72,7 @@ function sanitizeReportPrefix(prefix: string): string {
 }
 
 /**
- * Parse and validate action inputs
+ * Parse and validate action inputs with comprehensive security checks
  */
 export function parseActionInputs(): ActionInputs {
   const token = core.getInput('REPO_TOKEN')
@@ -79,13 +82,23 @@ export function parseActionInputs(): ActionInputs {
   const sha = core.getInput('SHA')
   const reportPrefix = core.getInput('REPORT_PREFIX')
 
-  // Validate required inputs
+  // Validate required inputs with enhanced security checks
   if (!token || typeof token !== 'string' || token.trim().length === 0) {
     throw new Error('REPO_TOKEN is required and must be a non-empty string')
   }
 
+  // Additional token format validation
+  if (token.length < 10 || token.includes(' ') || token.includes('\n')) {
+    throw new Error('REPO_TOKEN appears to be malformed')
+  }
+
   if (!trxPath || typeof trxPath !== 'string' || trxPath.trim().length === 0) {
     throw new Error('TRX_PATH is required and must be a non-empty string')
+  }
+
+  // Enhanced path length validation
+  if (trxPath.length > 500) {
+    throw new Error('TRX_PATH is too long (maximum 500 characters)')
   }
 
   // Validate and sanitize inputs

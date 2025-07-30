@@ -56,6 +56,7 @@ jobs:
           REPORT_PREFIX: ${{ matrix.os }}-failing
 
       - name: Verify test outputs
+        shell: bash
         run: |
           echo "Passing tests outcome: ${{ steps.passing-tests.outputs.test-outcome }}"
           echo "Passing tests files: ${{ steps.passing-tests.outputs.trx-files }}"

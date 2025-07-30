@@ -39,10 +39,18 @@ export async function transformTrxToJson(
     }
 
     // Security: Check for suspicious content before parsing
-    if (xmlData.includes('<!ENTITY') || xmlData.includes('<!DOCTYPE')) {
+    if (
+      xmlData.includes('<!ENTITY') ||
+      xmlData.includes('<!DOCTYPE') ||
+      xmlData.includes('SYSTEM') ||
+      xmlData.includes('PUBLIC') ||
+      (xmlData.includes('&') && xmlData.includes(';'))
+    ) {
       core.warning(
-        'XML contains entity declarations which may pose security risks'
+        'XML contains potentially dangerous constructs (entities, DTD references, or external references)'
       )
+      // For security, we could choose to reject such files entirely
+      // throw new Error('XML contains potentially dangerous constructs and cannot be processed')
     }
 
     const xmlParser = new XMLParser(XML_PARSER_OPTIONS)

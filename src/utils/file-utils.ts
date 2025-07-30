@@ -32,8 +32,16 @@ export function getAbsoluteFilePaths(
 
   return fileNames
     .filter(file => {
-      // Prevent path traversal attacks
-      if (file.includes('..') || file.includes('/') || file.includes('\\')) {
+      // Prevent path traversal attacks - be more strict about filename validation
+      if (
+        file.includes('..') ||
+        file.includes('/') ||
+        file.includes('\\') ||
+        file.includes('\0') ||
+        file.length === 0 ||
+        file.startsWith('.') ||
+        file.includes(':')
+      ) {
         return false
       }
       return true
@@ -41,12 +49,13 @@ export function getAbsoluteFilePaths(
     .map(file => {
       const fullPath = path.join(resolvedDirectory, file)
       const resolvedPath = path.resolve(fullPath)
+      const normalizedDirectory = path.normalize(resolvedDirectory)
+      const normalizedPath = path.normalize(resolvedPath)
 
       // Ensure the resolved path is within the intended directory
-      if (
-        !resolvedPath.startsWith(resolvedDirectory + path.sep) &&
-        resolvedPath !== resolvedDirectory
-      ) {
+      // Use path.relative to check if the path escapes the directory
+      const relativePath = path.relative(normalizedDirectory, normalizedPath)
+      if (relativePath.startsWith('..') || path.isAbsolute(relativePath)) {
         throw new Error(`Path traversal attempt detected: ${file}`)
       }
 

@@ -22,7 +22,9 @@ export const XML_PARSER_OPTIONS = {
   stopNodes: ['parse-me-as-string'],
   // Security: Disable external entity processing to prevent XXE attacks
   processEntities: false,
-  resolveExternalDTD: false
+  resolveExternalDTD: false,
+  // Additional security: Prevent external DTD resolution
+  allowDTD: false
 }
 
 export const XML_VALIDATOR_OPTIONS = {

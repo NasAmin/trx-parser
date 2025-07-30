@@ -6,10 +6,10 @@ import {transformTrxToJson} from '../src/parsers/trx-parser'
 describe('Test GetAbsolutePath returns correct values', () => {
   it('getAbsoluteFilePaths()', async () => {
     const filesNames = ['abc.trx', 'xyz.trx']
-    const dirName = path.normalize('/root/test-data')
+    const dirName = path.resolve('test-data')
     const expectedPaths = [
-      path.normalize('/root/test-data/abc.trx'),
-      path.normalize('/root/test-data/xyz.trx')
+      path.resolve('test-data', 'abc.trx'),
+      path.resolve('test-data', 'xyz.trx')
     ]
 
     const actualPaths = getAbsoluteFilePaths(filesNames, dirName)

@@ -28,10 +28,17 @@ exports.XML_PARSER_OPTIONS = {
     cdataPositionChar: '\\c',
     parseTrueNumberOnly: false,
     arrayMode: false,
-    stopNodes: ['parse-me-as-string']
+    stopNodes: ['parse-me-as-string'],
+    // Security: Disable external entity processing to prevent XXE attacks
+    processEntities: false,
+    resolveExternalDTD: false,
+    // Additional security: Prevent external DTD resolution
+    allowDTD: false
 };
 exports.XML_VALIDATOR_OPTIONS = {
-    allowBooleanAttributes: true
+    allowBooleanAttributes: true,
+    // Security: Disable external entity processing
+    resolveExternalDTD: false
 };
 exports.TEST_OUTCOMES = {
     PASSED: 'Passed',
@@ -177,44 +184,70 @@ exports.transformAllTrxToJson = transformAllTrxToJson;
 /* eslint-disable i18n-text/no-en */
 const core = __importStar(__nccwpck_require__(7484));
 const fs = __importStar(__nccwpck_require__(9896));
+const path = __importStar(__nccwpck_require__(6928));
 const fast_xml_parser_1 = __nccwpck_require__(9741);
 const constants_1 = __nccwpck_require__(1810);
 const file_utils_1 = __nccwpck_require__(1714);
 /**
- * Transform a single TRX file to JSON format
+ * Transform a single TRX file to JSON format with security validation
  */
 async function transformTrxToJson(filePath) {
-    if (!fs.existsSync(filePath)) {
-        core.warning(`Trx file ${filePath} does not exist`);
-        // Return empty wrapper for non-existent files
-        return createEmptyTrxDataWrapper(filePath);
+    // Validate file path security
+    const resolvedPath = path.resolve(filePath);
+    if (!resolvedPath.endsWith('.trx')) {
+        throw new Error(`Security: Only .trx files are allowed: ${filePath}`);
     }
-    core.info(`Transforming file ${filePath}`);
-    const xmlData = await (0, file_utils_1.readTrxFile)(filePath);
-    const xmlParser = new fast_xml_parser_1.XMLParser(constants_1.XML_PARSER_OPTIONS);
-    const isValid = fast_xml_parser_1.XMLValidator.validate(xmlData, constants_1.XML_VALIDATOR_OPTIONS);
-    if (isValid !== true) {
-        throw new Error(`Invalid XML in file ${filePath}: ${isValid}`);
+    if (!fs.existsSync(resolvedPath)) {
+        core.warning(`Trx file ${resolvedPath} does not exist`);
+        return createEmptyTrxDataWrapper(resolvedPath);
     }
-    const jsonString = xmlParser.parse(xmlData, true);
-    const testData = jsonString;
-    // Check for run failures
-    const runInfos = testData.TestRun.ResultSummary.RunInfos;
-    if (runInfos?.RunInfo._outcome === 'Failed') {
-        core.warning('There is trouble');
-    }
-    const reportHeaders = getReportHeaders(testData);
-    return {
-        TrxData: testData,
-        IsEmpty: isEmpty(testData),
-        ReportMetaData: {
-            TrxFilePath: filePath,
-            ReportName: `${reportHeaders.reportName}-check`,
-            ReportTitle: reportHeaders.reportTitle,
-            TrxJSonString: JSON.stringify(jsonString),
-            TrxXmlString: xmlData
+    core.info(`Transforming file ${resolvedPath}`);
+    try {
+        const xmlData = await (0, file_utils_1.readTrxFile)(resolvedPath);
+        // Security: Validate XML size to prevent DoS attacks
+        const maxFileSize = 50 * 1024 * 1024; // 50MB limit
+        if (xmlData.length > maxFileSize) {
+            throw new Error(`File too large: ${xmlData.length} bytes exceeds ${maxFileSize} bytes limit`);
         }
-    };
+        // Security: Check for suspicious content before parsing
+        if (xmlData.includes('<!ENTITY') ||
+            xmlData.includes('<!DOCTYPE') ||
+            xmlData.includes('SYSTEM') ||
+            xmlData.includes('PUBLIC') ||
+            (xmlData.includes('&') && xmlData.includes(';'))) {
+            core.warning('XML contains potentially dangerous constructs (entities, DTD references, or external references)');
+            // For security, we could choose to reject such files entirely
+            // throw new Error('XML contains potentially dangerous constructs and cannot be processed')
+        }
+        const xmlParser = new fast_xml_parser_1.XMLParser(constants_1.XML_PARSER_OPTIONS);
+        const isValid = fast_xml_parser_1.XMLValidator.validate(xmlData, constants_1.XML_VALIDATOR_OPTIONS);
+        if (isValid !== true) {
+            throw new Error(`Invalid XML in file ${resolvedPath}: ${JSON.stringify(isValid)}`);
+        }
+        const jsonString = xmlParser.parse(xmlData, true);
+        const testData = jsonString;
+        // Check for run failures
+        const runInfos = testData.TestRun?.ResultSummary?.RunInfos;
+        if (runInfos?.RunInfo?._outcome === 'Failed') {
+            core.warning('Test run contains failures');
+        }
+        const reportHeaders = getReportHeaders(testData);
+        return {
+            TrxData: testData,
+            IsEmpty: isEmpty(testData),
+            ReportMetaData: {
+                TrxFilePath: resolvedPath,
+                ReportName: `${reportHeaders.reportName}-check`,
+                ReportTitle: reportHeaders.reportTitle,
+                TrxJSonString: JSON.stringify(jsonString),
+                TrxXmlString: xmlData
+            }
+        };
+    }
+    catch (error) {
+        core.error(`Failed to process TRX file ${resolvedPath}: ${error.message}`);
+        throw error;
+    }
 }
 /**
  * Transform multiple TRX files to JSON format in parallel
@@ -337,21 +370,36 @@ const core = __importStar(__nccwpck_require__(7484));
 const github = __importStar(__nccwpck_require__(3228));
 const report_service_1 = __nccwpck_require__(3301);
 /**
- * Create a GitHub check run for test results
+ * Create a GitHub check run for test results with security validation
  */
 async function createCheckRun(repoToken, ignoreTestFailures, reportData, sha, reportPrefix) {
     try {
+        // Security: Validate token format (should start with 'ghp_' for GitHub personal access tokens)
+        if (!repoToken ||
+            typeof repoToken !== 'string' ||
+            repoToken.trim().length === 0) {
+            throw new Error('Invalid repository token provided');
+        }
+        // Security: Sanitize report prefix to prevent injection
+        const sanitizedReportPrefix = reportPrefix?.replace(/[^a-zA-Z0-9\-_]/g, '') || undefined;
+        if (reportPrefix && sanitizedReportPrefix !== reportPrefix) {
+            core.warning(`Report prefix was sanitized for security`);
+        }
         core.info(`Creating PR check for ${reportData.ReportMetaData.ReportTitle}`);
         const octokit = github.getOctokit(repoToken);
         const gitSha = determineGitSha(sha);
         const markupData = (0, report_service_1.getMarkupForTrx)(reportData);
         const checkTime = new Date().toUTCString();
-        const reportName = buildReportName(reportPrefix, reportData.ReportMetaData.ReportName);
+        const reportName = buildReportName(sanitizedReportPrefix, reportData.ReportMetaData.ReportName);
         core.info(`Check time is: ${checkTime}`);
+        // Security: Validate report name to prevent injection
+        const sanitizedReportName = reportName
+            .toLowerCase()
+            .replace(/[^a-zA-Z0-9\-_]/g, '-');
         const response = await octokit.rest.checks.create({
             owner: github.context.repo.owner,
             repo: github.context.repo.repo,
-            name: reportName.toLowerCase(),
+            name: sanitizedReportName,
             head_sha: gitSha,
             status: 'completed',
             conclusion: determineCheckConclusion(reportData, ignoreTestFailures),
@@ -369,11 +417,14 @@ async function createCheckRun(repoToken, ignoreTestFailures, reportData, sha, re
         }
     }
     catch (error) {
-        core.setFailed(error.message);
+        const errorMessage = error.message;
+        // Security: Don't log tokens or sensitive information
+        const sanitizedMessage = errorMessage.replace(/ghp_[a-zA-Z0-9]{36}/g, '[REDACTED_TOKEN]');
+        core.setFailed(sanitizedMessage);
     }
 }
 /**
- * Determine the git SHA to use for the check
+ * Determine the git SHA to use for the check with validation
  */
 function determineGitSha(sha) {
     let gitSha = github.context.sha;
@@ -387,16 +438,26 @@ function determineGitSha(sha) {
         core.info(`Creating status check for GitSha: ${gitSha} on a pull request event`);
     }
     if (sha) {
+        // Security: Validate SHA format
+        const shaRegex = /^[a-f0-9]{40}$/i;
+        if (!shaRegex.test(sha)) {
+            throw new Error(`Invalid SHA format: ${sha}`);
+        }
         gitSha = sha;
         core.info(`Creating status check for user-provided GitSha: ${gitSha}`);
     }
     return gitSha;
 }
 /**
- * Build the report name with optional prefix
+ * Build the report name with optional prefix and sanitization
  */
 function buildReportName(reportPrefix, reportName) {
-    return reportPrefix ? reportPrefix.concat('-', reportName) : reportName;
+    // Security: Sanitize inputs to prevent injection attacks
+    const sanitizedReportName = reportName.replace(/[^a-zA-Z0-9\-_]/g, '-');
+    const sanitizedPrefix = reportPrefix?.replace(/[^a-zA-Z0-9\-_]/g, '-');
+    return sanitizedPrefix
+        ? sanitizedPrefix.concat('-', sanitizedReportName)
+        : sanitizedReportName;
 }
 /**
  * Determine the check conclusion based on test results
@@ -754,24 +815,66 @@ const fs_1 = __nccwpck_require__(9896);
  * Get all TRX files from a directory
  */
 async function getTrxFiles(trxPath) {
-    if (!fs.existsSync(trxPath))
+    // Resolve and normalize the path to prevent traversal attacks
+    const resolvedTrxPath = path.resolve(trxPath);
+    if (!fs.existsSync(resolvedTrxPath))
         return [];
     const readdir = util.promisify(fs.readdir);
-    const fileNames = await readdir(trxPath);
-    const trxFiles = fileNames.filter(f => f.endsWith('.trx'));
-    return getAbsoluteFilePaths(trxFiles, trxPath);
+    const fileNames = await readdir(resolvedTrxPath);
+    const trxFiles = fileNames.filter(f => f.endsWith('.trx') && !f.includes('..'));
+    return getAbsoluteFilePaths(trxFiles, resolvedTrxPath);
 }
 /**
- * Convert relative file paths to absolute paths
+ * Convert relative file paths to absolute paths with path traversal protection
  */
 function getAbsoluteFilePaths(fileNames, directoryName) {
-    return fileNames.map(file => path.join(directoryName, file));
+    const resolvedDirectory = path.resolve(directoryName);
+    return fileNames
+        .filter(file => {
+        // Prevent path traversal attacks - be more strict about filename validation
+        if (file.includes('..') ||
+            file.includes('/') ||
+            file.includes('\\') ||
+            file.includes('\0') ||
+            file.length === 0 ||
+            file.startsWith('.') ||
+            file.includes(':')) {
+            return false;
+        }
+        return true;
+    })
+        .map(file => {
+        const fullPath = path.join(resolvedDirectory, file);
+        const resolvedPath = path.resolve(fullPath);
+        const normalizedDirectory = path.normalize(resolvedDirectory);
+        const normalizedPath = path.normalize(resolvedPath);
+        // Ensure the resolved path is within the intended directory
+        // Use path.relative to check if the path escapes the directory
+        const relativePath = path.relative(normalizedDirectory, normalizedPath);
+        if (relativePath.startsWith('..') || path.isAbsolute(relativePath)) {
+            throw new Error(`Path traversal attempt detected: ${file}`);
+        }
+        return resolvedPath;
+    });
 }
 /**
- * Read a TRX file and return its contents as a string
+ * Read a TRX file and return its contents as a string with path validation
  */
 async function readTrxFile(filePath) {
-    return await fs_1.promises.readFile(filePath, 'utf8');
+    // Resolve the file path to prevent directory traversal
+    const resolvedPath = path.resolve(filePath);
+    // Additional security check to ensure it's a .trx file
+    if (!resolvedPath.endsWith('.trx')) {
+        throw new Error(`Invalid file type. Only .trx files are allowed: ${filePath}`);
+    }
+    // Verify the file exists and is readable
+    try {
+        await fs_1.promises.access(resolvedPath, fs.constants.R_OK);
+    }
+    catch (error) {
+        throw new Error(`Cannot read file: ${filePath}. ${error.message}`);
+    }
+    return await fs_1.promises.readFile(resolvedPath, 'utf8');
 }
 
 
@@ -845,8 +948,56 @@ var __importStar = (this && this.__importStar) || (function () {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.parseActionInputs = parseActionInputs;
 const core = __importStar(__nccwpck_require__(7484));
+const path = __importStar(__nccwpck_require__(6928));
 /**
- * Parse and validate action inputs
+ * Sanitize and validate file path to prevent directory traversal
+ */
+function sanitizePath(inputPath) {
+    if (!inputPath || typeof inputPath !== 'string') {
+        throw new Error('Invalid path provided');
+    }
+    // Remove null bytes and other dangerous characters
+    const sanitized = inputPath.replace(/\0/g, '').trim();
+    if (sanitized !== inputPath) {
+        throw new Error('Path contains invalid characters');
+    }
+    // Resolve and normalize the path
+    const resolved = path.resolve(sanitized);
+    // Additional validation to prevent traversal outside working directory
+    const workingDir = path.resolve(process.cwd());
+    const relativePath = path.relative(workingDir, resolved);
+    // Check if the path is outside the working directory
+    if (relativePath.startsWith('..') || path.isAbsolute(relativePath)) {
+        core.warning(`Path ${resolved} is outside working directory ${workingDir}`); // eslint-disable-line i18n-text/no-en
+    }
+    return resolved;
+}
+/**
+ * Validate SHA format if provided
+ */
+function validateSha(sha) {
+    if (!sha)
+        return true; // SHA is optional
+    // SHA should be a 40-character hexadecimal string (Git SHA-1)
+    const shaRegex = /^[a-f0-9]{40}$/i;
+    return shaRegex.test(sha);
+}
+/**
+ * Sanitize report prefix to prevent injection attacks
+ */
+function sanitizeReportPrefix(prefix) {
+    if (!prefix)
+        return '';
+    // Allow only alphanumeric characters, hyphens, and underscores
+    const sanitized = prefix.replace(/[^a-zA-Z0-9\-_]/g, '');
+    if (sanitized !== prefix) {
+        core.warning(`Report prefix was sanitized from '${prefix}' to '${sanitized}'` // eslint-disable-line i18n-text/no-en
+        );
+    }
+    return sanitized;
+}
+/**
+ * Parse and validate action inputs with comprehensive security checks
  */
 function parseActionInputs() {
     const token = core.getInput('REPO_TOKEN');
@@ -854,19 +1005,35 @@ function parseActionInputs() {
     const ignoreTestFailures = core.getInput('IGNORE_FAILURE', { required: false }) === 'true';
     const sha = core.getInput('SHA');
     const reportPrefix = core.getInput('REPORT_PREFIX');
-    // Validate required inputs
-    if (!token) {
-        throw new Error('REPO_TOKEN is required');
+    // Validate required inputs with enhanced security checks
+    if (!token || typeof token !== 'string' || token.trim().length === 0) {
+        throw new Error('REPO_TOKEN is required and must be a non-empty string');
     }
-    if (!trxPath) {
-        throw new Error('TRX_PATH is required');
+    // Additional token format validation
+    if (token.length < 10 || token.includes(' ') || token.includes('\n')) {
+        throw new Error('REPO_TOKEN appears to be malformed');
     }
+    if (!trxPath || typeof trxPath !== 'string' || trxPath.trim().length === 0) {
+        throw new Error('TRX_PATH is required and must be a non-empty string');
+    }
+    // Enhanced path length validation
+    if (trxPath.length > 500) {
+        throw new Error('TRX_PATH is too long (maximum 500 characters)');
+    }
+    // Validate and sanitize inputs
+    const sanitizedTrxPath = sanitizePath(trxPath);
+    if (sha && !validateSha(sha)) {
+        throw new Error('SHA must be a valid 40-character hexadecimal string');
+    }
+    const sanitizedReportPrefix = reportPrefix
+        ? sanitizeReportPrefix(reportPrefix)
+        : undefined;
     return {
-        token,
-        trxPath,
+        token: token.trim(),
+        trxPath: sanitizedTrxPath,
         ignoreTestFailures,
         sha: sha || undefined,
-        reportPrefix: reportPrefix || undefined
+        reportPrefix: sanitizedReportPrefix
     };
 }
 
