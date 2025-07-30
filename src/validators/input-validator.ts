@@ -36,7 +36,9 @@ function sanitizePath(inputPath: string): string {
 
   // Check if the path is outside the working directory
   if (relativePath.startsWith('..') || path.isAbsolute(relativePath)) {
-    core.warning(`Path ${resolved} is outside working directory ${workingDir}`) // eslint-disable-line i18n-text/no-en
+    throw new Error(
+      `Security: Path traversal attempt detected. Path ${resolved} is outside working directory ${workingDir}`
+    )
   }
 
   return resolved
