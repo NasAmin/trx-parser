@@ -30,7 +30,7 @@ export async function createCheckRun(
 
     // Security: Sanitize report prefix to prevent injection
     const sanitizedReportPrefix =
-      reportPrefix?.replace(/[^a-zA-Z0-9\-_]/g, '') || undefined
+      reportPrefix?.replace(/[^a-zA-Z0-9_-]/g, '') || undefined
     if (reportPrefix && sanitizedReportPrefix !== reportPrefix) {
       core.warning(`Report prefix was sanitized for security`)
     }
@@ -51,7 +51,7 @@ export async function createCheckRun(
     // Security: Validate report name to prevent injection
     const sanitizedReportName = reportName
       .toLowerCase()
-      .replace(/[^a-zA-Z0-9\-_]/g, '-')
+      .replace(/[^a-zA-Z0-9_-]/g, '-')
 
     const response = await withSpan(
       'github_check_create',
@@ -144,8 +144,8 @@ function buildReportName(
   reportName: string
 ): string {
   // Security: Sanitize inputs to prevent injection attacks
-  const sanitizedReportName = reportName.replace(/[^a-zA-Z0-9\-_]/g, '-')
-  const sanitizedPrefix = reportPrefix?.replace(/[^a-zA-Z0-9\-_]/g, '-')
+  const sanitizedReportName = reportName.replace(/[^a-zA-Z0-9_-]/g, '-')
+  const sanitizedPrefix = reportPrefix?.replace(/[^a-zA-Z0-9_-]/g, '-')
 
   return sanitizedPrefix
     ? sanitizedPrefix.concat('-', sanitizedReportName)
