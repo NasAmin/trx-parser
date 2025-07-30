@@ -6,6 +6,7 @@ import * as types from '@octokit/webhooks-types'
 
 import {TrxDataWrapper} from '../types/types'
 import {getMarkupForTrx} from './report-service'
+import {withSpan} from './telemetry-service'
 
 /**
  * Create a GitHub check run for test results with security validation
@@ -52,19 +53,35 @@ export async function createCheckRun(
       .toLowerCase()
       .replace(/[^a-zA-Z0-9\-_]/g, '-')
 
-    const response = await octokit.rest.checks.create({
-      owner: github.context.repo.owner,
-      repo: github.context.repo.repo,
-      name: sanitizedReportName,
-      head_sha: gitSha,
-      status: 'completed',
-      conclusion: determineCheckConclusion(reportData, ignoreTestFailures),
-      output: {
-        title: reportData.ReportMetaData.ReportTitle,
-        summary: `This test run completed at \`${checkTime}\``,
-        text: markupData
+    const response = await withSpan(
+      'github_check_create',
+      async () => {
+        return octokit.rest.checks.create({
+          owner: github.context.repo.owner,
+          repo: github.context.repo.repo,
+          name: sanitizedReportName,
+          head_sha: gitSha,
+          status: 'completed',
+          conclusion: determineCheckConclusion(reportData, ignoreTestFailures),
+          output: {
+            title: reportData.ReportMetaData.ReportTitle,
+            summary: `This test run completed at \`${checkTime}\``,
+            text: markupData
+          }
+        })
+      },
+      {
+        check_name: sanitizedReportName,
+        sha: gitSha,
+        total_tests: reportData.IsEmpty
+          ? 0
+          : reportData.TrxData.TestRun?.ResultSummary?.Counters?._total || 0,
+        failed_tests: reportData.IsEmpty
+          ? 0
+          : reportData.TrxData.TestRun?.ResultSummary?.Counters?._failed || 0,
+        conclusion: determineCheckConclusion(reportData, ignoreTestFailures)
       }
-    })
+    )
 
     if (response.status !== 201) {
       throw new Error(

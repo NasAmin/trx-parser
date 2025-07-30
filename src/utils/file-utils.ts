@@ -2,23 +2,33 @@ import * as fs from 'fs'
 import * as path from 'path'
 import * as util from 'util'
 import {promises} from 'fs'
+import {withSpan} from '../services/telemetry-service'
 
 /**
  * Get all TRX files from a directory
  */
 export async function getTrxFiles(trxPath: string): Promise<string[]> {
-  // Resolve and normalize the path to prevent traversal attacks
-  const resolvedTrxPath = path.resolve(trxPath)
+  return withSpan(
+    'get_trx_files',
+    async () => {
+      // Resolve and normalize the path to prevent traversal attacks
+      const resolvedTrxPath = path.resolve(trxPath)
 
-  if (!fs.existsSync(resolvedTrxPath)) return []
+      if (!fs.existsSync(resolvedTrxPath)) return []
 
-  const readdir = util.promisify(fs.readdir)
-  const fileNames = await readdir(resolvedTrxPath)
-  const trxFiles = fileNames.filter(
-    f => f.endsWith('.trx') && !f.includes('..')
+      const readdir = util.promisify(fs.readdir)
+      const fileNames = await readdir(resolvedTrxPath)
+      const trxFiles = fileNames.filter(
+        f => f.endsWith('.trx') && !f.includes('..')
+      )
+
+      return getAbsoluteFilePaths(trxFiles, resolvedTrxPath)
+    },
+    {
+      trx_path: trxPath,
+      resolved_path: path.resolve(trxPath)
+    }
   )
-
-  return getAbsoluteFilePaths(trxFiles, resolvedTrxPath)
 }
 
 /**

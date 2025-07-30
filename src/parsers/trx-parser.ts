@@ -7,6 +7,7 @@ import {XMLParser, XMLValidator} from 'fast-xml-parser'
 import {TrxData, TrxDataWrapper, UnitTest} from '../types/types'
 import {XML_PARSER_OPTIONS, XML_VALIDATOR_OPTIONS} from '../config/constants'
 import {readTrxFile} from '../utils/file-utils'
+import {withSpan} from '../services/telemetry-service'
 
 /**
  * Transform a single TRX file to JSON format with security validation
@@ -98,8 +99,29 @@ export async function transformTrxToJson(
 export async function transformAllTrxToJson(
   trxFiles: string[]
 ): Promise<TrxDataWrapper[]> {
-  // Process files in parallel for better performance
-  return await Promise.all(trxFiles.map(async trx => transformTrxToJson(trx)))
+  return withSpan(
+    'transform_all_trx_to_json',
+    async () => {
+      // Process files in parallel for better performance
+      return await Promise.all(
+        trxFiles.map(async trx =>
+          withSpan(
+            'transform_single_trx_to_json',
+            async () => {
+              return transformTrxToJson(trx)
+            },
+            {
+              file_path: trx,
+              file_name: path.basename(trx)
+            }
+          )
+        )
+      )
+    },
+    {
+      file_count: trxFiles.length
+    }
+  )
 }
 
 /**
