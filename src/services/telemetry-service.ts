@@ -47,22 +47,15 @@ export function initializeTelemetry(): boolean {
 
     core.info('Vendor telemetry: Initializing telemetry with Honeycomb')
 
-    // Create OTLP exporters for Honeycomb
-    const traceExporter = new OTLPTraceExporter({
-      url: `${telemetryConfig.honeycombEndpoint}/v1/traces`,
-      headers: {
-        'x-honeycomb-team': telemetryConfig.honeycombApiKey || '',
-        'x-honeycomb-dataset': telemetryConfig.honeycombDataset || ''
-      }
-    })
+    // Set OpenTelemetry environment variables for HoneyComb as recommended
+    process.env.OTEL_SERVICE_NAME = telemetryConfig.serviceName
+    process.env.OTEL_EXPORTER_OTLP_PROTOCOL = 'http/protobuf'
+    process.env.OTEL_EXPORTER_OTLP_ENDPOINT = telemetryConfig.honeycombEndpoint
+    process.env.OTEL_EXPORTER_OTLP_HEADERS = `x-honeycomb-team=${telemetryConfig.honeycombApiKey}`
 
-    const metricExporter = new OTLPMetricExporter({
-      url: `${telemetryConfig.honeycombEndpoint}/v1/metrics`,
-      headers: {
-        'x-honeycomb-team': telemetryConfig.honeycombApiKey || '',
-        'x-honeycomb-dataset': telemetryConfig.honeycombDataset || ''
-      }
-    })
+    // Create OTLP exporters for Honeycomb using standard configuration
+    const traceExporter = new OTLPTraceExporter()
+    const metricExporter = new OTLPMetricExporter()
 
     // Initialize the SDK
     sdk = new NodeSDK({
