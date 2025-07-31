@@ -44,6 +44,9 @@ jobs:
           TRX_PATH: ${{ github.workspace }}/test-data/passing-tests
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPORT_PREFIX: ${{ matrix.os }}-passing
+        env:
+          VENDOR_HONEYCOMB_API_KEY: ${{ secrets.VENDOR_HONEYCOMB_API_KEY }}
+          VENDOR_HONEYCOMB_DATASET: ${{ secrets.VENDOR_HONEYCOMB_DATASET }}
 
       - name: Test with failing results (expect failure)
         id: failing-tests
@@ -54,6 +57,9 @@ jobs:
           REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           IGNORE_FAILURE: true
           REPORT_PREFIX: ${{ matrix.os }}-failing
+        env:
+          VENDOR_HONEYCOMB_API_KEY: ${{ secrets.VENDOR_HONEYCOMB_API_KEY }}
+          VENDOR_HONEYCOMB_DATASET: ${{ secrets.VENDOR_HONEYCOMB_DATASET }}
 
       - name: Verify test outputs
         shell: bash
