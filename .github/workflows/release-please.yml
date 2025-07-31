@@ -21,8 +21,6 @@ jobs:
         id: release
         uses: googleapis/release-please-action@v4
         with:
-          release-type: node
-          package-name: trx-parser
           token: ${{ secrets.GITHUB_TOKEN }}
           
   build-and-release:
