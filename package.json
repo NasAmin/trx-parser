@@ -52,7 +52,7 @@
     "@opentelemetry/instrumentation": "^0.203.0",
     "@opentelemetry/sdk-node": "^0.203.0",
     "@types/he": "^1.1.2",
-    "fast-xml-parser": "^5.2.5",
+    "fast-xml-parser": "^5.3.6",
     "he": "^1.2.0"
   },
   "devDependencies": {
