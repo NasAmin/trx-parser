@@ -1,6 +1,6 @@
 {
   "name": "trx-parser",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "private": true,
   "description": "Fast, parallel GitHub Action to parse .NET test results and create status checks using the GitHub Checks API",
   "main": "lib/main.js",
