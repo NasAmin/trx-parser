@@ -121,7 +121,7 @@ describe('Telemetry Service', () => {
   it('should set OpenTelemetry environment variables when initializing with valid config', () => {
     process.env.GITHUB_REPOSITORY = 'NasAmin/trx-parser'
     process.env.VENDOR_HONEYCOMB_API_KEY = 'test-api-key'
-    
+
     // Clear any existing OTEL env vars
     delete process.env.OTEL_SERVICE_NAME
     delete process.env.OTEL_EXPORTER_OTLP_PROTOCOL
@@ -130,11 +130,15 @@ describe('Telemetry Service', () => {
 
     const result = initializeTelemetry()
     expect(result).toBe(true)
-    
+
     // Verify that the OpenTelemetry environment variables are set
     expect(process.env.OTEL_SERVICE_NAME).toBe('trx-parser')
     expect(process.env.OTEL_EXPORTER_OTLP_PROTOCOL).toBe('http/protobuf')
-    expect(process.env.OTEL_EXPORTER_OTLP_ENDPOINT).toBe('https://api.honeycomb.io')
-    expect(process.env.OTEL_EXPORTER_OTLP_HEADERS).toBe('x-honeycomb-team=test-api-key')
+    expect(process.env.OTEL_EXPORTER_OTLP_ENDPOINT).toBe(
+      'https://api.honeycomb.io'
+    )
+    expect(process.env.OTEL_EXPORTER_OTLP_HEADERS).toBe(
+      'x-honeycomb-team=test-api-key'
+    )
   })
 })
